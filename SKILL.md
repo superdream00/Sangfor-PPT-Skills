@@ -390,15 +390,16 @@ ppt-generator/
 ├── SKILL.md                    # 本文件
 ├── scripts/
 │   ├── generate_ppt.py         # 核心生成脚本
-│   ├── utils.py                # 工具函数库
-│   └── analyze_template.py     # 模板分析脚本
+│   └── utils.py                # 工具函数库
 ├── references/
-│   ├── page_catalog.json       # 页面分类索引
+│   ├── page_catalog.json       # 页面分类索引（含各页可替换占位符正则）
 │   └── text_replacement_rules.json  # 文本替换规则
 ├── templates/
 │   └── 【常用】深信服--PPT浅色模板2024.pptx
 └── output/                     # 生成的PPT输出目录
 ```
+
+> 占位文字以 `references/page_catalog.json` 为准。若模板有变更，可用 python-pptx 遍历 `prs.slides[i].shapes` 打印各文本框内容，重新核对占位符后更新该 JSON。
 
 ### 4.2 生成命令
 
@@ -425,8 +426,61 @@ content_blocks 支持的类型:
 - `number_highlight`: 数字高亮展示
 - `image`: 图片插入
 - `two_column`: 两栏布局
+- `icon_row`: 水平排列的图标+标签行（产品特性展示）
 
-### 4.4 关键颜色常量（代码引用）
+### 4.4 图标库（Icon Library）★ 新特性
+
+内置 **172 个深信服蓝图标**（来源 Tabler Icons，MIT 许可，已预着色 `#006CD9` + 预转换为 512px 透明 PNG），存放于 `icons/` 下 7 个分类目录：
+
+| 分类目录 | 用途 | 代表图标 |
+|----------|------|----------|
+| `business/` | 通用商务概念 | chart-line, target, shield, users, rocket, coin, clock |
+| `cloud/` | 云计算/IT基础设施 | cloud-computing, server, network, cpu, key, shield-check |
+| `automotive/` | 汽车行业 | car, truck, robot, battery-charging, shield-lock, gauge |
+| `chip/` | 芯片/半导体 | dna, atom, calculator, temperature, checklist, stack |
+| `electronics/` | 电子制造 | device-laptop, qrcode, printer, robot, scan |
+| `energy/` | 新能源 | battery, sun, wind, leaf, recycle, bulb |
+| `pharma/` | 创新药/医疗 | pill, dna, vaccine, building-hospital, heartbeat |
+
+> 完整图标清单见 `icons/icon_list.txt`。查找图标：浏览对应分类目录下的 `.png` 文件名。
+
+**三种使用方式：**
+
+1. **bullet_list 列表项配图标**（图标替代绿色圆点）:
+```json
+{"type": "bullet_list", "items": [
+  {"title": "数据安全", "text": "数据不落地", "icon": "shield-lock"},
+  {"title": "弹性扩展", "text": "秒级开通", "icon": "rocket"}
+]}
+```
+
+2. **card_grid 卡片顶部配图标**（图标居中显示在标题条上方）:
+```json
+{"type": "card_grid", "columns": 3, "cards": [
+  {"header": "数据不落地", "body": "终端零残留", "icon": "lock"},
+  {"header": "随时接入", "body": "异地协同", "icon": "world"}
+]}
+```
+
+3. **icon_row 特性展示行**（水平排列多个图标+标签）:
+```json
+{"type": "icon_row", "items": [
+  {"icon": "shield", "label": "安全合规"},
+  {"icon": "clock", "label": "高效敏捷"},
+  {"icon": "coin", "label": "成本优化"}
+]}
+```
+
+**使用规则：**
+- `icon` 值为图标文件名（不含后缀），如 `"cloud"`、`"shield-lock"`。
+- 系统自动跨 7 个分类目录查找；如需限定可加 `"icon_category": "cloud"`。
+- 找不到图标时自动回退（bullet_list 回退为绿色圆点，card/icon_row 跳过图标）。
+- **代码 API**: `add_icon(slide, icon_name, left_cm, top_cm, size_cm=1.5)`。
+- 图标已预着色为深信服蓝；如需改色，在 PowerPoint 中选中图片用"图片格式"调整。
+
+**新增/重转图标**：把 SVG 放入对应分类目录，运行 `python convert_icons_to_png.py` 重新生成 PNG。
+
+### 4.5 关键颜色常量（代码引用）
 
 ```python
 from utils import SangforColors, SangforFonts
@@ -543,7 +597,7 @@ chart_colors = SangforColors.CHART_COLORS
 | `IndexError: list index out of range` | source_index 超出模板页数范围 | 检查索引，模板共50页(索引0-49) |
 | `KeyError: 'rId...'` | 克隆时关系引用冲突 | 使用 blank_with_content 替代 clone |
 | 图片不显示（白色方块） | 图片关系复制失败 | 检查模板文件是否完整 |
-| 生成的文字仍是占位符 | replacements 中的旧文本与模板不匹配 | 用 analyze_template.py 重新扫描确认占位文字 |
+| 生成的文字仍是占位符 | replacements 中的旧文本与模板不匹配 | 对照 `references/page_catalog.json` 核对占位文字，或遍历 `prs.slides[i].shapes` 打印实际文本框内容 |
 | 图表没有数据 | chart_data 格式错误 | 确认 categories 和 series.values 长度一致 |
 | 文件体积过大 (>5MB) | 克隆了含大量图片的页面 | 减少克隆页，多用 blank_with_content |
 

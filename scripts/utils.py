@@ -154,10 +154,19 @@ def set_paragraph_spacing(paragraph, line_spacing=1.5, space_before=Pt(0), space
         space_before: 段前间距
         space_after: 段后间距
     """
+    A_NS = 'http://schemas.openxmlformats.org/drawingml/2006/main'
     pPr = paragraph._p.get_or_add_pPr()
-    lnSpc = etree.SubElement(pPr, '{http://schemas.openxmlformats.org/drawingml/2006/main}lnSpc')
-    spcPct = etree.SubElement(lnSpc, '{http://schemas.openxmlformats.org/drawingml/2006/main}spcPct')
+
+    # OOXML 要求 lnSpc 必须是 pPr 的第一个子元素，且只能有一个。
+    # 先移除已有的 lnSpc（避免重复调用产生多个节点），再 insert 到首位。
+    for existing in pPr.findall(f'{{{A_NS}}}lnSpc'):
+        pPr.remove(existing)
+
+    lnSpc = etree.SubElement(pPr, f'{{{A_NS}}}lnSpc')
+    spcPct = etree.SubElement(lnSpc, f'{{{A_NS}}}spcPct')
     spcPct.set('val', str(int(line_spacing * 100000)))
+    pPr.remove(lnSpc)
+    pPr.insert(0, lnSpc)
 
 
 # ============================================================
@@ -354,22 +363,15 @@ def add_gradient_fill(shape, angle_deg, stops):
 # 高级组件函数
 # ============================================================
 def add_title_area(slide, title_text):
-    """添加标准标题区域（左上角蓝色标题+深蓝竖条装饰）
+    """添加标准标题区域（左上角蓝色标题）
     
     遵循模板设计：
     - 位置: (1.39cm, 0.54cm), 宽22cm, 高1.5cm
     - 文字: #006CD9, 微软雅黑, 22pt, 加粗
-    - 左侧有 #003592 深蓝竖条装饰
     
     Returns:
-        (竖条Shape, 文本框Shape) 元组
+        文本框Shape
     """
-    # 添加深蓝竖条装饰
-    bar = add_styled_rectangle(
-        slide, 0.8, 0.54, 0.3, 1.5,
-        fill_color=SangforColors.BLUE_DARK
-    )
-    
     # 添加标题文本
     title_box = add_textbox(
         slide, 1.39, 0.54, 22.03, 1.5, title_text,
@@ -378,33 +380,51 @@ def add_title_area(slide, title_text):
         bold=True
     )
     
-    return bar, title_box
+    return title_box
 
 
 def add_bullet_list(slide, left_cm, top_cm, width_cm, items,
-                    bullet_color='#53C800', title_color='#006CD9', 
+                    bullet_color='#53C800', title_color='#006CD9',
                     text_color='#0E0E0E', item_height_cm=2.5,
                     bullet_size_cm=0.3):
-    """添加带圆点标记的列表
-    
+    """添加带圆点标记的列表（支持图标替代圆点）
+
     Args:
-        items: [{'title': '小标题', 'text': '正文内容'}, ...]
-        bullet_color: 圆点颜色
+        items: [{'title': '小标题', 'text': '正文内容', 'icon': 'cloud'(可选)}, ...]
+        bullet_color: 圆点颜色（当未指定icon时使用）
         title_color: 小标题颜色
         text_color: 正文颜色
         item_height_cm: 每项高度
-        bullet_size_cm: 圆点直径
+        bullet_size_cm: 圆点直径或图标尺寸
     """
     shapes = []
     for i, item in enumerate(items):
         y = top_cm + i * item_height_cm
-        
-        # 添加绿色圆点
-        circle = add_styled_circle(
-            slide, left_cm, y + 0.4, bullet_size_cm, bullet_color
-        )
-        shapes.append(circle)
-        
+
+        # 添加标记（图标 or 圆点）
+        icon_name = item.get('icon')
+        if icon_name:
+            # 使用图标替代圆点
+            try:
+                icon_shape = add_icon(
+                    slide, icon_name, left_cm, y + 0.2,
+                    size_cm=bullet_size_cm * 3,  # 图标略大于圆点看起来更清晰
+                    category=item.get('icon_category')  # 可选指定分类
+                )
+                shapes.append(icon_shape)
+            except FileNotFoundError:
+                # 图标不存在，回退为圆点
+                circle = add_styled_circle(
+                    slide, left_cm, y + 0.4, bullet_size_cm, bullet_color
+                )
+                shapes.append(circle)
+        else:
+            # 默认绿色圆点
+            circle = add_styled_circle(
+                slide, left_cm, y + 0.4, bullet_size_cm, bullet_color
+            )
+            shapes.append(circle)
+
         # 添加文本（标题+正文）
         lines = []
         if item.get('title'):
@@ -420,34 +440,36 @@ def add_bullet_list(slide, left_cm, top_cm, width_cm, items,
                 'color': text_color,
                 'size': SangforFonts.BODY
             })
-        
+
         txBox = add_multiline_textbox(
             slide, left_cm + 0.8, y, width_cm - 0.8, item_height_cm,
             lines, line_spacing=1.3
         )
         shapes.append(txBox)
-    
+
     return shapes
 
 
 def add_card(slide, left_cm, top_cm, width_cm, height_cm,
              header_text='', body_text='',
              header_color='#006CD9', bg_color='#ECECEC',
-             bg_alpha=62):
-    """添加内容卡片（标题条+正文区）
-    
+             bg_alpha=62, icon=None):
+    """添加内容卡片（标题条+正文区，可选顶部图标）
+
     Args:
         header_text: 标题文字
         body_text: 正文文字
         header_color: 标题条颜色
         bg_color: 卡片背景色
         bg_alpha: 背景透明度（0-100）
+        icon: 图标名（可选），显示在卡片顶部居中
     Returns:
         创建的形状列表
     """
     shapes = []
     header_height = 1.3
-    
+    icon_area_height = 0 if not icon else 2.0  # 给图标预留空间
+
     # 卡片背景
     bg = add_styled_rectangle(
         slide, left_cm, top_cm, width_cm, height_cm,
@@ -463,37 +485,52 @@ def add_card(slide, left_cm, top_cm, width_cm, height_cm,
                 alpha = etree.SubElement(srgbClr, '{http://schemas.openxmlformats.org/drawingml/2006/main}alpha')
                 alpha.set('val', str(int(bg_alpha * 1000)))
     shapes.append(bg)
-    
+
+    # 可选：顶部居中图标
+    current_y = top_cm
+    if icon:
+        try:
+            icon_size = 1.5
+            icon_x = left_cm + (width_cm - icon_size) / 2
+            icon_shape = add_icon(slide, icon, icon_x, current_y + 0.3, size_cm=icon_size)
+            shapes.append(icon_shape)
+            current_y += icon_area_height
+        except FileNotFoundError:
+            # 图标不存在，跳过
+            pass
+
     # 标题条
     header_bar = add_styled_rectangle(
-        slide, left_cm, top_cm, width_cm, header_height,
+        slide, left_cm, current_y, width_cm, header_height,
         fill_color=header_color
     )
     shapes.append(header_bar)
-    
+
     # 标题文字
     if header_text:
         header_tb = add_textbox(
-            slide, left_cm + 0.5, top_cm, width_cm - 1, header_height,
+            slide, left_cm + 0.5, current_y, width_cm - 1, header_height,
             header_text,
             font_size=SangforFonts.BODY_LARGE,
             font_color=SangforColors.WHITE,
             bold=True
         )
         shapes.append(header_tb)
-    
+
     # 正文文字
     if body_text:
+        body_top = current_y + header_height + 0.3
+        body_height = height_cm - (current_y - top_cm) - header_height - 0.6
         body_tb = add_textbox(
-            slide, left_cm + 0.5, top_cm + header_height + 0.3,
-            width_cm - 1, height_cm - header_height - 0.6,
+            slide, left_cm + 0.5, body_top,
+            width_cm - 1, body_height,
             body_text,
             font_size=SangforFonts.BODY,
             font_color=SangforColors.TEXT_PRIMARY,
             line_spacing=1.5
         )
         shapes.append(body_tb)
-    
+
     return shapes
 
 
@@ -749,7 +786,7 @@ def _style_line_chart(chart, plot, colors):
 
 def add_image(slide, image_path, left_cm, top_cm, width_cm=None, height_cm=None):
     """添加图片，支持自适应尺寸
-    
+
     Args:
         image_path: 图片文件路径
         left_cm, top_cm: 位置
@@ -760,7 +797,7 @@ def add_image(slide, image_path, left_cm, top_cm, width_cm=None, height_cm=None)
     """
     if not os.path.exists(image_path):
         raise FileNotFoundError(f"图片文件不存在: {image_path}")
-    
+
     if width_cm is not None and height_cm is not None:
         pic = slide.shapes.add_picture(
             image_path, Cm(left_cm), Cm(top_cm), Cm(width_cm), Cm(height_cm)
@@ -777,7 +814,71 @@ def add_image(slide, image_path, left_cm, top_cm, width_cm=None, height_cm=None)
         pic = slide.shapes.add_picture(
             image_path, Cm(left_cm), Cm(top_cm)
         )
-    
+
+    return pic
+
+
+def add_icon(slide, icon_name, left_cm, top_cm, size_cm=1.5,
+             color='#006CD9', category=None):
+    """添加图标（PNG光栅化实现，零运行时依赖）
+
+    从图标库中查找并插入指定图标。图标来源于 Tabler Icons (MIT)，
+    构建时已预转换为 512px 透明背景 PNG，并预着色为深信服蓝 #006CD9。
+
+    Args:
+        slide: 幻灯片对象
+        icon_name: 图标名（可带或不带 .svg/.png 后缀，如 'cloud'）
+        left_cm, top_cm: 位置（厘米）
+        size_cm: 图标尺寸（厘米，正方形）
+        color: 预留参数（当前PNG已预着色，此参数暂不生效）
+        category: 图标分类目录（可选，如 'business'/'cloud'等，不指定则自动搜索）
+
+    Returns:
+        Picture Shape 对象
+
+    实现说明:
+        python-pptx/PIL 无法直接读取 SVG，故采用"构建时预转换 PNG"方案：
+        - 512px 高分辨率，透明背景，在投影/打印下视觉清晰
+        - 零运行时依赖（无需 cairosvg/svglib）
+        - 原始 SVG 一并保留在 icons/ 下，供未来升级为原生矢量嵌入
+
+        未来升级路径（原生SVG矢量嵌入）：通过 lxml 操作 OOXML 添加 SVG
+        relationship + PNG fallback，使图标在 PowerPoint 中可右键编辑改色。
+    """
+    # 定位图标文件
+    script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    icons_root = os.path.join(script_dir, 'icons')
+
+    # 规范化 icon_name -> 去后缀的 base 名
+    base = icon_name
+    for suffix in ('.png', '.svg'):
+        if base.endswith(suffix):
+            base = base[:-len(suffix)]
+            break
+    png_name = base + '.png'
+
+    # 查找 PNG 文件（优先使用预转换的 PNG）
+    icon_path = None
+    categories = [category] if category else \
+        ['business', 'cloud', 'automotive', 'chip', 'electronics', 'energy', 'pharma']
+    for cat in categories:
+        if not cat:
+            continue
+        candidate = os.path.join(icons_root, cat, png_name)
+        if os.path.exists(candidate):
+            icon_path = candidate
+            break
+
+    if not icon_path:
+        raise FileNotFoundError(
+            f"图标 '{base}' 不存在（找不到 {png_name}）。"
+            f"请检查 icons/ 目录，或运行 convert_icons_to_png.py 生成 PNG。"
+        )
+
+    pic = slide.shapes.add_picture(
+        icon_path, Cm(left_cm), Cm(top_cm),
+        width=Cm(size_cm), height=Cm(size_cm)
+    )
     return pic
 
 
@@ -814,6 +915,54 @@ def add_number_highlight(slide, left_cm, top_cm, number_text, label_text,
     return num_box, label_box
 
 
+def add_icon_row(slide, left_cm, top_cm, width_cm, items, icon_size_cm=1.5):
+    """添加水平排列的图标+标签行（用于产品特性展示）
+
+    Args:
+        slide: 幻灯片对象
+        left_cm, top_cm: 起始位置
+        width_cm: 总宽度
+        items: 图标列表 [{'icon': 'cloud', 'label': '弹性扩展'}, ...]
+        icon_size_cm: 图标尺寸
+
+    Returns:
+        创建的形状列表
+    """
+    shapes = []
+    if not items:
+        return shapes
+
+    item_width = width_cm / len(items)
+
+    for i, item in enumerate(items):
+        x = left_cm + i * item_width
+        icon_name = item.get('icon')
+        label_text = item.get('label', '')
+
+        # 居中显示图标
+        if icon_name:
+            icon_x = x + (item_width - icon_size_cm) / 2
+            try:
+                icon_shape = add_icon(slide, icon_name, icon_x, top_cm, size_cm=icon_size_cm)
+                shapes.append(icon_shape)
+            except FileNotFoundError:
+                pass  # 图标不存在，跳过
+
+        # 图标下方显示标签
+        if label_text:
+            label_box = add_textbox(
+                slide, x, top_cm + icon_size_cm + 0.3,
+                item_width, 1.0,
+                label_text,
+                font_size=SangforFonts.BODY,
+                font_color=SangforColors.TEXT_PRIMARY,
+                alignment=PP_ALIGN.CENTER
+            )
+            shapes.append(label_box)
+
+    return shapes
+
+
 # ============================================================
 # 页面布局构建器
 # ============================================================
@@ -827,6 +976,7 @@ BLOCK_WEIGHT_CONFIG = {
     'number_highlight': {'min_height': 4.0, 'preferred_height': 5.5, 'weight': 1.5},
     'image':            {'min_height': 5.0, 'preferred_height': 10.0, 'weight': 2.5},
     'two_column':       {'min_height': 5.0, 'preferred_height': 10.0, 'weight': 2.5},
+    'icon_row':         {'min_height': 2.5, 'preferred_height': 3.0, 'weight': 1.2},  # 新增
 }
 
 
@@ -941,24 +1091,25 @@ def _render_content_block(slide, block, left, top, width, height):
         columns = block.get('columns', min(len(cards), 3))
         if columns == 0:
             return
-        
+
         card_width = (width - (columns - 1) * 0.5) / columns
         card_height = height
-        card_colors = [SangforColors.BLUE_PRIMARY, SangforColors.BLUE_HIGHLIGHT, 
+        card_colors = [SangforColors.BLUE_PRIMARY, SangforColors.BLUE_HIGHLIGHT,
                       SangforColors.BLUE_LIGHT2]
-        
+
         for i, card in enumerate(cards):
             col = i % columns
             row = i // columns
             x = left + col * (card_width + 0.5)
             y = top + row * (card_height + 0.5)
             color = card_colors[col % len(card_colors)]
-            
+
             add_card(
                 slide, x, y, card_width, card_height,
                 header_text=card.get('header', ''),
                 body_text=card.get('body', ''),
-                header_color=color
+                header_color=color,
+                icon=card.get('icon')  # 传递图标字段
             )
     
     elif block_type == 'table':
@@ -1005,3 +1156,8 @@ def _render_content_block(slide, block, left, top, width, height):
         right_block = block.get('right', {})
         _render_content_block(slide, left_block, left, top, col_width, height)
         _render_content_block(slide, right_block, left + col_width + 1, top, col_width, height)
+
+    elif block_type == 'icon_row':
+        items = block.get('items', [])
+        if items:
+            add_icon_row(slide, left, top, width, items)

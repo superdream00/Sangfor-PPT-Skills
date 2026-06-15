@@ -180,7 +180,13 @@ def _remap_rids_in_element(element, rid_map):
 
 
 def _deep_copy_chart_part(source_chart_part, new_slide_part):
-    """深拷贝图表 part（包含嵌入的 Excel 数据）
+    """复制图表 part 的引用（当前为共享实现，非真正深拷贝）
+
+    ⚠️ 已知限制：为避免版本兼容问题，当前直接返回源 chart part，
+    多个克隆页会共享同一个图表 part（含内嵌的 Excel 数据）。
+    这意味着如果在 PowerPoint 中修改其中一页的图表数据，可能影响
+    引用同一 part 的其他页。纯展示场景无影响。
+    彻底解耦需用 zipfile 复制内部 xl/embeddings/*.xlsx 并新建 partname。
     
     Args:
         source_chart_part: 源图表的 Part 对象
@@ -205,19 +211,6 @@ def _deep_copy_chart_part(source_chart_part, new_slide_part):
     except Exception as e:
         print(f"  警告: 深拷贝图表失败: {e}")
         return source_chart_part
-
-
-def _get_next_rid(rels):
-    """获取下一个可用的 rId"""
-    existing = []
-    for r in rels.values():
-        if r.rId.startswith('rId'):
-            num_str = r.rId[3:]
-            if num_str.isdigit():
-                existing.append(int(num_str))
-    next_num = max(existing) + 1 if existing else 1
-    return f'rId{next_num}'
-
 
 
 # ============================================================
@@ -372,7 +365,7 @@ def replace_text_by_position(slide, position_replacements):
 # ============================================================
 # 空白页内容构建
 # ============================================================
-def create_blank_styled_slide(prs, layout_name='标题幻灯片'):
+def create_blank_styled_slide(prs, layout_name='标题和内容'):
     """创建基于模板版式的空白幻灯片
     
     使用模板的版式（继承背景、母版样式），但清除所有占位符内容，
@@ -380,7 +373,7 @@ def create_blank_styled_slide(prs, layout_name='标题幻灯片'):
     
     Args:
         prs: Presentation 对象
-        layout_name: 版式名称（默认"标题幻灯片"）
+        layout_name: 版式名称（默认"标题和内容"）
     Returns:
         空白 Slide 对象
     """
@@ -405,7 +398,7 @@ def create_blank_styled_slide(prs, layout_name='标题幻灯片'):
     return slide
 
 
-def build_content_slide(prs, title, content_blocks, layout_name='标题幻灯片'):
+def build_content_slide(prs, title, content_blocks, layout_name='标题和内容'):
     """构建带内容的幻灯片（空白页+填充）
     
     Args:
@@ -630,7 +623,7 @@ def generate_ppt(template_path, plan_data, output_path):
             
             elif action == 'blank_with_content':
                 # 空白页 + 内容填充
-                layout_name = slide_plan.get('layout_name', '标题幻灯片')
+                layout_name = slide_plan.get('layout_name', '标题和内容')
                 title = slide_plan.get('title', '')
                 content_blocks = slide_plan.get('content_blocks', [])
                 

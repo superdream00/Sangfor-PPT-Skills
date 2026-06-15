@@ -1,0 +1,89 @@
+{
+  "title": "汽车行业云桌面解决方案 - 图标库演示",
+  "slides": [
+    {
+      "action": "clone",
+      "source_index": 1,
+      "replacements": {
+        "大标题大标题大标题大标题": "汽车行业云桌面解决方案",
+        "小标题小标题小标题小标题小标题": "安全高效 · 灵活扩展 · 协同创新",
+        "小标题小标题小标题": "深信服 2024"
+      },
+      "notes": "封面页 - 展示整体方案定位"
+    },
+    {
+      "action": "blank_with_content",
+      "title": "行业痛点与挑战",
+      "content_blocks": [
+        {
+          "type": "bullet_list",
+          "items": [
+            {
+              "title": "数据安全风险",
+              "text": "设计图纸、工艺参数等核心数据存储在本地终端，存在泄露风险",
+              "icon": "shield-lock"
+            },
+            {
+              "title": "协同效率低下",
+              "text": "异地研发团队、供应商协同困难，文件传输复杂",
+              "icon": "users"
+            },
+            {
+              "title": "IT运维成本高",
+              "text": "终端分散管理，软件升级、故障维护耗费大量人力",
+              "icon": "tool"
+            },
+            {
+              "title": "弹性扩展受限",
+              "text": "新项目启动或产能波动时，硬件采购周期长、成本高",
+              "icon": "rocket"
+            }
+          ]
+        }
+      ],
+      "notes": "第一页 - bullet_list with icons 演示：每个痛点配专属图标，视觉锚点清晰"
+    },
+    {
+      "action": "blank_with_content",
+      "title": "深信服云桌面核心价值",
+      "content_blocks": [
+        {
+          "type": "card_grid",
+          "columns": 3,
+          "cards": [
+            {
+              "header": "数据不落地",
+              "body": "所有数据集中云端存储，终端零数据残留，彻底消除泄密风险",
+              "icon": "lock"
+            },
+            {
+              "header": "随时随地接入",
+              "body": "支持移动办公、远程协作，异地团队无缝协同",
+              "icon": "world"
+            },
+            {
+              "header": "秒级交付",
+              "body": "新员工入职、项目扩容，云桌面秒级开通，即开即用",
+              "icon": "bolt"
+            }
+          ]
+        },
+        {
+          "type": "icon_row",
+          "items": [
+            {"icon": "shield", "label": "安全合规"},
+            {"icon": "clock", "label": "高效敏捷"},
+            {"icon": "coin", "label": "成本优化"},
+            {"icon": "chart-line", "label": "持续创新"}
+          ]
+        }
+      ],
+      "notes": "第二页 - 演示 card_grid with icons (顶部居中图标) 和 icon_row (水平排列特性)"
+    },
+    {
+      "action": "clone",
+      "source_index": 48,
+      "notes": "尾页 - 谢谢聆听"
+    }
+  ]
+}

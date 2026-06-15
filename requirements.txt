@@ -1,0 +1,11 @@
+# 深信服 PPT 生成器依赖
+# 安装: pip install -r requirements.txt
+
+# 核心依赖（生成 PPT 必需）
+python-pptx>=0.6.21
+lxml>=4.9.0
+
+# 可选依赖（仅在维护/重新生成图标库时需要，日常生成 PPT 不需要）
+# 图标已预转换为 PNG 提交，运行时零依赖
+# svglib>=1.6.0    # SVG -> PNG 转换
+# reportlab>=4.0   # svglib 的渲染后端
