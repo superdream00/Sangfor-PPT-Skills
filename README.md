@@ -70,13 +70,30 @@ python scripts/generate_ppt.py \
   --output "output/single.pptx"
 ```
 
-生成计划（`plan.json`）的完整字段、`clone` / `blank_with_content` 两种 action、以及 `content_blocks` 支持的块类型（text / bullet_list / card_grid / table / chart / number_highlight / image / two_column），详见 **`SKILL.md`**。
+生成计划（`plan.json`）的完整字段、`clone` / `blank_with_content` 两种 action、以及 `content_blocks` 支持的块类型（text / bullet_list / card_grid / table / chart / number_highlight / image / two_column / **timeline** / **process_steps** / **comparison_table** / icon_row），详见 **`SKILL.md`**。
+
+---
+
+## 场景化组件（第二期新增）★
+
+新增 3 个高频业务场景组件：
+
+1. **timeline** — 时间轴（水平/垂直）：展示里程碑、发展历程、项目阶段
+2. **process_steps** — 流程步骤（带序号和箭头）：业务流程、操作步骤、实施路径
+3. **comparison_table** — 对比表（支持高亮列）：竞品对比、方案选型、功能对比
+
+演示：`python scripts/generate_ppt.py --template "templates/【常用】深信服--PPT浅色模板2024.pptx" --plan test_scene_components.json --output "output/test_scene_components.pptx"`
 
 ---
 
 ## 图标库 / Icon Library ★
 
-内置 **172 个深信服蓝图标**（来源 [Tabler Icons](https://tabler.io/icons)，MIT 许可），已预着色为 `#006CD9` 并预转换为 512px 透明 PNG，**零运行时依赖**即可使用。覆盖 7 大场景：通用商务、云计算/IT、汽车、芯片、电子、新能源、创新药。
+内置 **172 个深信服蓝图标**（来源 [Tabler Icons](https://tabler.io/icons)，MIT 许可），覆盖 7 大场景：通用商务、云计算/IT、汽车、芯片、电子、新能源、创新药。
+
+**第二期升级（2024）**：原生 SVG 矢量嵌入 + PNG fallback
+- **PowerPoint 2016+**：矢量 SVG，可缩放不失真，右键"编辑图形"改颜色
+- **PowerPoint 2013-**：自动降级为 512px 透明 PNG，保证兼容性
+- **零运行时依赖**：图标已预转换并提交，生成时无需额外安装
 
 三种用法（详见 `SKILL.md` 4.4 节）：
 - `bullet_list` 列表项加 `"icon": "shield-lock"` → 图标替代圆点

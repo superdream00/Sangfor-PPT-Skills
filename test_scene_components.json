@@ -1,0 +1,82 @@
+{
+  "title": "场景化组件演示（第二期）",
+  "slides": [
+    {
+      "action": "blank_with_content",
+      "title": "产品发展历程 - Timeline 组件",
+      "content_blocks": [
+        {
+          "type": "timeline",
+          "orientation": "horizontal",
+          "items": [
+            {
+              "date": "2020 Q1",
+              "title": "项目启动",
+              "description": "需求调研和技术选型"
+            },
+            {
+              "date": "2020 Q3",
+              "title": "Beta 版本",
+              "description": "内部测试"
+            },
+            {
+              "date": "2021 Q1",
+              "title": "正式发布",
+              "description": "V1.0 上线"
+            },
+            {
+              "date": "2021 Q4",
+              "title": "规模商用",
+              "description": "500+ 客户部署"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "action": "blank_with_content",
+      "title": "实施路径 - Process Steps 组件",
+      "content_blocks": [
+        {
+          "type": "process_steps",
+          "items": [
+            {
+              "title": "需求分析",
+              "description": "现场调研、痛点梳理"
+            },
+            {
+              "title": "方案设计",
+              "description": "技术选型、架构规划"
+            },
+            {
+              "title": "POC验证",
+              "description": "小规模试点、效果评估"
+            },
+            {
+              "title": "全面部署",
+              "description": "分阶段上线、培训运维"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "action": "blank_with_content",
+      "title": "竞品对比 - Comparison Table 组件",
+      "content_blocks": [
+        {
+          "type": "comparison_table",
+          "headers": ["功能", "深信服", "竞品A", "竞品B"],
+          "rows": [
+            ["安全合规", "✓ 等保三级", "○ 部分支持", "✗ 不支持"],
+            ["弹性扩展", "✓ 秒级开通", "○ 分钟级", "○ 小时级"],
+            ["数据不落地", "✓ 完全隔离", "✗ 缓存残留", "✗ 本地存储"],
+            ["异地协同", "✓ 全球加速", "○ 国内优化", "✗ 单点部署"],
+            ["成本优势", "✓ 按需付费", "○ 包年制", "✗ 高额授权"]
+          ],
+          "highlight_col": 1
+        }
+      ]
+    }
+  ]
+}

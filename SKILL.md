@@ -475,12 +475,54 @@ content_blocks 支持的类型:
 - `icon` 值为图标文件名（不含后缀），如 `"cloud"`、`"shield-lock"`。
 - 系统自动跨 7 个分类目录查找；如需限定可加 `"icon_category": "cloud"`。
 - 找不到图标时自动回退（bullet_list 回退为绿色圆点，card/icon_row 跳过图标）。
-- **代码 API**: `add_icon(slide, icon_name, left_cm, top_cm, size_cm=1.5)`。
-- 图标已预着色为深信服蓝；如需改色，在 PowerPoint 中选中图片用"图片格式"调整。
+
+**技术实现（第二期升级）**：
+- **原生 SVG 矢量嵌入**（PowerPoint 2016+）：图标以 SVG 格式嵌入，可缩放不失真，右键"编辑图形"可修改颜色/路径。
+- **PNG fallback**：同时嵌入 512px PNG，PowerPoint 2013- 自动降级显示，保证兼容性。
+- **自动检测**：有 SVG 源优先矢量嵌入，失败自动回退 PNG（零依赖）。
+- **代码 API**: `add_icon(slide, icon_name, left_cm, top_cm, size_cm=1.5)` 自动选择最佳方案。
 
 **新增/重转图标**：把 SVG 放入对应分类目录，运行 `python convert_icons_to_png.py` 重新生成 PNG。
 
-### 4.5 关键颜色常量（代码引用）
+### 4.5 场景化组件（第二期新增）
+
+**timeline - 时间轴**：展示里程碑、发展历程、项目阶段
+```json
+{"type": "timeline", "orientation": "horizontal", "items": [
+  {"date": "2020 Q1", "title": "项目启动", "description": "需求调研和技术选型"},
+  {"date": "2020 Q3", "title": "Beta版本", "description": "内部测试"},
+  {"date": "2021 Q1", "title": "正式发布", "description": "V1.0上线"}
+]}
+```
+- `orientation`: `"horizontal"`（默认，水平）或 `"vertical"`（垂直）
+- `description` 可选，不填则只显示日期和标题
+
+**process_steps - 流程步骤**：展示业务流程、操作步骤、实施路径
+```json
+{"type": "process_steps", "items": [
+  {"title": "需求分析", "description": "现场调研、痛点梳理"},
+  {"title": "方案设计", "description": "技术选型、架构规划"},
+  {"title": "POC验证", "description": "小规模试点"}
+]}
+```
+- 水平排列，带序号圆圈和箭头
+- 适合 3-5 个步骤（过多会拥挤）
+
+**comparison_table - 对比表**：竞品对比、方案选型、功能对比
+```json
+{"type": "comparison_table",
+ "headers": ["功能", "深信服", "竞品A", "竞品B"],
+ "rows": [
+   ["安全合规", "✓ 等保三级", "○ 部分支持", "✗ 不支持"],
+   ["弹性扩展", "✓ 秒级开通", "○ 分钟级", "○ 小时级"]
+ ],
+ "highlight_col": 1
+}
+```
+- `highlight_col`：高亮列索引（从 0 开始），通常是自家产品列
+- 建议使用 ✓/○/✗ 符号提升视觉区分度
+
+### 4.6 关键颜色常量（代码引用）
 
 ```python
 from utils import SangforColors, SangforFonts
@@ -517,7 +559,9 @@ chart_colors = SangforColors.CHART_COLORS
 | 饼图/占比 | 空白页+chart(pie) | 图表页(clone:39) |
 | 表格数据 | 空白页+table | — |
 | 引用/名言 | 引用页(clone:28) | — |
-| 流程/步骤 | 时间线(clone:32) | 空白页+自定义 |
+| 发展历程/里程碑 | 空白页+timeline ★ | 时间线(clone:32) |
+| 流程步骤 | 空白页+process_steps ★ | 时间线(clone:32) |
+| 竞品对比 | 空白页+comparison_table ★ | 空白页+table |
 | 自由设计 | 空白页 ★ | — |
 | PPT结尾 | 尾页(clone:48) | 尾页(clone:49) |
 

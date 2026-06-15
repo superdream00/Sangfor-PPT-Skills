@@ -818,61 +818,254 @@ def add_image(slide, image_path, left_cm, top_cm, width_cm=None, height_cm=None)
     return pic
 
 
-def add_icon(slide, icon_name, left_cm, top_cm, size_cm=1.5,
-             color='#006CD9', category=None):
-    """添加图标（PNG光栅化实现，零运行时依赖）
+def _create_svg_part(package, svg_bytes):
+    """手动创建 SVG Part（绕过 python-pptx 的 Image 类）
 
-    从图标库中查找并插入指定图标。图标来源于 Tabler Icons (MIT)，
-    构建时已预转换为 512px 透明背景 PNG，并预着色为深信服蓝 #006CD9。
+    python-pptx 不支持 SVG（依赖 PIL，PIL 不识别 SVG），
+    故手动创建 Part，content_type='image/svg+xml'。
+
+    Args:
+        package: Presentation.part.package
+        svg_bytes: SVG 文件的二进制内容
+
+    Returns:
+        SVG Part 对象（通过 relate_to() 调用时会自动注册到 package）
+    """
+    from pptx.opc.package import Part
+    from pptx.opc.packuri import PackURI
+
+    # 生成唯一 partname（如 /ppt/media/image1.svg）
+    partname_str = package.next_image_partname(ext='.svg')
+    svg_partname = PackURI(partname_str)
+
+    # 创建 Part（content_type 必须是 image/svg+xml）
+    # 注意：不需要手动注册，slide.part.relate_to() 会自动注册
+    svg_part = Part(svg_partname, 'image/svg+xml', package, svg_bytes)
+
+    return svg_part
+
+
+def add_icon_svg(slide, icon_name, left_cm, top_cm, size_cm=1.5, category=None):
+    """添加图标（原生 SVG 矢量嵌入 + PNG fallback）
+
+    优先使用 SVG 源文件实现矢量嵌入，PowerPoint 2016+ 可右键"编辑图形"改颜色。
+    PowerPoint 2013- 自动降级为 PNG。找不到 SVG 时抛出异常。
 
     Args:
         slide: 幻灯片对象
-        icon_name: 图标名（可带或不带 .svg/.png 后缀，如 'cloud'）
+        icon_name: 图标名（可带或不带后缀）
         left_cm, top_cm: 位置（厘米）
         size_cm: 图标尺寸（厘米，正方形）
-        color: 预留参数（当前PNG已预着色，此参数暂不生效）
-        category: 图标分类目录（可选，如 'business'/'cloud'等，不指定则自动搜索）
+        category: 可选，指定分类
 
     Returns:
-        Picture Shape 对象
+        lxml Element（<p:pic>）
+
+    Raises:
+        FileNotFoundError: SVG 或 PNG 文件不存在
+    """
+    from pptx.util import Cm
+    from pptx.opc.constants import RELATIONSHIP_TYPE as RT
+
+    # 定位图标文件
+    script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    icons_root = os.path.join(script_dir, 'icons')
+
+    # 规范化文件名
+    base = icon_name.replace('.svg', '').replace('.png', '')
+    svg_filename = base + '.svg'
+    png_filename = base + '.png'
+
+    # 查找 SVG 和 PNG
+    svg_path = _find_icon_file(icons_root, svg_filename, category)
+    png_path = _find_icon_file(icons_root, png_filename, category)
+
+    if not svg_path:
+        raise FileNotFoundError(f"图标 '{base}' 的 SVG 源文件不存在（跨 7 个分类查找失败）")
+    if not png_path:
+        raise FileNotFoundError(f"图标 '{base}' 的 PNG fallback 不存在（需要先运行 convert_icons_to_png.py）")
+
+    # 读取 SVG 和 PNG 文件
+    with open(svg_path, 'rb') as f:
+        svg_bytes = f.read()
+    with open(png_path, 'rb') as f:
+        png_bytes = f.read()
+
+    # 创建 SVG Part
+    pkg = slide.part.package
+    svg_part = _create_svg_part(pkg, svg_bytes)
+
+    # 创建 PNG Part（使用 package 的标准方法）
+    png_part = pkg.get_or_add_image_part(png_path)
+
+    # 建立 Relationship（slide → SVG, slide → PNG）
+    svg_rid = slide.part.relate_to(svg_part, RT.IMAGE)
+    png_rid = slide.part.relate_to(png_part, RT.IMAGE)
+
+    # 位置尺寸转换（cm → EMU）
+    left_emu = Cm(left_cm)
+    top_emu = Cm(top_cm)
+    cx_emu = Cm(size_cm)
+    cy_emu = Cm(size_cm)
+
+    # 构建 <p:pic> XML 元素
+    pic_element = _create_pic_element_with_svg(
+        slide, svg_rid, png_rid, left_emu, top_emu, cx_emu, cy_emu,
+        name=f'Icon {base}'
+    )
+
+    # 插入到 slide 的 shape tree
+    slide.shapes._spTree.append(pic_element)
+
+    return pic_element
+
+
+def _create_pic_element_with_svg(slide, svg_rid, png_rid, left_emu, top_emu, cx_emu, cy_emu, name='Icon'):
+    """构建带 SVG + PNG fallback 的 <p:pic> XML 元素（符合 OOXML 规范）
+
+    PowerPoint 2016+ 显示 SVG 矢量，2013- 自动降级为 PNG。
+
+    Args:
+        slide: 幻灯片对象
+        svg_rid: SVG 的 relationship ID（如 'rId5'）
+        png_rid: PNG fallback 的 relationship ID（如 'rId6'）
+        left_emu, top_emu: 位置（EMU 单位）
+        cx_emu, cy_emu: 尺寸（EMU 单位）
+        name: shape 名称
+
+    Returns:
+        lxml Element（<p:pic>）
+    """
+    from lxml import etree
+
+    # OOXML namespace 定义
+    nsmap = {
+        'p': 'http://schemas.openxmlformats.org/presentationml/2006/main',
+        'a': 'http://schemas.openxmlformats.org/drawingml/2006/main',
+        'r': 'http://schemas.openxmlformats.org/officeDocument/2006/relationships',
+        'asvg': 'http://schemas.microsoft.com/office/drawing/2016/SVG/main'
+    }
+
+    # 生成唯一 shape ID
+    existing_ids = []
+    for sp in slide.shapes._spTree.iter():
+        if isinstance(sp.tag, str):  # 跳过注释节点
+            cNvPr = sp.find('.//{http://schemas.openxmlformats.org/presentationml/2006/main}cNvPr')
+            if cNvPr is not None and 'id' in cNvPr.attrib:
+                existing_ids.append(int(cNvPr.attrib['id']))
+    shape_id = max(existing_ids, default=1) + 1
+
+    # 构建 <p:pic>
+    pic = etree.Element(f'{{{nsmap["p"]}}}pic', nsmap=nsmap)
+
+    # <p:nvPicPr>（非视觉属性）
+    nvPicPr = etree.SubElement(pic, f'{{{nsmap["p"]}}}nvPicPr')
+    cNvPr = etree.SubElement(nvPicPr, f'{{{nsmap["p"]}}}cNvPr', id=str(shape_id), name=name)
+    cNvPicPr = etree.SubElement(nvPicPr, f'{{{nsmap["p"]}}}cNvPicPr')
+    nvPr = etree.SubElement(nvPicPr, f'{{{nsmap["p"]}}}nvPr')
+
+    # <p:blipFill>（图像填充）
+    blipFill = etree.SubElement(pic, f'{{{nsmap["p"]}}}blipFill')
+    blip = etree.SubElement(blipFill, f'{{{nsmap["a"]}}}blip')
+    blip.set(f'{{{nsmap["r"]}}}embed', svg_rid)  # 主图：SVG
+
+    # PNG fallback（通过扩展指定）
+    extLst = etree.SubElement(blip, f'{{{nsmap["a"]}}}extLst')
+    ext = etree.SubElement(extLst, f'{{{nsmap["a"]}}}ext',
+                           uri='{96DAC541-7B7A-43D3-8B79-37D633B846F1}')
+    svgBlip = etree.SubElement(ext, f'{{{nsmap["asvg"]}}}svgBlip')
+    svgBlip.set(f'{{{nsmap["r"]}}}embed', png_rid)  # fallback: PNG
+
+    # <a:stretch>（填充方式：拉伸）
+    stretch = etree.SubElement(blipFill, f'{{{nsmap["a"]}}}stretch')
+    fillRect = etree.SubElement(stretch, f'{{{nsmap["a"]}}}fillRect')
+
+    # <p:spPr>（形状属性：位置和尺寸）
+    spPr = etree.SubElement(pic, f'{{{nsmap["p"]}}}spPr')
+    xfrm = etree.SubElement(spPr, f'{{{nsmap["a"]}}}xfrm')
+    off = etree.SubElement(xfrm, f'{{{nsmap["a"]}}}off', x=str(int(left_emu)), y=str(int(top_emu)))
+    ext_elem = etree.SubElement(xfrm, f'{{{nsmap["a"]}}}ext', cx=str(int(cx_emu)), cy=str(int(cy_emu)))
+    prstGeom = etree.SubElement(spPr, f'{{{nsmap["a"]}}}prstGeom', prst='rect')
+    avLst = etree.SubElement(prstGeom, f'{{{nsmap["a"]}}}avLst')
+
+    return pic
+
+
+def _find_icon_file(icons_root, filename, category=None):
+    """查找图标文件（跨 7 个分类目录）
+
+    Args:
+        icons_root: icons/ 根目录路径
+        filename: 文件名（如 'cloud.svg' 或 'cloud.png'）
+        category: 可选，指定分类（如 'business'）
+
+    Returns:
+        完整文件路径，找不到返回 None
+    """
+    categories = [category] if category else \
+        ['business', 'cloud', 'automotive', 'chip', 'electronics', 'energy', 'pharma']
+
+    for cat in categories:
+        if not cat:
+            continue
+        candidate = os.path.join(icons_root, cat, filename)
+        if os.path.exists(candidate):
+            return candidate
+    return None
+
+
+def add_icon(slide, icon_name, left_cm, top_cm, size_cm=1.5,
+             color='#006CD9', category=None):
+    """添加图标（自动选择最佳方案：SVG 矢量优先，PNG 兜底）
+
+    从图标库中查找并插入指定图标。图标来源于 Tabler Icons (MIT)。
+
+    **第二期升级（2024）**：优先使用原生 SVG 矢量嵌入（PowerPoint 2016+ 可编辑），
+    失败时自动回退为 PNG 光栅化（零依赖、兼容性强）。
+
+    Args:
+        slide: 幻灯片对象
+        icon_name: 图标名（可带或不带后缀，如 'cloud' 或 'cloud.svg'）
+        left_cm, top_cm: 位置（厘米）
+        size_cm: 图标尺寸（厘米，正方形）
+        color: 预留参数（PNG 已预着色，SVG 可在 PowerPoint 内编辑改色）
+        category: 图标分类目录（可选，不指定则自动搜索 7 个分类）
+
+    Returns:
+        Picture Shape 对象（PNG）或 lxml Element（SVG）
 
     实现说明:
-        python-pptx/PIL 无法直接读取 SVG，故采用"构建时预转换 PNG"方案：
-        - 512px 高分辨率，透明背景，在投影/打印下视觉清晰
-        - 零运行时依赖（无需 cairosvg/svglib）
-        - 原始 SVG 一并保留在 icons/ 下，供未来升级为原生矢量嵌入
-
-        未来升级路径（原生SVG矢量嵌入）：通过 lxml 操作 OOXML 添加 SVG
-        relationship + PNG fallback，使图标在 PowerPoint 中可右键编辑改色。
+        1. 检测 SVG 源文件是否存在
+        2. 若存在 → 调用 add_icon_svg()（矢量嵌入，可编辑）
+        3. SVG 失败或不存在 → 使用 PNG（512px 透明背景，零依赖）
     """
     # 定位图标文件
     script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     icons_root = os.path.join(script_dir, 'icons')
 
-    # 规范化 icon_name -> 去后缀的 base 名
-    base = icon_name
-    for suffix in ('.png', '.svg'):
-        if base.endswith(suffix):
-            base = base[:-len(suffix)]
-            break
+    # 规范化文件名
+    base = icon_name.replace('.svg', '').replace('.png', '')
+    svg_name = base + '.svg'
     png_name = base + '.png'
 
-    # 查找 PNG 文件（优先使用预转换的 PNG）
-    icon_path = None
-    categories = [category] if category else \
-        ['business', 'cloud', 'automotive', 'chip', 'electronics', 'energy', 'pharma']
-    for cat in categories:
-        if not cat:
-            continue
-        candidate = os.path.join(icons_root, cat, png_name)
-        if os.path.exists(candidate):
-            icon_path = candidate
-            break
+    # 检测 SVG 源是否存在
+    svg_path = _find_icon_file(icons_root, svg_name, category)
+
+    if svg_path:
+        # 有 SVG 源，优先矢量嵌入
+        try:
+            return add_icon_svg(slide, icon_name, left_cm, top_cm, size_cm, category)
+        except Exception as e:
+            # SVG 嵌入失败，回退 PNG（不报错，保证可用性）
+            print(f"  警告: SVG 矢量嵌入失败 ({base}: {e})，回退为 PNG")
+
+    # 使用 PNG 光栅化方案（第一期实现，零依赖）
+    icon_path = _find_icon_file(icons_root, png_name, category)
 
     if not icon_path:
         raise FileNotFoundError(
-            f"图标 '{base}' 不存在（找不到 {png_name}）。"
-            f"请检查 icons/ 目录，或运行 convert_icons_to_png.py 生成 PNG。"
+            f"图标 '{base}' 不存在（SVG 和 PNG 都找不到）。"
+            f"请检查 icons/ 目录，或运行 download_icons.py + convert_icons_to_png.py。"
         )
 
     pic = slide.shapes.add_picture(
@@ -880,6 +1073,392 @@ def add_icon(slide, icon_name, left_cm, top_cm, size_cm=1.5,
         width=Cm(size_cm), height=Cm(size_cm)
     )
     return pic
+
+
+def add_comparison_table(slide, headers, rows, left_cm=2, top_cm=6,
+                         width_cm=20, highlight_col=None):
+    """添加对比表组件（突出优劣势）
+
+    用于竞品对比、方案选型、功能对比。支持高亮某一列（通常是自家产品）。
+
+    Args:
+        slide: 幻灯片对象
+        headers: 表头列表，如 ["功能", "深信服", "竞品A", "竞品B"]
+        rows: 数据行列表，每行是一个列表，如 [["安全性", "✓ 高", "○ 中", "✗ 低"], ...]
+        left_cm, top_cm: 起始位置
+        width_cm: 表格总宽度
+        highlight_col: 高亮列索引（从 0 开始），如 1 表示第二列（通常是自家产品）
+
+    Returns:
+        None
+    """
+    from pptx.util import Cm, Pt
+    from pptx.dml.color import RGBColor
+    from pptx.enum.text import PP_ALIGN
+
+    primary_color = RGBColor(0, 108, 217)  # #006CD9
+    text_color = RGBColor(14, 14, 14)
+    gray_color = RGBColor(102, 102, 102)
+    light_bg = RGBColor(236, 236, 236)     # #ECECEC
+    highlight_bg = RGBColor(230, 244, 255) # 浅蓝色背景
+
+    num_cols = len(headers)
+    num_rows = len(rows) + 1  # +1 for header
+    col_width_cm = width_cm / num_cols
+    row_height_cm = 1.0
+
+    # 创建表格框架
+    table = slide.shapes.add_table(
+        num_rows, num_cols,
+        Cm(left_cm), Cm(top_cm),
+        Cm(width_cm), Cm(row_height_cm * num_rows)
+    ).table
+
+    # 设置表头
+    for col_idx, header in enumerate(headers):
+        cell = table.cell(0, col_idx)
+        cell.text = header
+        cell.fill.solid()
+
+        # 高亮列使用深信服蓝背景
+        if col_idx == highlight_col:
+            cell.fill.fore_color.rgb = primary_color
+            font_color = RGBColor(255, 255, 255)
+        else:
+            cell.fill.fore_color.rgb = light_bg
+            font_color = text_color
+
+        # 表头文字样式
+        for paragraph in cell.text_frame.paragraphs:
+            paragraph.alignment = PP_ALIGN.CENTER
+            paragraph.font.size = Pt(11)
+            paragraph.font.bold = True
+            paragraph.font.color.rgb = font_color
+            paragraph.font.name = '微软雅黑'
+
+        cell.text_frame.vertical_anchor = 1  # MSO_ANCHOR.MIDDLE
+
+    # 填充数据行
+    for row_idx, row_data in enumerate(rows):
+        for col_idx, cell_text in enumerate(row_data):
+            cell = table.cell(row_idx + 1, col_idx)
+            cell.text = cell_text
+            cell.fill.solid()
+
+            # 高亮列使用浅蓝背景
+            if col_idx == highlight_col:
+                cell.fill.fore_color.rgb = highlight_bg
+                font_color = primary_color
+                font_bold = True
+            else:
+                cell.fill.fore_color.rgb = RGBColor(255, 255, 255)
+                font_color = text_color if col_idx == 0 else gray_color
+                font_bold = (col_idx == 0)  # 第一列（功能名）加粗
+
+            # 单元格文字样式
+            for paragraph in cell.text_frame.paragraphs:
+                paragraph.alignment = PP_ALIGN.CENTER if col_idx > 0 else PP_ALIGN.LEFT
+                paragraph.font.size = Pt(10)
+                paragraph.font.bold = font_bold
+                paragraph.font.color.rgb = font_color
+                paragraph.font.name = '微软雅黑'
+
+            cell.text_frame.vertical_anchor = 1  # MSO_ANCHOR.MIDDLE
+            cell.text_frame.margin_left = Cm(0.2)
+            cell.text_frame.margin_right = Cm(0.2)
+
+
+def add_process_steps(slide, items, left_cm=2, top_cm=6, step_width_cm=4.5, spacing_cm=0.8):
+    """添加流程步骤组件（水平排列，带序号和箭头）
+
+    用于展示业务流程、操作步骤、实施路径。
+
+    Args:
+        slide: 幻灯片对象
+        items: 步骤列表，每项包含 {"title": "标题", "description": "说明（可选）", "icon": "图标名（可选）"}
+        left_cm, top_cm: 起始位置
+        step_width_cm: 每个步骤的宽度
+        spacing_cm: 步骤间距（箭头宽度）
+
+    Returns:
+        None
+    """
+    from pptx.util import Cm, Pt
+    from pptx.enum.shapes import MSO_SHAPE
+    from pptx.enum.text import PP_ALIGN
+    from pptx.dml.color import RGBColor
+
+    primary_color = RGBColor(0, 108, 217)  # #006CD9
+    text_color = RGBColor(14, 14, 14)
+    gray_color = RGBColor(102, 102, 102)
+    light_bg = RGBColor(236, 236, 236)     # #ECECEC
+
+    num_items = len(items)
+    step_height_cm = 2.5
+
+    for i, item in enumerate(items):
+        x_cm = left_cm + i * (step_width_cm + spacing_cm)
+
+        # 步骤卡片（圆角矩形）
+        card = slide.shapes.add_shape(
+            MSO_SHAPE.ROUNDED_RECTANGLE,
+            Cm(x_cm), Cm(top_cm),
+            Cm(step_width_cm), Cm(step_height_cm)
+        )
+        card.fill.solid()
+        card.fill.fore_color.rgb = light_bg
+        card.line.color.rgb = primary_color
+        card.line.width = Pt(1.5)
+
+        # 序号圆圈（左上角）
+        num_size_cm = 0.6
+        num_circle = slide.shapes.add_shape(
+            MSO_SHAPE.OVAL,
+            Cm(x_cm + 0.3), Cm(top_cm + 0.3),
+            Cm(num_size_cm), Cm(num_size_cm)
+        )
+        num_circle.fill.solid()
+        num_circle.fill.fore_color.rgb = primary_color
+        num_circle.line.width = Pt(0)
+
+        # 序号文字
+        num_frame = num_circle.text_frame
+        num_frame.text = str(i + 1)
+        num_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+        num_frame.paragraphs[0].font.size = Pt(14)
+        num_frame.paragraphs[0].font.bold = True
+        num_frame.paragraphs[0].font.color.rgb = RGBColor(255, 255, 255)
+        num_frame.paragraphs[0].font.name = 'Arial'
+        num_frame.vertical_anchor = 1  # MSO_ANCHOR.MIDDLE
+
+        # 标题
+        title_box = slide.shapes.add_textbox(
+            Cm(x_cm + 0.2), Cm(top_cm + 1.1),
+            Cm(step_width_cm - 0.4), Cm(0.7)
+        )
+        title_frame = title_box.text_frame
+        title_frame.text = item.get('title', '')
+        title_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+        title_frame.paragraphs[0].font.size = Pt(12)
+        title_frame.paragraphs[0].font.bold = True
+        title_frame.paragraphs[0].font.color.rgb = primary_color
+        title_frame.paragraphs[0].font.name = '微软雅黑'
+        title_frame.word_wrap = True
+
+        # 说明文字（可选）
+        if item.get('description'):
+            desc_box = slide.shapes.add_textbox(
+                Cm(x_cm + 0.2), Cm(top_cm + 1.8),
+                Cm(step_width_cm - 0.4), Cm(0.6)
+            )
+            desc_frame = desc_box.text_frame
+            desc_frame.text = item.get('description', '')
+            desc_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+            desc_frame.paragraphs[0].font.size = Pt(9)
+            desc_frame.paragraphs[0].font.color.rgb = gray_color
+            desc_frame.paragraphs[0].font.name = '微软雅黑'
+            desc_frame.word_wrap = True
+
+        # 箭头（除最后一个）
+        if i < num_items - 1:
+            arrow_x = x_cm + step_width_cm
+            arrow_y = top_cm + step_height_cm / 2
+            arrow = slide.shapes.add_shape(
+                MSO_SHAPE.RIGHT_ARROW,
+                Cm(arrow_x), Cm(arrow_y - 0.25),
+                Cm(spacing_cm), Cm(0.5)
+            )
+            arrow.fill.solid()
+            arrow.fill.fore_color.rgb = primary_color
+            arrow.line.width = Pt(0)
+
+
+def add_timeline(slide, items, left_cm=2, top_cm=6, width_cm=20, orientation='horizontal'):
+    """添加时间轴组件（水平或垂直）
+
+    用于展示里程碑、发展历程、项目阶段。
+
+    Args:
+        slide: 幻灯片对象
+        items: 时间节点列表，每项包含 {"date": "2020 Q1", "title": "标题", "description": "说明（可选）"}
+        left_cm, top_cm: 起始位置（厘米）
+        width_cm: 时间轴宽度（水平）或高度（垂直）
+        orientation: 'horizontal'（默认）或 'vertical'
+
+    Returns:
+        None（直接在 slide 上绘制）
+    """
+    from pptx.util import Cm, Pt
+    from pptx.enum.shapes import MSO_SHAPE
+    from pptx.enum.text import PP_ALIGN
+    from pptx.dml.color import RGBColor
+
+    num_items = len(items)
+    if num_items < 2:
+        raise ValueError("Timeline 至少需要 2 个节点")
+
+    # 品牌色
+    primary_color = RGBColor(0, 108, 217)  # #006CD9
+    text_color = RGBColor(14, 14, 14)      # #0E0E0E
+    gray_color = RGBColor(102, 102, 102)   # #666666
+
+    if orientation == 'horizontal':
+        _add_timeline_horizontal(slide, items, left_cm, top_cm, width_cm,
+                                 primary_color, text_color, gray_color)
+    else:
+        _add_timeline_vertical(slide, items, left_cm, top_cm, width_cm,
+                               primary_color, text_color, gray_color)
+
+
+def _add_timeline_horizontal(slide, items, left_cm, top_cm, width_cm,
+                              primary_color, text_color, gray_color):
+    """水平时间轴实现"""
+    from pptx.util import Cm, Pt
+    from pptx.enum.shapes import MSO_SHAPE
+    from pptx.enum.text import PP_ALIGN
+
+    num_items = len(items)
+    spacing = width_cm / (num_items - 1) if num_items > 1 else 0
+
+    # 绘制主线（连接所有节点）
+    line_top_cm = top_cm + 1.5  # 日期下方
+    line = slide.shapes.add_connector(
+        1,  # msoConnectorStraight
+        Cm(left_cm), Cm(line_top_cm),
+        Cm(left_cm + width_cm), Cm(line_top_cm)
+    )
+    line.line.color.rgb = primary_color
+    line.line.width = Pt(2)
+
+    # 绘制节点和文字
+    for i, item in enumerate(items):
+        x_cm = left_cm + i * spacing
+
+        # 节点圆形
+        node_size_cm = 0.35
+        node = slide.shapes.add_shape(
+            MSO_SHAPE.OVAL,
+            Cm(x_cm - node_size_cm/2), Cm(line_top_cm - node_size_cm/2),
+            Cm(node_size_cm), Cm(node_size_cm)
+        )
+        node.fill.solid()
+        node.fill.fore_color.rgb = primary_color
+        node.line.color.rgb = RGBColor(255, 255, 255)
+        node.line.width = Pt(2)
+
+        # 日期（节点上方）
+        date_box = slide.shapes.add_textbox(
+            Cm(x_cm - 2), Cm(line_top_cm - 1.2),
+            Cm(4), Cm(0.6)
+        )
+        date_frame = date_box.text_frame
+        date_frame.text = item.get('date', '')
+        date_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+        date_frame.paragraphs[0].font.size = Pt(14)
+        date_frame.paragraphs[0].font.color.rgb = text_color
+        date_frame.paragraphs[0].font.name = '微软雅黑'
+
+        # 标题（节点下方）
+        title_box = slide.shapes.add_textbox(
+            Cm(x_cm - 2), Cm(line_top_cm + 0.5),
+            Cm(4), Cm(0.8)
+        )
+        title_frame = title_box.text_frame
+        title_frame.text = item.get('title', '')
+        title_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+        title_frame.paragraphs[0].font.size = Pt(12)
+        title_frame.paragraphs[0].font.bold = True
+        title_frame.paragraphs[0].font.color.rgb = primary_color
+        title_frame.paragraphs[0].font.name = '微软雅黑'
+        title_frame.word_wrap = True
+
+        # 说明文字（可选，标题下方）
+        if item.get('description'):
+            desc_box = slide.shapes.add_textbox(
+                Cm(x_cm - 2), Cm(line_top_cm + 1.4),
+                Cm(4), Cm(1.5)
+            )
+            desc_frame = desc_box.text_frame
+            desc_frame.text = item.get('description', '')
+            desc_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+            desc_frame.paragraphs[0].font.size = Pt(10)
+            desc_frame.paragraphs[0].font.color.rgb = gray_color
+            desc_frame.paragraphs[0].font.name = '微软雅黑'
+            desc_frame.word_wrap = True
+
+
+def _add_timeline_vertical(slide, items, left_cm, top_cm, height_cm,
+                            primary_color, text_color, gray_color):
+    """垂直时间轴实现"""
+    from pptx.util import Cm, Pt
+    from pptx.enum.shapes import MSO_SHAPE
+    from pptx.enum.text import PP_ALIGN
+
+    num_items = len(items)
+    spacing = height_cm / (num_items - 1) if num_items > 1 else 0
+
+    # 绘制主线
+    line_left_cm = left_cm + 2
+    line = slide.shapes.add_connector(
+        1,  # msoConnectorStraight
+        Cm(line_left_cm), Cm(top_cm),
+        Cm(line_left_cm), Cm(top_cm + height_cm)
+    )
+    line.line.color.rgb = primary_color
+    line.line.width = Pt(2)
+
+    # 绘制节点和文字
+    for i, item in enumerate(items):
+        y_cm = top_cm + i * spacing
+
+        # 节点圆形
+        node_size_cm = 0.35
+        node = slide.shapes.add_shape(
+            MSO_SHAPE.OVAL,
+            Cm(line_left_cm - node_size_cm/2), Cm(y_cm - node_size_cm/2),
+            Cm(node_size_cm), Cm(node_size_cm)
+        )
+        node.fill.solid()
+        node.fill.fore_color.rgb = primary_color
+        node.line.color.rgb = RGBColor(255, 255, 255)
+        node.line.width = Pt(2)
+
+        # 日期（节点左侧）
+        date_box = slide.shapes.add_textbox(
+            Cm(left_cm), Cm(y_cm - 0.3),
+            Cm(1.8), Cm(0.6)
+        )
+        date_frame = date_box.text_frame
+        date_frame.text = item.get('date', '')
+        date_frame.paragraphs[0].alignment = PP_ALIGN.RIGHT
+        date_frame.paragraphs[0].font.size = Pt(12)
+        date_frame.paragraphs[0].font.color.rgb = text_color
+        date_frame.paragraphs[0].font.name = '微软雅黑'
+
+        # 标题（节点右侧）
+        title_box = slide.shapes.add_textbox(
+            Cm(line_left_cm + 0.5), Cm(y_cm - 0.3),
+            Cm(12), Cm(0.6)
+        )
+        title_frame = title_box.text_frame
+        title_frame.text = item.get('title', '')
+        title_frame.paragraphs[0].font.size = Pt(12)
+        title_frame.paragraphs[0].font.bold = True
+        title_frame.paragraphs[0].font.color.rgb = primary_color
+        title_frame.paragraphs[0].font.name = '微软雅黑'
+
+        # 说明文字（可选，标题下方）
+        if item.get('description'):
+            desc_box = slide.shapes.add_textbox(
+                Cm(line_left_cm + 0.5), Cm(y_cm + 0.4),
+                Cm(12), Cm(0.8)
+            )
+            desc_frame = desc_box.text_frame
+            desc_frame.text = item.get('description', '')
+            desc_frame.paragraphs[0].font.size = Pt(10)
+            desc_frame.paragraphs[0].font.color.rgb = gray_color
+            desc_frame.paragraphs[0].font.name = '微软雅黑'
+            desc_frame.word_wrap = True
 
 
 def add_number_highlight(slide, left_cm, top_cm, number_text, label_text,
@@ -1161,3 +1740,24 @@ def _render_content_block(slide, block, left, top, width, height):
         items = block.get('items', [])
         if items:
             add_icon_row(slide, left, top, width, items)
+
+    elif block_type == 'timeline':
+        items = block.get('items', [])
+        orientation = block.get('orientation', 'horizontal')
+        if items:
+            add_timeline(slide, items, left, top, width, orientation)
+
+    elif block_type == 'process_steps':
+        items = block.get('items', [])
+        step_width = block.get('step_width_cm', 4.5)
+        spacing = block.get('spacing_cm', 0.8)
+        if items:
+            add_process_steps(slide, items, left, top, step_width, spacing)
+
+    elif block_type == 'comparison_table':
+        headers = block.get('headers', [])
+        rows = block.get('rows', [])
+        highlight_col = block.get('highlight_col', None)
+        if headers and rows:
+            add_comparison_table(slide, headers, rows, left, top, width, highlight_col)
+

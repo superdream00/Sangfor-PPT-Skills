@@ -1,0 +1,41 @@
+{
+  "title": "SVG 矢量嵌入测试",
+  "slides": [
+    {
+      "action": "blank_with_content",
+      "title": "SVG 矢量图标测试（第二期）",
+      "content_blocks": [
+        {
+          "type": "icon_row",
+          "items": [
+            {"icon": "cloud", "label": "云计算"},
+            {"icon": "shield-lock", "label": "安全"},
+            {"icon": "rocket", "label": "高效"},
+            {"icon": "users", "label": "协同"}
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "items": [
+            {
+              "title": "原生 SVG 矢量",
+              "text": "PowerPoint 2016+ 可右键编辑图形改颜色，缩放无锯齿",
+              "icon": "check"
+            },
+            {
+              "title": "PNG Fallback",
+              "text": "PowerPoint 2013- 自动降级为 PNG，保证兼容性",
+              "icon": "device-desktop"
+            },
+            {
+              "title": "自动检测",
+              "text": "有 SVG 源优先矢量嵌入，失败自动回退 PNG",
+              "icon": "refresh"
+            }
+          ]
+        }
+      ],
+      "notes": "验证要点：1. 图标清晰无锯齿 2. 右键可编辑（2016+）3. 解压查看 media/ 有 .svg 和 .png"
+    }
+  ]
+}
