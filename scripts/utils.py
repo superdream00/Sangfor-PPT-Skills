@@ -846,10 +846,9 @@ def _create_svg_part(package, svg_bytes):
 
 
 def add_icon_svg(slide, icon_name, left_cm, top_cm, size_cm=1.5, category=None):
-    """添加图标（原生 SVG 矢量嵌入 + PNG fallback）
+    """添加图标（直接使用原生 SVG 矢量嵌入，不带 PNG fallback）
 
-    优先使用 SVG 源文件实现矢量嵌入，PowerPoint 2016+ 可右键"编辑图形"改颜色。
-    PowerPoint 2013- 自动降级为 PNG。找不到 SVG 时抛出异常。
+    直接使用 SVG 源文件实现矢量嵌入，PowerPoint 2016+ 可右键"编辑图形"改颜色。
 
     Args:
         slide: 幻灯片对象
@@ -862,7 +861,7 @@ def add_icon_svg(slide, icon_name, left_cm, top_cm, size_cm=1.5, category=None):
         lxml Element（<p:pic>）
 
     Raises:
-        FileNotFoundError: SVG 或 PNG 文件不存在
+        FileNotFoundError: SVG 文件不存在
     """
     from pptx.util import Cm
     from pptx.opc.constants import RELATIONSHIP_TYPE as RT
@@ -874,33 +873,23 @@ def add_icon_svg(slide, icon_name, left_cm, top_cm, size_cm=1.5, category=None):
     # 规范化文件名
     base = icon_name.replace('.svg', '').replace('.png', '')
     svg_filename = base + '.svg'
-    png_filename = base + '.png'
 
-    # 查找 SVG 和 PNG
+    # 查找 SVG
     svg_path = _find_icon_file(icons_root, svg_filename, category)
-    png_path = _find_icon_file(icons_root, png_filename, category)
 
     if not svg_path:
         raise FileNotFoundError(f"图标 '{base}' 的 SVG 源文件不存在（跨 7 个分类查找失败）")
-    if not png_path:
-        raise FileNotFoundError(f"图标 '{base}' 的 PNG fallback 不存在（需要先运行 convert_icons_to_png.py）")
 
-    # 读取 SVG 和 PNG 文件
+    # 读取 SVG 文件
     with open(svg_path, 'rb') as f:
         svg_bytes = f.read()
-    with open(png_path, 'rb') as f:
-        png_bytes = f.read()
 
     # 创建 SVG Part
     pkg = slide.part.package
     svg_part = _create_svg_part(pkg, svg_bytes)
 
-    # 创建 PNG Part（使用 package 的标准方法）
-    png_part = pkg.get_or_add_image_part(png_path)
-
-    # 建立 Relationship（slide → SVG, slide → PNG）
+    # 建立 Relationship（slide → SVG）
     svg_rid = slide.part.relate_to(svg_part, RT.IMAGE)
-    png_rid = slide.part.relate_to(png_part, RT.IMAGE)
 
     # 位置尺寸转换（cm → EMU）
     left_emu = Cm(left_cm)
@@ -910,7 +899,7 @@ def add_icon_svg(slide, icon_name, left_cm, top_cm, size_cm=1.5, category=None):
 
     # 构建 <p:pic> XML 元素
     pic_element = _create_pic_element_with_svg(
-        slide, svg_rid, png_rid, left_emu, top_emu, cx_emu, cy_emu,
+        slide, svg_rid, left_emu, top_emu, cx_emu, cy_emu,
         name=f'Icon {base}'
     )
 
@@ -920,15 +909,12 @@ def add_icon_svg(slide, icon_name, left_cm, top_cm, size_cm=1.5, category=None):
     return pic_element
 
 
-def _create_pic_element_with_svg(slide, svg_rid, png_rid, left_emu, top_emu, cx_emu, cy_emu, name='Icon'):
-    """构建带 SVG + PNG fallback 的 <p:pic> XML 元素（符合 OOXML 规范）
-
-    PowerPoint 2016+ 显示 SVG 矢量，2013- 自动降级为 PNG。
+def _create_pic_element_with_svg(slide, svg_rid, left_emu, top_emu, cx_emu, cy_emu, name='Icon'):
+    """构建直接使用 SVG 的 <p:pic> XML 元素
 
     Args:
         slide: 幻灯片对象
         svg_rid: SVG 的 relationship ID（如 'rId5'）
-        png_rid: PNG fallback 的 relationship ID（如 'rId6'）
         left_emu, top_emu: 位置（EMU 单位）
         cx_emu, cy_emu: 尺寸（EMU 单位）
         name: shape 名称
@@ -942,8 +928,7 @@ def _create_pic_element_with_svg(slide, svg_rid, png_rid, left_emu, top_emu, cx_
     nsmap = {
         'p': 'http://schemas.openxmlformats.org/presentationml/2006/main',
         'a': 'http://schemas.openxmlformats.org/drawingml/2006/main',
-        'r': 'http://schemas.openxmlformats.org/officeDocument/2006/relationships',
-        'asvg': 'http://schemas.microsoft.com/office/drawing/2016/SVG/main'
+        'r': 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
     }
 
     # 生成唯一 shape ID
@@ -967,14 +952,7 @@ def _create_pic_element_with_svg(slide, svg_rid, png_rid, left_emu, top_emu, cx_
     # <p:blipFill>（图像填充）
     blipFill = etree.SubElement(pic, f'{{{nsmap["p"]}}}blipFill')
     blip = etree.SubElement(blipFill, f'{{{nsmap["a"]}}}blip')
-    blip.set(f'{{{nsmap["r"]}}}embed', png_rid)  # 主图：PNG (PowerPoint 2013- 兼容首选)
-
-    # PNG fallback（通过扩展指定）
-    extLst = etree.SubElement(blip, f'{{{nsmap["a"]}}}extLst')
-    ext = etree.SubElement(extLst, f'{{{nsmap["a"]}}}ext',
-                           uri='{96DAC541-7B7A-43D3-8B79-37D633B846F1}')
-    svgBlip = etree.SubElement(ext, f'{{{nsmap["asvg"]}}}svgBlip')
-    svgBlip.set(f'{{{nsmap["r"]}}}embed', svg_rid)  # 矢量扩展：SVG (PowerPoint 2016+ 原生矢量)
+    blip.set(f'{{{nsmap["r"]}}}embed', svg_rid)  # 直接将 SVG 设为主图
 
     # <a:stretch>（填充方式：拉伸）
     stretch = etree.SubElement(blipFill, f'{{{nsmap["a"]}}}stretch')
@@ -1016,28 +994,20 @@ def _find_icon_file(icons_root, filename, category=None):
 
 def add_icon(slide, icon_name, left_cm, top_cm, size_cm=1.5,
              color='#006CD9', category=None):
-    """添加图标（自动选择最佳方案：SVG 矢量优先，PNG 兜底）
+    """添加图标（直接使用原生 SVG 矢量嵌入，不带 PNG fallback）
 
     从图标库中查找并插入指定图标。图标来源于 Tabler Icons (MIT)。
-
-    **第二期升级（2024）**：优先使用原生 SVG 矢量嵌入（PowerPoint 2016+ 可编辑），
-    失败时自动回退为 PNG 光栅化（零依赖、兼容性强）。
 
     Args:
         slide: 幻灯片对象
         icon_name: 图标名（可带或不带后缀，如 'cloud' 或 'cloud.svg'）
         left_cm, top_cm: 位置（厘米）
         size_cm: 图标尺寸（厘米，正方形）
-        color: 预留参数（PNG 已预着色，SVG 可在 PowerPoint 内编辑改色）
+        color: 预留参数（SVG 可在 PowerPoint 内编辑改色）
         category: 图标分类目录（可选，不指定则自动搜索 7 个分类）
 
     Returns:
-        Picture Shape 对象（PNG）或 lxml Element（SVG）
-
-    实现说明:
-        1. 检测 SVG 源文件是否存在
-        2. 若存在 → 调用 add_icon_svg()（矢量嵌入，可编辑）
-        3. SVG 失败或不存在 → 使用 PNG（512px 透明背景，零依赖）
+        lxml Element（SVG）
     """
     # 定位图标文件
     script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -1046,33 +1016,17 @@ def add_icon(slide, icon_name, left_cm, top_cm, size_cm=1.5,
     # 规范化文件名
     base = icon_name.replace('.svg', '').replace('.png', '')
     svg_name = base + '.svg'
-    png_name = base + '.png'
 
     # 检测 SVG 源是否存在
     svg_path = _find_icon_file(icons_root, svg_name, category)
 
-    if svg_path:
-        # 有 SVG 源，优先矢量嵌入
-        try:
-            return add_icon_svg(slide, icon_name, left_cm, top_cm, size_cm, category)
-        except Exception as e:
-            # SVG 嵌入失败，回退 PNG（不报错，保证可用性）
-            print(f"  警告: SVG 矢量嵌入失败 ({base}: {e})，回退为 PNG")
-
-    # 使用 PNG 光栅化方案（第一期实现，零依赖）
-    icon_path = _find_icon_file(icons_root, png_name, category)
-
-    if not icon_path:
+    if not svg_path:
         raise FileNotFoundError(
-            f"图标 '{base}' 不存在（SVG 和 PNG 都找不到）。"
-            f"请检查 icons/ 目录，或运行 download_icons.py + convert_icons_to_png.py。"
+            f"图标 '{base}' 不存在（找不到 SVG 文件）。"
+            f"请检查 icons/ 目录。"
         )
 
-    pic = slide.shapes.add_picture(
-        icon_path, Cm(left_cm), Cm(top_cm),
-        width=Cm(size_cm), height=Cm(size_cm)
-    )
-    return pic
+    return add_icon_svg(slide, icon_name, left_cm, top_cm, size_cm, category)
 
 
 def add_comparison_table(slide, headers, rows, left_cm=2, top_cm=6,
