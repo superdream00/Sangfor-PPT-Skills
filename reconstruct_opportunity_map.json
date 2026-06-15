@@ -828,7 +828,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\nCATIA/UG/NX图纸保护",
+                  "text": "CATIA/UG/NX图纸保护",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -869,7 +869,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\n嵌入式代码保护",
+                  "text": "嵌入式代码保护",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -910,7 +910,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\n仿真数据保护",
+                  "text": "仿真数据保护",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -979,7 +979,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\nCadence/Synopsys保护",
+                  "text": "Cadence/Synopsys保护",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -1020,7 +1020,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\n研发环境安全",
+                  "text": "研发环境安全",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -1061,7 +1061,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\nIP资产安全管理",
+                  "text": "IP资产安全管理",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -1130,7 +1130,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\n电池工艺配方保护",
+                  "text": "电池工艺配方保护",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -1171,7 +1171,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\n仿真设计数据保护",
+                  "text": "仿真设计数据保护",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -1212,7 +1212,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\n测试数据防泄露",
+                  "text": "测试数据防泄露",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -1281,7 +1281,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\n算法代码保护",
+                  "text": "算法代码保护",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -1322,7 +1322,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\n模型文件安全",
+                  "text": "模型文件安全",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -1363,7 +1363,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\n训练数据/标注保护",
+                  "text": "训练数据/标注保护",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -1432,7 +1432,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\n实验数据保护",
+                  "text": "实验数据保护",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -1473,7 +1473,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\n临床/研发文档保护",
+                  "text": "临床/研发文档保护",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -1514,7 +1514,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\n合规要求/GxP管理",
+                  "text": "合规要求/GxP管理",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -1583,7 +1583,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\nPCB设计文件保护",
+                  "text": "PCB设计文件保护",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -1624,7 +1624,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\n固件/代码保护",
+                  "text": "固件/代码保护",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -1665,7 +1665,7 @@
                   "color": "#0E0E0E"
                 },
                 {
-                  "text": "\n产品设计文档保护",
+                  "text": "产品设计文档保护",
                   "bold": false,
                   "size": 7.5,
                   "color": "#595959"
@@ -1706,7 +1706,7 @@
                   "color": "#006CD9"
                 },
                 {
-                  "text": "\n从卖电脑，走向卖数据安全价值",
+                  "text": "从卖电脑，走向卖数据安全价值",
                   "bold": false,
                   "size": 9.5,
                   "color": "#0E0E0E"

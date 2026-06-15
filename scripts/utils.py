@@ -835,7 +835,7 @@ def _create_svg_part(package, svg_bytes):
     from pptx.opc.packuri import PackURI
 
     # 生成唯一 partname（如 /ppt/media/image1.svg）
-    partname_str = package.next_image_partname(ext='.svg')
+    partname_str = package.next_image_partname(ext='svg')
     svg_partname = PackURI(partname_str)
 
     # 创建 Part（content_type 必须是 image/svg+xml）
