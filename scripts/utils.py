@@ -1139,7 +1139,9 @@ def add_icon(slide, icon_name, left_cm, top_cm, size_cm=1.5,
         cmds = svg_path_to_ooxml(d, v_w, v_h)
         if cmds:
             cmds_str = "".join(cmds)
-            paths_xml_list.append(f'<a:path w="{int(v_w * 1000)}" h="{int(v_h * 1000)}" fill="none" stroke="1">{cmds_str}</a:path>')
+            # DrawingML 标准写法：省略 fill 和 stroke 属性。
+            # fill 填充状态直接继承形状本身的 a:noFill 或填充设置，stroke 默认即为 true 绘制描边
+            paths_xml_list.append(f'<a:path w="{int(v_w * 1000)}" h="{int(v_h * 1000)}">{cmds_str}</a:path>')
             
     paths_xml = "".join(paths_xml_list)
     
@@ -1162,7 +1164,16 @@ def add_icon(slide, icon_name, left_cm, top_cm, size_cm=1.5,
     </a:custGeom>
     """
     custGeom_el = etree.fromstring(custGeom_xml)
-    spPr.append(custGeom_el)
+    
+    # 按照 DrawingML Schema 规范的顺序插入元素：
+    # spPr 子元素顺序必须为：xfrm -> EG_Geometry (custGeom) -> EG_FillProperties -> ln
+    # 如果不按顺序插入，Office PPT 引擎会因 Schema 校验失败而丢弃该图形的几何定义，导致图标不显示（变空白/隐形）
+    xfrm = spPr.find('{http://schemas.openxmlformats.org/drawingml/2006/main}xfrm')
+    if xfrm is not None:
+        idx = list(spPr).index(xfrm)
+        spPr.insert(idx + 1, custGeom_el)
+    else:
+        spPr.insert(0, custGeom_el)
     
     return shape
 
