@@ -1,0 +1,363 @@
+{
+  "version": "1.0",
+  "template_file": "【常用】深信服--PPT浅色模板2024.pptx",
+  "skip_pages": [0, 4, 5],
+  "pages": {
+    "cover": {
+      "description": "封面页 - 全屏背景图+底部蓝色横条+大小标题+Logo",
+      "template_indices": [1, 2, 3],
+      "default_index": 1,
+      "replaceable_elements": [
+        {
+          "role": "main_title",
+          "match_pattern": "大标题大标题大标题大标题",
+          "shape_name_hint": "文本框 8",
+          "position_cm": {"left": 2.42, "top": 14.92, "width": 18.53, "height": 1.78},
+          "font": {"color": "#FFFFFF", "size_pt": 24, "bold": true}
+        },
+        {
+          "role": "subtitle",
+          "match_pattern": "小标题小标题小标题小标题小标题",
+          "shape_name_hint": "文本框 8",
+          "position_cm": {"left": 2.42, "top": 16.68, "width": 13.88, "height": 1.07},
+          "font": {"color": "#FFFFFF", "size_pt": 14, "bold": false}
+        },
+        {
+          "role": "date_or_tag",
+          "match_pattern": "小标题小标题小标题",
+          "shape_name_hint": "文本框 8",
+          "position_cm": {"left": 27.33, "top": 17.09, "width": 4.78, "height": 0.9},
+          "font": {"color": "#FFFFFF", "size_pt": 12, "bold": false}
+        },
+        {
+          "role": "website",
+          "match_pattern": "www.sangfor.com.cn",
+          "shape_name_hint": "文本框 8",
+          "position_cm": {"left": 27.96, "top": 18.11, "width": 5.17, "height": 0.65},
+          "font": {"color": "#FFFFFF", "size_pt": 10, "bold": false}
+        }
+      ]
+    },
+    "section_divider": {
+      "description": "章节分隔页 - 编号+标题+底部渐变条",
+      "template_indices": [6, 7, 8, 9],
+      "default_index": 6,
+      "replaceable_elements": [
+        {
+          "role": "section_number",
+          "match_pattern": "标题标题微软雅黑44号",
+          "shape_name_hint": "文本框 10",
+          "position_cm": {"left": 8.94, "top": 6.42, "width": 15.99, "height": 2.44},
+          "font": {"color": "#006CD9", "size_pt": 44, "bold": true}
+        },
+        {
+          "role": "section_title",
+          "match_pattern": "标题标题标题标题微软雅黑",
+          "shape_name_hint": "文本框 13",
+          "position_cm": {"left": 6.98, "top": 8.77, "width": 19.91, "height": 1.42},
+          "font": {"color": "#0E0E0E", "size_pt": 20, "bold": false}
+        }
+      ]
+    },
+    "table_of_contents": {
+      "description": "目录页 - 居中Logo+标题+导航圆点",
+      "template_indices": [10],
+      "default_index": 10,
+      "replaceable_elements": [
+        {
+          "role": "title",
+          "match_pattern": "标题标题微软雅黑44号",
+          "position_cm": {"left": 8.94, "top": 6.42},
+          "font": {"color": "#006CD9", "size_pt": 44, "bold": true}
+        }
+      ]
+    },
+    "content_text_paragraph": {
+      "description": "大段文字页 - 标题+大段正文+条目列表(剪角矩形装饰)",
+      "template_indices": [11],
+      "default_index": 11,
+      "replaceable_elements": [
+        {
+          "role": "title",
+          "match_pattern": "请输入标题文字请输入标题文字请输入标题文字",
+          "shape_name_hint": "文本框 8",
+          "position_cm": {"left": 1.39, "top": 0.54, "width": 22.03, "height": 1.5},
+          "font": {"color": "#006CD9", "size_pt": 22, "bold": true}
+        },
+        {
+          "role": "body_text",
+          "match_pattern": "请输入您需要的文字请输入您需要的文字",
+          "shape_name_hint": "矩形 3",
+          "position_cm": {"left": 1.72, "top": 4.82, "width": 30.41, "height": 4.29},
+          "font": {"color": "#0E0E0E", "size_pt": 12, "bold": false},
+          "highlight_color": "#53C800"
+        },
+        {
+          "role": "list_item_1",
+          "match_pattern": "请输入您需要的文字",
+          "shape_name_hint": "矩形 11",
+          "position_cm": {"left": 2.54, "top": 10.76},
+          "font": {"color": "#0E0E0E", "size_pt": 12}
+        },
+        {
+          "role": "list_item_2",
+          "match_pattern": "请输入您需要的文字",
+          "shape_name_hint": "矩形 11",
+          "position_cm": {"left": 2.54, "top": 12.99},
+          "font": {"color": "#0E0E0E", "size_pt": 12}
+        }
+      ]
+    },
+    "content_text_list": {
+      "description": "列表页 - 标题+绿色圆点标记列表(4项)",
+      "template_indices": [12],
+      "default_index": 12,
+      "replaceable_elements": [
+        {
+          "role": "title",
+          "match_pattern": "请输入标题文字请输入标题文字请输入标题文字",
+          "shape_name_hint": "文本框 8",
+          "position_cm": {"left": 1.39, "top": 0.54, "width": 22.03, "height": 1.5},
+          "font": {"color": "#006CD9", "size_pt": 22, "bold": true}
+        },
+        {
+          "role": "list_items",
+          "match_pattern": "请输入您需要的文字请输入您需要的文字",
+          "shape_name_hint": "矩形 3",
+          "description": "4个条目，每个包含蓝色小标题(#006CD9)+黑色正文(#0E0E0E)",
+          "item_count": 4,
+          "bullet_color": "#53C800",
+          "title_color": "#006CD9",
+          "text_color": "#0E0E0E"
+        }
+      ]
+    },
+    "content_two_column": {
+      "description": "两栏对比页 - 左右卡片+蓝色标题条+绿色圆标列表",
+      "template_indices": [13],
+      "default_index": 13,
+      "replaceable_elements": [
+        {
+          "role": "title",
+          "match_pattern": "请输入标题文字请输入标题文字请输入标题文字",
+          "font": {"color": "#006CD9", "size_pt": 22, "bold": true}
+        },
+        {
+          "role": "left_column_header",
+          "match_pattern": "请输入您需要的文字",
+          "shape_name_hint": "矩形 9",
+          "position_cm": {"left": 2.39, "top": 5.4},
+          "font": {"color": "#FFFFFF", "size_pt": 14, "bold": true},
+          "header_bg_color": "#006CD9"
+        },
+        {
+          "role": "right_column_header",
+          "match_pattern": "请输入您需要的文字",
+          "shape_name_hint": "矩形 9",
+          "position_cm": {"left": 19.79, "top": 5.4},
+          "font": {"color": "#FFFFFF", "size_pt": 14, "bold": true},
+          "header_bg_color": "#0185FF"
+        }
+      ]
+    },
+    "content_three_column": {
+      "description": "三栏并列页 - 三等宽卡片+各色标题条",
+      "template_indices": [14],
+      "default_index": 14,
+      "replaceable_elements": [
+        {
+          "role": "title",
+          "match_pattern": "请输入标题文字请输入标题文字请输入标题文字",
+          "font": {"color": "#006CD9", "size_pt": 22, "bold": true}
+        },
+        {
+          "role": "col1_header",
+          "match_pattern": "请输入您需要的文字",
+          "position_cm": {"left": 3.37, "top": 6.1},
+          "header_bg_color": "#006CD9"
+        },
+        {
+          "role": "col2_header",
+          "match_pattern": "请输入您需要的文字",
+          "position_cm": {"left": 13.26, "top": 6.11},
+          "header_bg_color": "#0185FF"
+        },
+        {
+          "role": "col3_header",
+          "match_pattern": "请输入您需要的文字",
+          "position_cm": {"left": 23.18, "top": 6.11},
+          "header_bg_color": "#3BA5FF"
+        }
+      ]
+    },
+    "content_image_text": {
+      "description": "左图右文页 - 左半图片+右半标题文字+圆形数字装饰",
+      "template_indices": [16],
+      "default_index": 16,
+      "replaceable_elements": [
+        {
+          "role": "title",
+          "match_pattern": "请输入标题文字请输入标题文字请输入标题文字",
+          "font": {"color": "#006CD9"}
+        },
+        {
+          "role": "body_text",
+          "match_pattern": "请输入文字请输入文字",
+          "shape_name_hint": "矩形 28",
+          "font": {"color": "#0E0E0E", "size_pt": 12}
+        },
+        {
+          "role": "image",
+          "shape_name_hint": "图片 13",
+          "position_cm": {"left": 0, "top": 5.67, "width": 15.48, "height": 9.67}
+        }
+      ]
+    },
+    "content_number_highlight": {
+      "description": "数字高亮展示页 - 大号数字+说明文字",
+      "template_indices": [17, 18, 19, 20],
+      "default_index": 17,
+      "replaceable_elements": [
+        {
+          "role": "title",
+          "match_pattern": "请输入标题文字请输入标题文字请输入标题文字",
+          "font": {"color": "#006CD9"}
+        },
+        {
+          "role": "numbers",
+          "description": "大号数字展示，蓝色#006CD9，36-48pt"
+        }
+      ]
+    },
+    "content_card_grid": {
+      "description": "多卡片网格页 - 3-6个模块卡片，含图标+标题+描述",
+      "template_indices": [21, 22, 23, 24, 26],
+      "default_index": 21,
+      "replaceable_elements": [
+        {
+          "role": "title",
+          "match_pattern": "请输入标题文字请输入标题文字请输入标题文字",
+          "font": {"color": "#006CD9"}
+        },
+        {
+          "role": "cards",
+          "description": "每个卡片含：图标圆(#006CD9)+标题+描述文字"
+        }
+      ]
+    },
+    "content_quote": {
+      "description": "引用/金句页 - 居中引号+文字卡片",
+      "template_indices": [28],
+      "default_index": 28,
+      "replaceable_elements": [
+        {
+          "role": "title",
+          "match_pattern": "请输入标题文字请输入标题",
+          "font": {"color": "#006CD9"}
+        },
+        {
+          "role": "quote_text",
+          "match_pattern": "请输入您需要的文字请输入您需要的文字请输入",
+          "shape_name_hint": "矩形 13",
+          "font": {"color": "#0E0E0E", "size_pt": 14}
+        }
+      ]
+    },
+    "content_fullimage": {
+      "description": "全图文字页 - 全屏背景图+底部半透明白色条+圆形图标",
+      "template_indices": [29],
+      "default_index": 29,
+      "replaceable_elements": [
+        {
+          "role": "body_text",
+          "match_pattern": "请输入您需要的文字请输入您需要的文字",
+          "shape_name_hint": "矩形 100",
+          "font": {"color": "#0E0E0E"}
+        },
+        {
+          "role": "image",
+          "shape_name_hint": "图片 99",
+          "position_cm": {"left": 0, "top": 0, "width": 33.87, "height": 19.05}
+        }
+      ]
+    },
+    "content_timeline": {
+      "description": "阶梯递进/时间线页 - 竖线+节点+递进卡片组",
+      "template_indices": [32],
+      "default_index": 32,
+      "replaceable_elements": [
+        {
+          "role": "title",
+          "match_pattern": "请输入标题文字请输入标题文字请输入标题文字",
+          "font": {"color": "#006CD9"}
+        },
+        {
+          "role": "timeline_items",
+          "description": "4个节点，每个含：绿色圆点(#53C800)+卡片(标题+描述)"
+        }
+      ]
+    },
+    "chart_bar": {
+      "description": "柱状图页 - PowerPoint原生Chart对象",
+      "template_indices": [38],
+      "default_index": 38,
+      "replaceable_elements": [
+        {
+          "role": "title",
+          "match_pattern": "请输入标题文字",
+          "font": {"color": "#006CD9"}
+        },
+        {
+          "role": "chart",
+          "chart_type": "column",
+          "brand_colors": ["#006CD9", "#53C800", "#0587F5", "#3BA5FF", "#6FBA2C"]
+        }
+      ]
+    },
+    "chart_pie": {
+      "description": "饼图/环形图页 - PowerPoint原生Chart对象",
+      "template_indices": [39],
+      "default_index": 39,
+      "replaceable_elements": [
+        {
+          "role": "title",
+          "match_pattern": "请输入标题文字",
+          "font": {"color": "#006CD9"}
+        },
+        {
+          "role": "chart",
+          "chart_type": "pie",
+          "brand_colors": ["#006CD9", "#53C800", "#0587F5", "#3BA5FF", "#6FBA2C", "#51C0F9"]
+        }
+      ]
+    },
+    "ending": {
+      "description": "尾页 - 全屏背景+谢谢聆听+Slogan+Logo",
+      "template_indices": [48, 49],
+      "default_index": 48,
+      "replaceable_elements": []
+    }
+  },
+  "content_to_page_mapping": {
+    "description": "内容类型到页面模板的推荐映射",
+    "rules": [
+      {"content_type": "封面/标题", "page_type": "cover", "priority": 1},
+      {"content_type": "目录/大纲", "page_type": "table_of_contents", "priority": 1},
+      {"content_type": "章节分隔", "page_type": "section_divider", "priority": 1},
+      {"content_type": "大段文字/说明", "page_type": "content_text_paragraph", "priority": 1},
+      {"content_type": "要点列表(2-4项)", "page_type": "content_text_list", "priority": 1},
+      {"content_type": "对比/优劣势", "page_type": "content_two_column", "priority": 1},
+      {"content_type": "三个并列要点", "page_type": "content_three_column", "priority": 1},
+      {"content_type": "图文并排", "page_type": "content_image_text", "priority": 1},
+      {"content_type": "关键数字/指标", "page_type": "content_number_highlight", "priority": 1},
+      {"content_type": "多模块功能展示", "page_type": "content_card_grid", "priority": 1},
+      {"content_type": "引用/名言/总结", "page_type": "content_quote", "priority": 1},
+      {"content_type": "全图展示", "page_type": "content_fullimage", "priority": 1},
+      {"content_type": "流程/时间线", "page_type": "content_timeline", "priority": 1},
+      {"content_type": "柱状图/折线图", "page_type": "chart_bar", "priority": 1},
+      {"content_type": "饼图/占比", "page_type": "chart_pie", "priority": 1},
+      {"content_type": "结尾/致谢", "page_type": "ending", "priority": 1},
+      {"content_type": "自由布局/自定义", "page_type": "blank_with_content", "priority": 2}
+    ]
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "title": "深信服网络安全解决方案",
+  "slides": [
+    {
+      "action": "clone",
+      "source_index": 1,
+      "replacements": {
+        "大标题大标题大标题大标题": "深信服网络安全解决方案",
+        "小标题小标题小标题小标题小标题": "全面守护企业数字化安全",
+        "小标题小标题小标题": "2024年度方案"
+      },
+      "notes": "深信服2024年度网络安全解决方案汇报。主要面向企业数字化转型中的安全需求。"
+    },
+    {
+      "action": "clone",
+      "source_index": 12,
+      "replacements": {
+        "请输入标题文字请输入标题文字请输入标题文字": "方案核心优势"
+      }
+    },
+    {
+      "action": "blank_with_content",
+      "title": "市场趋势分析",
+      "content_blocks": [
+        {
+          "type": "chart",
+          "chart_type": "column",
+          "data": {
+            "categories": ["2021", "2022", "2023", "2024"],
+            "series": [
+              {"name": "市场规模(亿元)", "values": [680, 820, 950, 1100]},
+              {"name": "增长率(%)", "values": [18, 21, 16, 15]}
+            ]
+          }
+        }
+      ],
+      "notes": "展示2021-2024年市场规模及增长率趋势。可以看到市场规模逐年上升，增速保持在两位数以上。"
+    },
+    {
+      "action": "blank_with_content",
+      "title": "核心产品矩阵",
+      "content_blocks": [
+        {
+          "type": "card_grid",
+          "columns": 3,
+          "cards": [
+            {"header": "下一代防火墙", "body": "智能识别应用层威胁，精准防护网络边界安全"},
+            {"header": "终端安全响应", "body": "AI驱动的终端检测与响应，快速定位处置威胁"},
+            {"header": "安全云服务", "body": "云端安全能力输出，为混合云环境提供统一防护"}
+          ]
+        }
+      ]
+    },
+    {
+      "action": "blank_with_content",
+      "title": "客户成果数据",
+      "content_blocks": [
+        {
+          "type": "number_highlight",
+          "numbers": [
+            {"value": "10万+", "label": "企业客户"},
+            {"value": "99.9%", "label": "安全可用性"},
+            {"value": "50+", "label": "国家和地区"},
+            {"value": "7x24", "label": "安全响应"}
+          ]
+        }
+      ]
+    },
+    {
+      "action": "blank_with_content",
+      "title": "产品部署架构",
+      "content_blocks": [
+        {
+          "type": "table",
+          "data": [
+            ["部署区域", "产品组件", "核心功能", "部署方式"],
+            ["网络边界", "下一代防火墙", "访问控制/入侵防御", "串联部署"],
+            ["核心交换", "安全感知平台", "流量分析/威胁检测", "旁路镜像"],
+            ["终端层", "EDR终端安全", "病毒查杀/行为监控", "Agent安装"],
+            ["云端", "安全云脑", "威胁情报/协同分析", "SaaS接入"]
+          ]
+        }
+      ]
+    },
+    {
+      "action": "clone",
+      "source_index": 48
+    }
+  ]
+}
