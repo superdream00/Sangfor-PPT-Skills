@@ -1,0 +1,1763 @@
+{
+  "title": "研发高价值市场机会地图",
+  "slides": [
+    {
+      "action": "blank_with_content",
+      "layout_name": "标题和内容",
+      "title": "研发高价值市场机会地图",
+      "notes": "本页展示研发高价值市场机会地图，通过价值行业、客户画像、主打场景及行业重点场景映射，全方位展示研发数据安全防护的业务图景，帮助企业建立可靠的研发数据安全基座。",
+      "content_blocks": [
+        {
+          "type": "canvas",
+          "elements": [
+            {
+              "shape_type": "text",
+              "left_cm": 1.39,
+              "top_cm": 1.25,
+              "width_cm": 15.0,
+              "height_cm": 0.8,
+              "text": "锁定价值行业 → 识别目标客户 → 切入核心研发场景",
+              "font_size_pt": 12,
+              "font_color": "#0E0E0E",
+              "bold": false
+            },
+            {
+              "shape_type": "rect",
+              "left_cm": 1.0,
+              "top_cm": 2.2,
+              "width_cm": 1.0,
+              "height_cm": 2.8,
+              "fill_color": "#003592",
+              "border_color": null,
+              "text": "价\n值\n行\n业",
+              "font_size_pt": 10,
+              "font_color": "#FFFFFF",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 2.2,
+              "top_cm": 2.2,
+              "width_cm": 4.9,
+              "height_cm": 2.8,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "car",
+              "left_cm": 4.050000000000001,
+              "top_cm": 2.3,
+              "width_cm": 1.2,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 2.2,
+              "top_cm": 3.6,
+              "width_cm": 4.9,
+              "height_cm": 0.5,
+              "text": "汽车",
+              "font_size_pt": 11,
+              "font_color": "#000000",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 2.3000000000000003,
+              "top_cm": 4.1,
+              "width_cm": 4.7,
+              "height_cm": 0.8,
+              "text": "智能化、电动化驱动\n研发数据爆发",
+              "font_size_pt": 8.5,
+              "font_color": "#595959",
+              "bold": false,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 7.32,
+              "top_cm": 2.2,
+              "width_cm": 4.9,
+              "height_cm": 2.8,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "cpu",
+              "left_cm": 9.17,
+              "top_cm": 2.3,
+              "width_cm": 1.2,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 7.32,
+              "top_cm": 3.6,
+              "width_cm": 4.9,
+              "height_cm": 0.5,
+              "text": "芯片半导体",
+              "font_size_pt": 11,
+              "font_color": "#000000",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 7.42,
+              "top_cm": 4.1,
+              "width_cm": 4.7,
+              "height_cm": 0.8,
+              "text": "EDA/IP/设计数据\n价值高、泄露风险大",
+              "font_size_pt": 8.5,
+              "font_color": "#595959",
+              "bold": false,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 12.440000000000001,
+              "top_cm": 2.2,
+              "width_cm": 4.9,
+              "height_cm": 2.8,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "building-factory",
+              "left_cm": 14.290000000000001,
+              "top_cm": 2.3,
+              "width_cm": 1.2,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 12.440000000000001,
+              "top_cm": 3.6,
+              "width_cm": 4.9,
+              "height_cm": 0.5,
+              "text": "电子制造",
+              "font_size_pt": 11,
+              "font_color": "#000000",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 12.540000000000001,
+              "top_cm": 4.1,
+              "width_cm": 4.7,
+              "height_cm": 0.8,
+              "text": "产品迭代快，供应链协同\n研发数据分散",
+              "font_size_pt": 8.5,
+              "font_color": "#595959",
+              "bold": false,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 17.56,
+              "top_cm": 2.2,
+              "width_cm": 4.9,
+              "height_cm": 2.8,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "wind",
+              "left_cm": 19.41,
+              "top_cm": 2.3,
+              "width_cm": 1.2,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 17.56,
+              "top_cm": 3.6,
+              "width_cm": 4.9,
+              "height_cm": 0.5,
+              "text": "新能源",
+              "font_size_pt": 11,
+              "font_color": "#000000",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 17.66,
+              "top_cm": 4.1,
+              "width_cm": 4.7,
+              "height_cm": 0.8,
+              "text": "电池/电控/工艺研发\n数据安全要求高",
+              "font_size_pt": 8.5,
+              "font_color": "#595959",
+              "bold": false,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 22.68,
+              "top_cm": 2.2,
+              "width_cm": 4.9,
+              "height_cm": 2.8,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "robot",
+              "left_cm": 24.53,
+              "top_cm": 2.3,
+              "width_cm": 1.2,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 22.68,
+              "top_cm": 3.6,
+              "width_cm": 4.9,
+              "height_cm": 0.5,
+              "text": "AI科技",
+              "font_size_pt": 11,
+              "font_color": "#000000",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 22.78,
+              "top_cm": 4.1,
+              "width_cm": 4.7,
+              "height_cm": 0.8,
+              "text": "算法/模型/训练数据\n核心资产需保护",
+              "font_size_pt": 8.5,
+              "font_color": "#595959",
+              "bold": false,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 27.8,
+              "top_cm": 2.2,
+              "width_cm": 4.9,
+              "height_cm": 2.8,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "pill",
+              "left_cm": 29.650000000000002,
+              "top_cm": 2.3,
+              "width_cm": 1.2,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 27.8,
+              "top_cm": 3.6,
+              "width_cm": 4.9,
+              "height_cm": 0.5,
+              "text": "生物医药",
+              "font_size_pt": 11,
+              "font_color": "#000000",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 27.900000000000002,
+              "top_cm": 4.1,
+              "width_cm": 4.7,
+              "height_cm": 0.8,
+              "text": "研发周期长，数据敏感\n合规要求严格",
+              "font_size_pt": 8.5,
+              "font_color": "#595959",
+              "bold": false,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "rect",
+              "left_cm": 1.0,
+              "top_cm": 5.3,
+              "width_cm": 1.0,
+              "height_cm": 2.5,
+              "fill_color": "#53C800",
+              "border_color": null,
+              "text": "客\n户\n画\n像",
+              "font_size_pt": 10,
+              "font_color": "#FFFFFF",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 2.2,
+              "top_cm": 5.3,
+              "width_cm": 9.8,
+              "height_cm": 2.5,
+              "fill_color": "#FFFFFF",
+              "border_color": "#ECECEC",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "circle",
+              "left_cm": 2.6,
+              "top_cm": 5.85,
+              "width_cm": 1.4,
+              "height_cm": 1.4,
+              "fill_color": "#E8F5E9",
+              "border_color": null
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "users",
+              "left_cm": 2.7,
+              "top_cm": 5.95,
+              "width_cm": 1.2,
+              "color": "#53C800"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 4.2,
+              "top_cm": 5.5,
+              "width_cm": 7.5,
+              "height_cm": 0.5,
+              "text": "研发型企业",
+              "font_size_pt": 11,
+              "font_color": "#53C800",
+              "bold": true,
+              "text_align": "left"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 4.2,
+              "top_cm": 6.0,
+              "width_cm": 7.5,
+              "height_cm": 1.7,
+              "text": "• 有研发团队\n• 有代码资产、设计图纸、EDA环境\n• 多部门协同研发，数据流转频繁",
+              "font_size_pt": 8.5,
+              "font_color": "#404040",
+              "bold": false,
+              "text_align": "left"
+            },
+            {
+              "shape_type": "right_arrow",
+              "left_cm": 12.1,
+              "top_cm": 6.3,
+              "width_cm": 0.4,
+              "height_cm": 0.4,
+              "fill_color": "#53C800",
+              "border_color": null
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 12.600000000000001,
+              "top_cm": 5.3,
+              "width_cm": 9.8,
+              "height_cm": 2.5,
+              "fill_color": "#FFFFFF",
+              "border_color": "#ECECEC",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "circle",
+              "left_cm": 13.000000000000002,
+              "top_cm": 5.85,
+              "width_cm": 1.4,
+              "height_cm": 1.4,
+              "fill_color": "#E3F2FD",
+              "border_color": null
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "shield",
+              "left_cm": 13.100000000000001,
+              "top_cm": 5.95,
+              "width_cm": 1.2,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 14.600000000000001,
+              "top_cm": 5.5,
+              "width_cm": 7.5,
+              "height_cm": 0.5,
+              "text": "数据敏感型企业",
+              "font_size_pt": 11,
+              "font_color": "#006CD9",
+              "bold": true,
+              "text_align": "left"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 14.600000000000001,
+              "top_cm": 6.0,
+              "width_cm": 7.5,
+              "height_cm": 1.7,
+              "text": "• 有核心技术IP\n• 对数据泄露敏感\n• 研发需要跨团队/跨区域协作",
+              "font_size_pt": 8.5,
+              "font_color": "#404040",
+              "bold": false,
+              "text_align": "left"
+            },
+            {
+              "shape_type": "right_arrow",
+              "left_cm": 22.500000000000004,
+              "top_cm": 6.3,
+              "width_cm": 0.4,
+              "height_cm": 0.4,
+              "fill_color": "#53C800",
+              "border_color": null
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 23.0,
+              "top_cm": 5.3,
+              "width_cm": 9.8,
+              "height_cm": 2.5,
+              "fill_color": "#FFFFFF",
+              "border_color": "#ECECEC",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "circle",
+              "left_cm": 23.4,
+              "top_cm": 5.85,
+              "width_cm": 1.4,
+              "height_cm": 1.4,
+              "fill_color": "#FFF3E0",
+              "border_color": null
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "clipboard-check",
+              "left_cm": 23.5,
+              "top_cm": 5.95,
+              "width_cm": 1.2,
+              "color": "#0587F5"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 25.0,
+              "top_cm": 5.5,
+              "width_cm": 7.5,
+              "height_cm": 0.5,
+              "text": "合规驱动型企业",
+              "font_size_pt": 11,
+              "font_color": "#0587F5",
+              "bold": true,
+              "text_align": "left"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 25.0,
+              "top_cm": 6.0,
+              "width_cm": 7.5,
+              "height_cm": 1.7,
+              "text": "• 有IPO/出海计划\n• 供应链审计要求高\n• 行业合规监管严格",
+              "font_size_pt": 8.5,
+              "font_color": "#404040",
+              "bold": false,
+              "text_align": "left"
+            },
+            {
+              "shape_type": "rect",
+              "left_cm": 1.0,
+              "top_cm": 8.1,
+              "width_cm": 1.0,
+              "height_cm": 3.1,
+              "fill_color": "#006CD9",
+              "border_color": null,
+              "text": "主\n打\n场\n景",
+              "font_size_pt": 10,
+              "font_color": "#FFFFFF",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 2.2,
+              "top_cm": 8.1,
+              "width_cm": 4.9,
+              "height_cm": 3.1,
+              "fill_color": "#F2F7FC",
+              "border_color": "#3BA5FF",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "code",
+              "left_cm": 4.050000000000001,
+              "top_cm": 8.25,
+              "width_cm": 1.2,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 2.2,
+              "top_cm": 9.5,
+              "width_cm": 4.9,
+              "height_cm": 0.5,
+              "text": "代码开发安全",
+              "font_size_pt": 11,
+              "font_color": "#006CD9",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 2.4000000000000004,
+              "top_cm": 10.0,
+              "width_cm": 4.5,
+              "height_cm": 1.1,
+              "text": "• 源代码防泄密\n• 开发环境一致性\n• 远程安全协作",
+              "font_size_pt": 8.5,
+              "font_color": "#0E0E0E",
+              "bold": false,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 7.32,
+              "top_cm": 8.1,
+              "width_cm": 4.9,
+              "height_cm": 3.1,
+              "fill_color": "#F2F7FC",
+              "border_color": "#3BA5FF",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "box",
+              "left_cm": 9.17,
+              "top_cm": 8.25,
+              "width_cm": 1.2,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 7.32,
+              "top_cm": 9.5,
+              "width_cm": 4.9,
+              "height_cm": 0.5,
+              "text": "3D设计安全",
+              "font_size_pt": 11,
+              "font_color": "#006CD9",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 7.5200000000000005,
+              "top_cm": 10.0,
+              "width_cm": 4.5,
+              "height_cm": 1.1,
+              "text": "• 图纸防泄密\n• 版本管理\n• 设计协同安全",
+              "font_size_pt": 8.5,
+              "font_color": "#0E0E0E",
+              "bold": false,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 12.440000000000001,
+              "top_cm": 8.1,
+              "width_cm": 4.9,
+              "height_cm": 3.1,
+              "fill_color": "#F2F7FC",
+              "border_color": "#3BA5FF",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "microscope",
+              "left_cm": 14.290000000000001,
+              "top_cm": 8.25,
+              "width_cm": 1.2,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 12.440000000000001,
+              "top_cm": 9.5,
+              "width_cm": 4.9,
+              "height_cm": 0.5,
+              "text": "EDA研发安全",
+              "font_size_pt": 11,
+              "font_color": "#006CD9",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 12.64,
+              "top_cm": 10.0,
+              "width_cm": 4.5,
+              "height_cm": 1.1,
+              "text": "• EDA工具链保护\n• IP资产安全\n• 设计数据不落地",
+              "font_size_pt": 8.5,
+              "font_color": "#0E0E0E",
+              "bold": false,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 17.56,
+              "top_cm": 8.1,
+              "width_cm": 4.9,
+              "height_cm": 3.1,
+              "fill_color": "#F2F7FC",
+              "border_color": "#3BA5FF",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "flask",
+              "left_cm": 19.41,
+              "top_cm": 8.25,
+              "width_cm": 1.2,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 17.56,
+              "top_cm": 9.5,
+              "width_cm": 4.9,
+              "height_cm": 0.5,
+              "text": "实验室研发安全",
+              "font_size_pt": 11,
+              "font_color": "#006CD9",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 17.759999999999998,
+              "top_cm": 10.0,
+              "width_cm": 4.5,
+              "height_cm": 1.1,
+              "text": "• 实验数据管理\n• 科研协作\n• 敏感数据保护",
+              "font_size_pt": 8.5,
+              "font_color": "#0E0E0E",
+              "bold": false,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 22.68,
+              "top_cm": 8.1,
+              "width_cm": 4.9,
+              "height_cm": 3.1,
+              "fill_color": "#F2F7FC",
+              "border_color": "#3BA5FF",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "settings",
+              "left_cm": 24.53,
+              "top_cm": 8.25,
+              "width_cm": 1.2,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 22.68,
+              "top_cm": 9.5,
+              "width_cm": 4.9,
+              "height_cm": 0.5,
+              "text": "工艺研发安全",
+              "font_size_pt": 11,
+              "font_color": "#006CD9",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 22.88,
+              "top_cm": 10.0,
+              "width_cm": 4.5,
+              "height_cm": 1.1,
+              "text": "• 工艺配方防护\n• 仿真数据安全\n• 生产工艺知识产权",
+              "font_size_pt": 8.5,
+              "font_color": "#0E0E0E",
+              "bold": false,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 27.8,
+              "top_cm": 8.1,
+              "width_cm": 4.9,
+              "height_cm": 3.1,
+              "fill_color": "#F2F7FC",
+              "border_color": "#3BA5FF",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "robot",
+              "left_cm": 29.650000000000002,
+              "top_cm": 8.25,
+              "width_cm": 1.2,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 27.8,
+              "top_cm": 9.5,
+              "width_cm": 4.9,
+              "height_cm": 0.5,
+              "text": "AI训练安全",
+              "font_size_pt": 11,
+              "font_color": "#006CD9",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 28.0,
+              "top_cm": 10.0,
+              "width_cm": 4.5,
+              "height_cm": 1.1,
+              "text": "• 训练数据防泄露\n• 模型保护\n• 算力环境安全",
+              "font_size_pt": 8.5,
+              "font_color": "#0E0E0E",
+              "bold": false,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "rect",
+              "left_cm": 1.0,
+              "top_cm": 11.5,
+              "width_cm": 1.0,
+              "height_cm": 4.4,
+              "fill_color": "#00479D",
+              "border_color": null,
+              "text": "六\n大\n行\n业\n重\n点\n场\n景\n映\n射",
+              "font_size_pt": 9,
+              "font_color": "#FFFFFF",
+              "bold": true,
+              "text_align": "center"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 2.2,
+              "top_cm": 11.5,
+              "width_cm": 4.9,
+              "height_cm": 0.6,
+              "fill_color": "#ECECEC",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1,
+              "text": [
+                {
+                  "text": " 汽车",
+                  "bold": true,
+                  "size": 10,
+                  "color": "#0E0E0E"
+                }
+              ],
+              "text_align": "center"
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "car",
+              "left_cm": 3.7,
+              "top_cm": 11.6,
+              "width_cm": 0.4,
+              "color": "#0E0E0E"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 2.2,
+              "top_cm": 12.3,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "box",
+              "left_cm": 2.45,
+              "top_cm": 12.55,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 3.0500000000000003,
+              "top_cm": 12.4,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "3D设计",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\nCATIA/UG/NX图纸保护",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 2.2,
+              "top_cm": 13.4,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "code",
+              "left_cm": 2.45,
+              "top_cm": 13.65,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 3.0500000000000003,
+              "top_cm": 13.5,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "代码开发",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\n嵌入式代码保护",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 2.2,
+              "top_cm": 14.5,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "chart-line",
+              "left_cm": 2.45,
+              "top_cm": 14.75,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 3.0500000000000003,
+              "top_cm": 14.6,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "仿真测试",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\n仿真数据保护",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 7.32,
+              "top_cm": 11.5,
+              "width_cm": 4.9,
+              "height_cm": 0.6,
+              "fill_color": "#ECECEC",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1,
+              "text": [
+                {
+                  "text": " 芯片半导体",
+                  "bold": true,
+                  "size": 10,
+                  "color": "#0E0E0E"
+                }
+              ],
+              "text_align": "center"
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "cpu",
+              "left_cm": 8.52,
+              "top_cm": 11.6,
+              "width_cm": 0.4,
+              "color": "#0E0E0E"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 7.32,
+              "top_cm": 12.3,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "microscope",
+              "left_cm": 7.57,
+              "top_cm": 12.55,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 8.17,
+              "top_cm": 12.4,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "EDA研发",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\nCadence/Synopsys保护",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 7.32,
+              "top_cm": 13.4,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "device-desktop",
+              "left_cm": 7.57,
+              "top_cm": 13.65,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 8.17,
+              "top_cm": 13.5,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "Linux研发",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\n研发环境安全",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 7.32,
+              "top_cm": 14.5,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "shield",
+              "left_cm": 7.57,
+              "top_cm": 14.75,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 8.17,
+              "top_cm": 14.6,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "IP保护",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\nIP资产安全管理",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 12.440000000000001,
+              "top_cm": 11.5,
+              "width_cm": 4.9,
+              "height_cm": 0.6,
+              "fill_color": "#ECECEC",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1,
+              "text": [
+                {
+                  "text": " 新能源",
+                  "bold": true,
+                  "size": 10,
+                  "color": "#0E0E0E"
+                }
+              ],
+              "text_align": "center"
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "wind",
+              "left_cm": 13.840000000000002,
+              "top_cm": 11.6,
+              "width_cm": 0.4,
+              "color": "#0E0E0E"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 12.440000000000001,
+              "top_cm": 12.3,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "settings",
+              "left_cm": 12.690000000000001,
+              "top_cm": 12.55,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 13.290000000000001,
+              "top_cm": 12.4,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "工艺研发",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\n电池工艺配方保护",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 12.440000000000001,
+              "top_cm": 13.4,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "box",
+              "left_cm": 12.690000000000001,
+              "top_cm": 13.65,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 13.290000000000001,
+              "top_cm": 13.5,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "仿真设计",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\n仿真设计数据保护",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 12.440000000000001,
+              "top_cm": 14.5,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "shield-check",
+              "left_cm": 12.690000000000001,
+              "top_cm": 14.75,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 13.290000000000001,
+              "top_cm": 14.6,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "测试数据",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\n测试数据防泄露",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 17.56,
+              "top_cm": 11.5,
+              "width_cm": 4.9,
+              "height_cm": 0.6,
+              "fill_color": "#ECECEC",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1,
+              "text": [
+                {
+                  "text": " AI科技",
+                  "bold": true,
+                  "size": 10,
+                  "color": "#0E0E0E"
+                }
+              ],
+              "text_align": "center"
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "robot",
+              "left_cm": 19.06,
+              "top_cm": 11.6,
+              "width_cm": 0.4,
+              "color": "#0E0E0E"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 17.56,
+              "top_cm": 12.3,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "code",
+              "left_cm": 17.81,
+              "top_cm": 12.55,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 18.41,
+              "top_cm": 12.4,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "算法开发",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\n算法代码保护",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 17.56,
+              "top_cm": 13.4,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "robot",
+              "left_cm": 17.81,
+              "top_cm": 13.65,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 18.41,
+              "top_cm": 13.5,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "模型训练",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\n模型文件安全",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 17.56,
+              "top_cm": 14.5,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "database",
+              "left_cm": 17.81,
+              "top_cm": 14.75,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 18.41,
+              "top_cm": 14.6,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "数据集安全",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\n训练数据/标注保护",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 22.68,
+              "top_cm": 11.5,
+              "width_cm": 4.9,
+              "height_cm": 0.6,
+              "fill_color": "#ECECEC",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1,
+              "text": [
+                {
+                  "text": " 生物医药",
+                  "bold": true,
+                  "size": 10,
+                  "color": "#0E0E0E"
+                }
+              ],
+              "text_align": "center"
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "pill",
+              "left_cm": 24.08,
+              "top_cm": 11.6,
+              "width_cm": 0.4,
+              "color": "#0E0E0E"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 22.68,
+              "top_cm": 12.3,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "flask",
+              "left_cm": 22.93,
+              "top_cm": 12.55,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 23.53,
+              "top_cm": 12.4,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "实验数据",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\n实验数据保护",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 22.68,
+              "top_cm": 13.4,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "file-text",
+              "left_cm": 22.93,
+              "top_cm": 13.65,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 23.53,
+              "top_cm": 13.5,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "研发文档",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\n临床/研发文档保护",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 22.68,
+              "top_cm": 14.5,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "clipboard-check",
+              "left_cm": 22.93,
+              "top_cm": 14.75,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 23.53,
+              "top_cm": 14.6,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "合规数据",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\n合规要求/GxP管理",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 27.8,
+              "top_cm": 11.5,
+              "width_cm": 4.9,
+              "height_cm": 0.6,
+              "fill_color": "#ECECEC",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1,
+              "text": [
+                {
+                  "text": " 电子制造",
+                  "bold": true,
+                  "size": 10,
+                  "color": "#0E0E0E"
+                }
+              ],
+              "text_align": "center"
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "building-factory",
+              "left_cm": 29.2,
+              "top_cm": 11.6,
+              "width_cm": 0.4,
+              "color": "#0E0E0E"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 27.8,
+              "top_cm": 12.3,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "layers-intersect",
+              "left_cm": 28.05,
+              "top_cm": 12.55,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 28.650000000000002,
+              "top_cm": 12.4,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "PCB设计",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\nPCB设计文件保护",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 27.8,
+              "top_cm": 13.4,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "code",
+              "left_cm": 28.05,
+              "top_cm": 13.65,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 28.650000000000002,
+              "top_cm": 13.5,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "嵌入式开发",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\n固件/代码保护",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 27.8,
+              "top_cm": 14.5,
+              "width_cm": 4.9,
+              "height_cm": 1.0,
+              "fill_color": "#FFFFFF",
+              "border_color": "#E7E6E6",
+              "border_width_pt": 1.0,
+              "corner_radius": 0.1
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "file-text",
+              "left_cm": 28.05,
+              "top_cm": 14.75,
+              "width_cm": 0.5,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 28.650000000000002,
+              "top_cm": 14.6,
+              "width_cm": 3.95,
+              "height_cm": 0.8,
+              "text": [
+                {
+                  "text": "产品研发",
+                  "bold": true,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "\n产品设计文档保护",
+                  "bold": false,
+                  "size": 7.5,
+                  "color": "#595959"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "round_rect",
+              "left_cm": 1.0,
+              "top_cm": 16.3,
+              "width_cm": 31.87,
+              "height_cm": 1.8,
+              "fill_color": "#F2F7FC",
+              "border_color": "#006CD9",
+              "border_width_pt": 1.5,
+              "corner_radius": 0.15
+            },
+            {
+              "shape_type": "icon",
+              "icon_name": "target",
+              "left_cm": 1.5,
+              "top_cm": 16.55,
+              "width_cm": 1.3,
+              "color": "#006CD9"
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 3.1,
+              "top_cm": 16.55,
+              "width_cm": 6.0,
+              "height_cm": 1.3,
+              "text": [
+                {
+                  "text": "我们的目标客户",
+                  "bold": true,
+                  "size": 13,
+                  "color": "#006CD9"
+                },
+                {
+                  "text": "\n从卖电脑，走向卖数据安全价值",
+                  "bold": false,
+                  "size": 9.5,
+                  "color": "#0E0E0E"
+                }
+              ],
+              "text_align": "left"
+            },
+            {
+              "shape_type": "line",
+              "from_point_cm": [
+                8.7,
+                0.35
+              ],
+              "to_point_cm": [
+                8.7,
+                1.45
+              ],
+              "line_color": "#A0C0F0",
+              "line_width_pt": 1.5
+            },
+            {
+              "shape_type": "text",
+              "left_cm": 10.2,
+              "top_cm": 16.6,
+              "width_cm": 21.0,
+              "height_cm": 1.2,
+              "text": [
+                {
+                  "text": "研发数据价值高、泄露影响大、安全要求严",
+                  "bold": true,
+                  "size": 10.5,
+                  "color": "#006CD9"
+                },
+                {
+                  "text": "的研发型企业及研发部门，通过场景化切入，解决实际痛点，帮助企业建立可靠",
+                  "bold": false,
+                  "size": 10.5,
+                  "color": "#0E0E0E"
+                },
+                {
+                  "text": "的研发数据安全基座。",
+                  "bold": true,
+                  "size": 10.5,
+                  "color": "#006CD9"
+                }
+              ],
+              "text_align": "left"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

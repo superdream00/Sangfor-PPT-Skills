@@ -1,0 +1,145 @@
+{
+  "page_info": {
+    "width_cm": 33.87,
+    "height_cm": 19.05,
+    "background_color": "#FFFFFF"
+  },
+  "elements": [
+    {
+      "type": "text",
+      "content": "Why Choose Our Product?",
+      "position": {"left_cm": 8, "top_cm": 1.5},
+      "size": {"width_cm": 18, "height_cm": 2},
+      "style": {
+        "font_size_pt": 36,
+        "font_color": "#2C3E50",
+        "bold": true,
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "card",
+      "position": {"left_cm": 3, "top_cm": 5},
+      "size": {"width_cm": 13, "height_cm": 5.5},
+      "style": {
+        "fill_color": "#9B59B6",
+        "corner_radius": 0.3
+      },
+      "icon": {
+        "type": "circle",
+        "position_offset": {"x_cm": 5.5, "y_cm": 0.8},
+        "size_cm": 1.2,
+        "fill_color": "#FFFFFF"
+      },
+      "title": {
+        "content": "Easy to Use",
+        "y_offset_cm": 2.5,
+        "font_size_pt": 20,
+        "font_color": "#FFFFFF",
+        "bold": true
+      },
+      "description": {
+        "content": "Intuitive interface designed\nfor everyone",
+        "y_offset_cm": 3.5,
+        "font_size_pt": 12,
+        "font_color": "#FFFFFF"
+      }
+    },
+    {
+      "type": "card",
+      "position": {"left_cm": 17.5, "top_cm": 5},
+      "size": {"width_cm": 13, "height_cm": 5.5},
+      "style": {
+        "fill_color": "#3498DB",
+        "corner_radius": 0.3
+      },
+      "icon": {
+        "type": "circle",
+        "position_offset": {"x_cm": 5.5, "y_cm": 0.8},
+        "size_cm": 1.2,
+        "fill_color": "#FFFFFF"
+      },
+      "title": {
+        "content": "Cost Effective",
+        "y_offset_cm": 2.5,
+        "font_size_pt": 20,
+        "font_color": "#FFFFFF",
+        "bold": true
+      },
+      "description": {
+        "content": "Affordable pricing plans\nfor every budget",
+        "y_offset_cm": 3.5,
+        "font_size_pt": 12,
+        "font_color": "#FFFFFF"
+      }
+    },
+    {
+      "type": "card",
+      "position": {"left_cm": 3, "top_cm": 11.5},
+      "size": {"width_cm": 13, "height_cm": 5.5},
+      "style": {
+        "fill_color": "#E67E22",
+        "corner_radius": 0.3
+      },
+      "icon": {
+        "type": "circle",
+        "position_offset": {"x_cm": 5.5, "y_cm": 0.8},
+        "size_cm": 1.2,
+        "fill_color": "#FFFFFF"
+      },
+      "title": {
+        "content": "24/7 Support",
+        "y_offset_cm": 2.5,
+        "font_size_pt": 20,
+        "font_color": "#FFFFFF",
+        "bold": true
+      },
+      "description": {
+        "content": "Round-the-clock customer\nsupport available",
+        "y_offset_cm": 3.5,
+        "font_size_pt": 12,
+        "font_color": "#FFFFFF"
+      }
+    },
+    {
+      "type": "card",
+      "position": {"left_cm": 17.5, "top_cm": 11.5},
+      "size": {"width_cm": 13, "height_cm": 5.5},
+      "style": {
+        "fill_color": "#2ECC71",
+        "corner_radius": 0.3
+      },
+      "icon": {
+        "type": "circle",
+        "position_offset": {"x_cm": 5.5, "y_cm": 0.8},
+        "size_cm": 1.2,
+        "fill_color": "#FFFFFF"
+      },
+      "title": {
+        "content": "Secure & Reliable",
+        "y_offset_cm": 2.5,
+        "font_size_pt": 20,
+        "font_color": "#FFFFFF",
+        "bold": true
+      },
+      "description": {
+        "content": "Enterprise-grade security\nand 99.9% uptime",
+        "y_offset_cm": 3.5,
+        "font_size_pt": 12,
+        "font_color": "#FFFFFF"
+      }
+    },
+    {
+      "type": "text",
+      "content": "Contact us today to learn more",
+      "position": {"left_cm": 10, "top_cm": 17.5},
+      "size": {"width_cm": 14, "height_cm": 1},
+      "style": {
+        "font_size_pt": 14,
+        "font_color": "#7F8C8D",
+        "bold": false,
+        "alignment": "center"
+      }
+    }
+  ]
+}

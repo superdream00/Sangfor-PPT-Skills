@@ -1543,6 +1543,258 @@ def add_icon_row(slide, left_cm, top_cm, width_cm, items, icon_size_cm=1.5):
 
 
 # ============================================================
+# 画布渲染与手绘自定义图形组件
+# ============================================================
+def _fill_shape_text(shape, text_data, default_font_size=Pt(10), default_color='#0E0E0E', default_bold=False, alignment=PP_ALIGN.LEFT):
+    """向形状填充多行格式化文字"""
+    tf = shape.text_frame
+    tf.word_wrap = True
+    tf.margin_left = Cm(0.1)
+    tf.margin_right = Cm(0.1)
+    tf.margin_top = Cm(0.1)
+    tf.margin_bottom = Cm(0.1)
+    
+    if not text_data:
+        return
+        
+    if isinstance(text_data, str):
+        lines = text_data.split('\n')
+    else:
+        lines = text_data
+        
+    for i, line in enumerate(lines):
+        if i == 0:
+            p = tf.paragraphs[0]
+        else:
+            p = tf.add_paragraph()
+        p.alignment = alignment
+        set_paragraph_spacing(p, 1.2)
+        
+        if isinstance(line, str):
+            run = p.add_run()
+            run.text = line
+            set_font(run, font_name='微软雅黑', size=default_font_size, color=default_color, bold=default_bold)
+        elif isinstance(line, dict):
+            run = p.add_run()
+            run.text = line.get('text', '')
+            font_size = Pt(line.get('font_size_pt', line.get('size', 10)))
+            font_color = line.get('font_color', line.get('color', default_color))
+            bold = line.get('bold', default_bold)
+            set_font(run, font_name='微软雅黑', size=font_size, color=font_color, bold=bold)
+
+
+def add_connector_arrow(slide, fx, fy, tx, ty, color='#000000', width_pt=1.5):
+    """绘制带指向箭头的连接线"""
+    connector = slide.shapes.add_connector(1, Cm(fx), Cm(fy), Cm(tx), Cm(ty))
+    connector.line.color.rgb = hex_to_rgb(color)
+    connector.line.width = Pt(width_pt)
+    connector.line.end_arrowhead = 2  # MSO_ARROWHEAD_STYLE.TRIANGLE
+    return connector
+
+
+def add_connector_line(slide, fx, fy, tx, ty, color='#000000', width_pt=1.5):
+    """绘制直线连接线"""
+    connector = slide.shapes.add_connector(1, Cm(fx), Cm(fy), Cm(tx), Cm(ty))
+    connector.line.color.rgb = hex_to_rgb(color)
+    connector.line.width = Pt(width_pt)
+    return connector
+
+
+def _render_canvas_block(slide, block, left_cm, top_cm, width_cm, height_cm):
+    """根据自定义百分比或厘米坐标，手绘自定义形状、文本框、图标与连接线"""
+    elements = block.get('elements', [])
+    
+    def parse_coord(elem, key_pct, key_cm, scale, offset):
+        if key_pct in elem:
+            return offset + elem[key_pct] * scale / 100.0
+        elif key_cm in elem:
+            return offset + elem[key_cm]
+        elif key_pct.replace('_pct', '') in elem:
+            return offset + elem[key_pct.replace('_pct', '')]
+        return offset
+
+    for elem in elements:
+        elem_type = elem.get('shape_type', elem.get('type'))
+        if not elem_type:
+            continue
+            
+        x = parse_coord(elem, 'left_pct', 'left_cm', width_cm, left_cm)
+        y = parse_coord(elem, 'top_pct', 'top_cm', height_cm, top_cm)
+        w = parse_coord(elem, 'width_pct', 'width_cm', width_cm, 0.0)
+        h = parse_coord(elem, 'height_pct', 'height_cm', height_cm, 0.0)
+        
+        fill_color = elem.get('fill_color', '#FFFFFF')
+        border_color = elem.get('border_color', elem.get('line_color'))
+        border_width_pt = Pt(elem.get('border_width_pt', elem.get('line_width_pt', 1.0)))
+        
+        if elem_type in ('round_rect', 'rounded_rectangle'):
+            shape = add_styled_rectangle(
+                slide, x, y, w, h,
+                fill_color=fill_color,
+                line_color=border_color,
+                line_width=border_width_pt,
+                corner_radius=elem.get('corner_radius', 0.2)
+            )
+            if 'text' in elem:
+                text_align = elem.get('text_align', 'left')
+                align_map = {'left': PP_ALIGN.LEFT, 'center': PP_ALIGN.CENTER, 'right': PP_ALIGN.RIGHT}
+                _fill_shape_text(
+                    shape, elem['text'],
+                    default_font_size=Pt(elem.get('font_size_pt', 10)),
+                    default_color=elem.get('font_color', '#0E0E0E'),
+                    default_bold=elem.get('bold', False),
+                    alignment=align_map.get(text_align, PP_ALIGN.LEFT)
+                )
+                
+        elif elem_type in ('rect', 'rectangle'):
+            shape = add_styled_rectangle(
+                slide, x, y, w, h,
+                fill_color=fill_color,
+                line_color=border_color,
+                line_width=border_width_pt,
+                corner_radius=None
+            )
+            if 'text' in elem:
+                text_align = elem.get('text_align', 'left')
+                align_map = {'left': PP_ALIGN.LEFT, 'center': PP_ALIGN.CENTER, 'right': PP_ALIGN.RIGHT}
+                _fill_shape_text(
+                    shape, elem['text'],
+                    default_font_size=Pt(elem.get('font_size_pt', 10)),
+                    default_color=elem.get('font_color', '#0E0E0E'),
+                    default_bold=elem.get('bold', False),
+                    alignment=align_map.get(text_align, PP_ALIGN.LEFT)
+                )
+                
+        elif elem_type in ('circle', 'oval'):
+            shape = slide.shapes.add_shape(MSO_SHAPE.OVAL, Cm(x), Cm(y), Cm(w), Cm(h))
+            shape.fill.solid()
+            shape.fill.fore_color.rgb = hex_to_rgb(fill_color)
+            if border_color:
+                shape.line.fill.solid()
+                shape.line.fill.fore_color.rgb = hex_to_rgb(border_color)
+                shape.line.width = border_width_pt
+            else:
+                shape.line.fill.background()
+            if 'text' in elem:
+                text_align = elem.get('text_align', 'center')
+                align_map = {'left': PP_ALIGN.LEFT, 'center': PP_ALIGN.CENTER, 'right': PP_ALIGN.RIGHT}
+                _fill_shape_text(
+                    shape, elem['text'],
+                    default_font_size=Pt(elem.get('font_size_pt', 10)),
+                    default_color=elem.get('font_color', '#0E0E0E'),
+                    default_bold=elem.get('bold', False),
+                    alignment=align_map.get(text_align, PP_ALIGN.CENTER)
+                )
+                
+        elif elem_type == 'parallelogram':
+            shape = slide.shapes.add_shape(MSO_SHAPE.PARALLELOGRAM, Cm(x), Cm(y), Cm(w), Cm(h))
+            shape.fill.solid()
+            shape.fill.fore_color.rgb = hex_to_rgb(fill_color)
+            if border_color:
+                shape.line.fill.solid()
+                shape.line.fill.fore_color.rgb = hex_to_rgb(border_color)
+                shape.line.width = border_width_pt
+            else:
+                shape.line.fill.background()
+            if 'text' in elem:
+                text_align = elem.get('text_align', 'center')
+                align_map = {'left': PP_ALIGN.LEFT, 'center': PP_ALIGN.CENTER, 'right': PP_ALIGN.RIGHT}
+                _fill_shape_text(
+                    shape, elem['text'],
+                    default_font_size=Pt(elem.get('font_size_pt', 10)),
+                    default_color=elem.get('font_color', '#0E0E0E'),
+                    default_bold=elem.get('bold', False),
+                    alignment=align_map.get(text_align, PP_ALIGN.CENTER)
+                )
+                
+        elif elem_type in ('right_arrow', 'arrow'):
+            shape = slide.shapes.add_shape(MSO_SHAPE.RIGHT_ARROW, Cm(x), Cm(y), Cm(w), Cm(h))
+            shape.fill.solid()
+            shape.fill.fore_color.rgb = hex_to_rgb(fill_color)
+            if border_color:
+                shape.line.fill.solid()
+                shape.line.fill.fore_color.rgb = hex_to_rgb(border_color)
+                shape.line.width = border_width_pt
+            else:
+                shape.line.fill.background()
+            if 'text' in elem:
+                text_align = elem.get('text_align', 'center')
+                align_map = {'left': PP_ALIGN.LEFT, 'center': PP_ALIGN.CENTER, 'right': PP_ALIGN.RIGHT}
+                _fill_shape_text(
+                    shape, elem['text'],
+                    default_font_size=Pt(elem.get('font_size_pt', 10)),
+                    default_color=elem.get('font_color', '#0E0E0E'),
+                    default_bold=elem.get('bold', False),
+                    alignment=align_map.get(text_align, PP_ALIGN.CENTER)
+                )
+                
+        elif elem_type == 'connector_arrow':
+            from_pt = elem.get('from_point', [0.0, 0.0])
+            to_pt = elem.get('to_point', [0.0, 0.0])
+            fx = left_cm + from_pt[0] * width_cm / 100.0 if 'from_point' in elem and len(from_pt) >= 2 else left_cm
+            fy = top_cm + from_pt[1] * height_cm / 100.0 if 'from_point' in elem and len(from_pt) >= 2 else top_cm
+            tx = left_cm + to_pt[0] * width_cm / 100.0 if 'to_point' in elem and len(to_pt) >= 2 else left_cm
+            ty = top_cm + to_pt[1] * height_cm / 100.0 if 'to_point' in elem and len(to_pt) >= 2 else top_cm
+            
+            if 'from_point_cm' in elem:
+                from_pt_cm = elem['from_point_cm']
+                fx = left_cm + from_pt_cm[0]
+                fy = top_cm + from_pt_cm[1]
+            if 'to_point_cm' in elem:
+                to_pt_cm = elem['to_point_cm']
+                tx = left_cm + to_pt_cm[0]
+                ty = top_cm + to_pt_cm[1]
+                
+            color = elem.get('line_color', elem.get('color', '#000000'))
+            width_pt = elem.get('line_width_pt', elem.get('width_pt', 1.5))
+            add_connector_arrow(slide, fx, fy, tx, ty, color=color, width_pt=width_pt)
+            
+        elif elem_type in ('line', 'connector'):
+            from_pt = elem.get('from_point', [0.0, 0.0])
+            to_pt = elem.get('to_point', [0.0, 0.0])
+            fx = left_cm + from_pt[0] * width_cm / 100.0 if 'from_point' in elem and len(from_pt) >= 2 else left_cm
+            fy = top_cm + from_pt[1] * height_cm / 100.0 if 'from_point' in elem and len(from_pt) >= 2 else top_cm
+            tx = left_cm + to_pt[0] * width_cm / 100.0 if 'to_point' in elem and len(to_pt) >= 2 else left_cm
+            ty = top_cm + to_pt[1] * height_cm / 100.0 if 'to_point' in elem and len(to_pt) >= 2 else top_cm
+            
+            if 'from_point_cm' in elem:
+                from_pt_cm = elem['from_point_cm']
+                fx = left_cm + from_pt_cm[0]
+                fy = top_cm + from_pt_cm[1]
+            if 'to_point_cm' in elem:
+                to_pt_cm = elem['to_point_cm']
+                tx = left_cm + to_pt_cm[0]
+                ty = top_cm + to_pt_cm[1]
+                
+            color = elem.get('line_color', elem.get('color', '#000000'))
+            width_pt = elem.get('line_width_pt', elem.get('width_pt', 1.5))
+            add_connector_line(slide, fx, fy, tx, ty, color=color, width_pt=width_pt)
+            
+        elif elem_type in ('text', 'text_box'):
+            txBox = slide.shapes.add_textbox(Cm(x), Cm(y), Cm(w), Cm(h))
+            if 'text' in elem:
+                text_align = elem.get('text_align', 'left')
+                align_map = {'left': PP_ALIGN.LEFT, 'center': PP_ALIGN.CENTER, 'right': PP_ALIGN.RIGHT}
+                _fill_shape_text(
+                    txBox, elem['text'],
+                    default_font_size=Pt(elem.get('font_size_pt', 10)),
+                    default_color=elem.get('font_color', '#0E0E0E'),
+                    default_bold=elem.get('bold', False),
+                    alignment=align_map.get(text_align, PP_ALIGN.LEFT)
+                )
+                
+        elif elem_type == 'icon':
+            icon_name = elem.get('icon_name', elem.get('icon'))
+            color = elem.get('color', '#006CD9')
+            category = elem.get('category')
+            if icon_name:
+                try:
+                    add_icon(slide, icon_name, x, y, size_cm=w, color=color, category=category)
+                except Exception as e:
+                    print(f"  警告: 绘制画布图标 '{icon_name}' 时出错: {e}")
+
+
+# ============================================================
 # 页面布局构建器
 # ============================================================
 # 内容块视觉权重配置
@@ -1556,6 +1808,7 @@ BLOCK_WEIGHT_CONFIG = {
     'image':            {'min_height': 5.0, 'preferred_height': 10.0, 'weight': 2.5},
     'two_column':       {'min_height': 5.0, 'preferred_height': 10.0, 'weight': 2.5},
     'icon_row':         {'min_height': 2.5, 'preferred_height': 3.0, 'weight': 1.2},  # 新增
+    'canvas':           {'min_height': 5.0, 'preferred_height': 12.0, 'weight': 3.0},
 }
 
 
@@ -1760,4 +2013,7 @@ def _render_content_block(slide, block, left, top, width, height):
         highlight_col = block.get('highlight_col', None)
         if headers and rows:
             add_comparison_table(slide, headers, rows, left, top, width, highlight_col)
+
+    elif block_type == 'canvas':
+        _render_canvas_block(slide, block, left, top, width, height)
 
