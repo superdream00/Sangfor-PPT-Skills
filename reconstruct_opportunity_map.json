@@ -1717,12 +1717,12 @@
             {
               "shape_type": "line",
               "from_point_cm": [
-                8.7,
-                0.35
+                9.7,
+                16.65
               ],
               "to_point_cm": [
-                8.7,
-                1.45
+                9.7,
+                17.75
               ],
               "line_color": "#A0C0F0",
               "line_width_pt": 1.5

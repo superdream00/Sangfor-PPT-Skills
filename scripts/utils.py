@@ -967,14 +967,14 @@ def _create_pic_element_with_svg(slide, svg_rid, png_rid, left_emu, top_emu, cx_
     # <p:blipFill>（图像填充）
     blipFill = etree.SubElement(pic, f'{{{nsmap["p"]}}}blipFill')
     blip = etree.SubElement(blipFill, f'{{{nsmap["a"]}}}blip')
-    blip.set(f'{{{nsmap["r"]}}}embed', svg_rid)  # 主图：SVG
+    blip.set(f'{{{nsmap["r"]}}}embed', png_rid)  # 主图：PNG (PowerPoint 2013- 兼容首选)
 
     # PNG fallback（通过扩展指定）
     extLst = etree.SubElement(blip, f'{{{nsmap["a"]}}}extLst')
     ext = etree.SubElement(extLst, f'{{{nsmap["a"]}}}ext',
                            uri='{96DAC541-7B7A-43D3-8B79-37D633B846F1}')
     svgBlip = etree.SubElement(ext, f'{{{nsmap["asvg"]}}}svgBlip')
-    svgBlip.set(f'{{{nsmap["r"]}}}embed', png_rid)  # fallback: PNG
+    svgBlip.set(f'{{{nsmap["r"]}}}embed', svg_rid)  # 矢量扩展：SVG (PowerPoint 2016+ 原生矢量)
 
     # <a:stretch>（填充方式：拉伸）
     stretch = etree.SubElement(blipFill, f'{{{nsmap["a"]}}}stretch')
@@ -1603,14 +1603,16 @@ def add_connector_line(slide, fx, fy, tx, ty, color='#000000', width_pt=1.5):
 def _render_canvas_block(slide, block, left_cm, top_cm, width_cm, height_cm):
     """根据自定义百分比或厘米坐标，手绘自定义形状、文本框、图标与连接线"""
     elements = block.get('elements', [])
-    
+    is_absolute = block.get('absolute', True)  # 默认为 True，代表使用绝对页面厘米坐标
+
     def parse_coord(elem, key_pct, key_cm, scale, offset):
         if key_pct in elem:
             return offset + elem[key_pct] * scale / 100.0
         elif key_cm in elem:
-            return offset + elem[key_cm]
+            return elem[key_cm] if is_absolute else offset + elem[key_cm]
         elif key_pct.replace('_pct', '') in elem:
-            return offset + elem[key_pct.replace('_pct', '')]
+            val = elem[key_pct.replace('_pct', '')]
+            return val if is_absolute else offset + val
         return offset
 
     for elem in elements:
@@ -1738,12 +1740,12 @@ def _render_canvas_block(slide, block, left_cm, top_cm, width_cm, height_cm):
             
             if 'from_point_cm' in elem:
                 from_pt_cm = elem['from_point_cm']
-                fx = left_cm + from_pt_cm[0]
-                fy = top_cm + from_pt_cm[1]
+                fx = from_pt_cm[0] if is_absolute else left_cm + from_pt_cm[0]
+                fy = from_pt_cm[1] if is_absolute else top_cm + from_pt_cm[1]
             if 'to_point_cm' in elem:
                 to_pt_cm = elem['to_point_cm']
-                tx = left_cm + to_pt_cm[0]
-                ty = top_cm + to_pt_cm[1]
+                tx = to_pt_cm[0] if is_absolute else left_cm + to_pt_cm[0]
+                ty = to_pt_cm[1] if is_absolute else top_cm + to_pt_cm[1]
                 
             color = elem.get('line_color', elem.get('color', '#000000'))
             width_pt = elem.get('line_width_pt', elem.get('width_pt', 1.5))
@@ -1759,12 +1761,12 @@ def _render_canvas_block(slide, block, left_cm, top_cm, width_cm, height_cm):
             
             if 'from_point_cm' in elem:
                 from_pt_cm = elem['from_point_cm']
-                fx = left_cm + from_pt_cm[0]
-                fy = top_cm + from_pt_cm[1]
+                fx = from_pt_cm[0] if is_absolute else left_cm + from_pt_cm[0]
+                fy = from_pt_cm[1] if is_absolute else top_cm + from_pt_cm[1]
             if 'to_point_cm' in elem:
                 to_pt_cm = elem['to_point_cm']
-                tx = left_cm + to_pt_cm[0]
-                ty = top_cm + to_pt_cm[1]
+                tx = to_pt_cm[0] if is_absolute else left_cm + to_pt_cm[0]
+                ty = to_pt_cm[1] if is_absolute else top_cm + to_pt_cm[1]
                 
             color = elem.get('line_color', elem.get('color', '#000000'))
             width_pt = elem.get('line_width_pt', elem.get('width_pt', 1.5))
