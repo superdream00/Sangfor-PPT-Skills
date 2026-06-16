@@ -43,7 +43,7 @@ sangfor-ppt-generator/
 ├── download_icons.py         # 图标下载+改色工具（从 Tabler CDN）
 ├── convert_icons_to_png.py   # SVG→512px透明PNG预转换工具
 ├── templates/
-│   └── 【常用】深信服--PPT浅色模板2024.pptx   # 必需资源（Skill 依赖此模板运行）
+│   └── sangfor_template_2024.pptx   # 必需资源（Skill 依赖此模板运行）
 ├── test_plan.json            # 涵盖全部组件类型的示例生成计划
 ├── comp_analysis_plan.json   # 真实案例：桌面云竞争分析（6 页）
 ├── demo_icons.json           # 图标库演示：汽车行业云桌面方案（4 页）
@@ -59,13 +59,13 @@ sangfor-ppt-generator/
 ```bash
 # 1) 从 JSON 计划生成完整 PPT
 python scripts/generate_ppt.py \
-  --template "templates/【常用】深信服--PPT浅色模板2024.pptx" \
+  --template "templates/sangfor_template_2024.pptx" \
   --plan test_plan.json \
   --output "output/result.pptx"
 
 # 2) 单页快速克隆 + 文本替换
 python scripts/generate_ppt.py \
-  --template "templates/【常用】深信服--PPT浅色模板2024.pptx" \
+  --template "templates/sangfor_template_2024.pptx" \
   --clone 1 --replace "大标题大标题大标题大标题:实际标题" \
   --output "output/single.pptx"
 ```
@@ -82,7 +82,7 @@ python scripts/generate_ppt.py \
 2. **process_steps** — 流程步骤（带序号和箭头）：业务流程、操作步骤、实施路径
 3. **comparison_table** — 对比表（支持高亮列）：竞品对比、方案选型、功能对比
 
-演示：`python scripts/generate_ppt.py --template "templates/【常用】深信服--PPT浅色模板2024.pptx" --plan test_scene_components.json --output "output/test_scene_components.pptx"`
+演示：`python scripts/generate_ppt.py --template "templates/sangfor_template_2024.pptx" --plan test_scene_components.json --output "output/test_scene_components.pptx"`
 
 ---
 
@@ -100,7 +100,7 @@ python scripts/generate_ppt.py \
 - `card_grid` 卡片加 `"icon": "lock"` → 图标显示在标题上方
 - 新增 `icon_row` 组件 → 水平排列"图标+标签"展示产品特性
 
-演示：`python scripts/generate_ppt.py --template "templates/【常用】深信服--PPT浅色模板2024.pptx" --plan demo_icons.json --output "output/demo_icons.pptx"`
+演示：`python scripts/generate_ppt.py --template "templates/sangfor_template_2024.pptx" --plan demo_icons.json --output "output/demo_icons.pptx"`
 
 **维护与扩展图标**：若需增加图标，只需将 `.svg` 格式的图标放置到 `icons/` 相应的分类文件夹中，生成器在运行时会自动读取、解析其路径并实时绘制。
 

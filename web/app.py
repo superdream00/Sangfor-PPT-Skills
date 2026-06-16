@@ -21,7 +21,7 @@ app = Flask(__name__,
             static_folder=os.path.join(web_dir, 'static'))
 
 # 默认使用的 PPT 模板文件路径
-DEFAULT_TEMPLATE = os.path.join(project_root, 'templates', '【常用】深信服--PPT浅色模板2024.pptx')
+DEFAULT_TEMPLATE = os.path.join(project_root, 'templates', 'sangfor_template_2024.pptx')
 
 @app.route('/')
 def index():

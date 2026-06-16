@@ -72,7 +72,7 @@
 ```bash
 cd /path/to/sangfor-ppt-generator
 python scripts/generate_ppt.py \
-  --template "templates/【常用】深信服--PPT浅色模板2024.pptx" \
+  --template "templates/sangfor_template_2024.pptx" \
   --plan user_plan.json \
   --output "output/用户需求.pptx"
 ```
@@ -188,7 +188,7 @@ python scripts/generate_ppt.py \
 - **Python**: 3.8+
 - **依赖**: `python-pptx>=0.6.21`, `lxml>=4.9.0`（见 `requirements.txt`）
 - **字体**: 微软雅黑（中文）、Arial（英文）— Windows 默认自带
-- **模板**: `templates/【常用】深信服--PPT浅色模板2024.pptx`（13MB，已在仓库）
+- **模板**: `templates/sangfor_template_2024.pptx`（13MB，已在仓库）
 - **图标**: `icons/` 目录下 172 个预转换 PNG（无需运行时依赖 cairosvg/svglib）
 
 ---

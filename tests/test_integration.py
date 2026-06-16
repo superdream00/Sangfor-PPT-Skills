@@ -13,7 +13,7 @@ def test_integration_generate():
     project_root = os.path.dirname(test_dir)
     workspace_root = os.path.dirname(os.path.dirname(project_root))
     
-    template_path = os.path.join(workspace_root, "【常用】深信服--PPT浅色模板2024.pptx")
+    template_path = os.path.join(workspace_root, "sangfor_template_2024.pptx")
     
     # 若 .pptx 不存在，寻找 .potx 模板
     if not os.path.exists(template_path):

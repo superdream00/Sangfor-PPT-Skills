@@ -29,7 +29,7 @@
 | **[scripts/utils.py](scripts/utils.py)** | 源码 | **工具函数与底层组件**。提供品牌色及字号常量、支持中英文双重字体的 `set_font`、支持透明度的形状绘制、智能权重布局 (`build_standard_page`)、表格生成以及原生图表样式美化。 |
 | **[references/page_catalog.json](references/page_catalog.json)** | 配置 | 模板中 15 类关键页面（如封面、目录、卡片、数字等）对应的模板索引与可替换文本占位符正则映射。 |
 | **[references/text_replacement_rules.json](references/text_replacement_rules.json)** | 配置 | 常见占位文字的映射规则。 |
-| **templates/【常用】深信服--PPT浅色模板2024.pptx** | 资源 | 13MB 官方主模板文件。 |
+| **templates/sangfor_template_2024.pptx** | 资源 | 13MB 官方主模板文件。 |
 | **[test_plan.json](test_plan.json)** | 配置 | 涵盖全部组件类型的多页测试生成计划。 |
 | **[comp_analysis_plan.json](comp_analysis_plan.json)** | 配置 | 对桌面云竞争分析测试用的真实生成计划（6页）。 |
 | **[.gitignore](.gitignore)** | 配置 | Git 忽略规则。 |

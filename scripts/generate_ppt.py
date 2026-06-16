@@ -587,7 +587,7 @@ def generate_ppt(template_path, plan_data, output_path):
     # === 新增：输入验证 ===
     is_valid, errors = validate_plan(plan_data, original_slide_count)
     if not is_valid:
-        print("⚠️ 生成计划存在问题:")
+        print("[!] 生成计划存在问题:")
         for err in errors:
             print(f"  - {err}")
         print("继续执行，但某些页面可能出错...")
