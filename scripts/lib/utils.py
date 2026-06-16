@@ -17,10 +17,10 @@ def hex_to_rgb(hex_color: str) -> RGBColor:
     return RGBColor(r, g, b)
 
 def set_font(run, font_name='微软雅黑', size=Pt(12), color='#0E0E0E', 
-             bold=False, italic=False):
-    """设置 run 的完整字体属性（包括中文和英文字体）"""
+             bold=False, italic=False, font_name_english='Arial'):
+    """设置 run 的完整字体属性（包括中文和英文字体分流，默认中文微软雅黑，英文及数字Arial）"""
     font = run.font
-    font.name = font_name
+    font.name = font_name_english
     font.size = size
     font.color.rgb = hex_to_rgb(color)
     font.bold = bold
@@ -33,11 +33,11 @@ def set_font(run, font_name='微软雅黑', size=Pt(12), color='#0E0E0E',
         ea = etree.SubElement(rpr, '{http://schemas.openxmlformats.org/drawingml/2006/main}ea')
     ea.set('typeface', font_name)
     
-    # 同时设置拉丁字体
+    # 设置拉丁英文字体 <a:latin typeface="Arial"/>
     latin = rpr.find('{http://schemas.openxmlformats.org/drawingml/2006/main}latin')
     if latin is None:
         latin = etree.SubElement(rpr, '{http://schemas.openxmlformats.org/drawingml/2006/main}latin')
-    latin.set('typeface', font_name)
+    latin.set('typeface', font_name_english)
 
 def set_paragraph_spacing(paragraph, line_spacing=1.5, space_before=Pt(0), space_after=Pt(0)):
     """设置段落行间距与段前后间距"""

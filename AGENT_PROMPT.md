@@ -86,7 +86,7 @@ python scripts/generate_ppt.py \
 
 ---
 
-## 9 种内容组件（content_blocks）
+## 10 种内容组件（content_blocks）
 
 | 组件类型 | 用途 | 必需字段 |
 |----------|------|----------|
@@ -99,6 +99,8 @@ python scripts/generate_ppt.py \
 | `image` | 图片插入 | `path`, `position` |
 | `two_column` | 两栏布局 | `left: {...}`, `right: {...}` |
 | `icon_row` | 图标+标签水平排列 | `items: [{"icon", "label"}]` |
+| `grid_matrix` | 矩阵网格卡片 (如3x3) | `rows`, `columns`, `items: [{"header", "body", "icon"(可选), "bg_color"(可选)}]` |
+| `timeline` | 挂载小卡片时间轴 | `items: [{"date", "title", "description", "card_bg"(可选)}]` |
 
 ---
 

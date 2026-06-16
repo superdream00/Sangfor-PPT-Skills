@@ -1,0 +1,56 @@
+{
+  "title": "新版生成与重建功能测试",
+  "slides": [
+    {
+      "action": "clone",
+      "source_index": 1,
+      "replacements": {
+        "大标题大标题大标题大标题": "深信服优化版组件测试 PPT",
+        "小标题小标题小标题小标题小标题": "测试矩阵卡片、卡片式时间轴与中英文 Arial 分流",
+        "小标题小标题小标题": "2026年6月"
+      }
+    },
+    {
+      "action": "blank_with_content",
+      "title": "新组件测试：3x3 矩阵网格 (grid_matrix)",
+      "content_blocks": [
+        {
+          "type": "grid_matrix",
+          "rows": 3,
+          "columns": 3,
+          "items": [
+            {"header": "核心代码", "body": "Embedded logic 123", "bg_color": "#CDD1F6"},
+            {"header": "3D CAD图纸", "body": "CAD parameters 456", "bg_color": "#CDD1F6"},
+            {"header": "EDA 仿真环境", "body": "IC environment 789", "bg_color": "#CDD1F6"},
+            {"header": "跨域外协协作", "body": "Data flow boundary control", "bg_color": "#FFD6BF"},
+            {"header": "AI智能安全助手", "body": "Zero Trust agent controls", "bg_color": "#6159E5"},
+            {"header": "高亮警告展示", "body": "High value metrics warning", "bg_color": "#FFC000"},
+            {"header": "研发PC保护", "body": "IP Core protection"},
+            {"header": "普通办公区", "body": "Office VM isolation"},
+            {"header": "互联网上网区", "body": "Web SBC isolation"}
+          ]
+        }
+      ]
+    },
+    {
+      "action": "blank_with_content",
+      "title": "新组件测试：卡片式时间轴 (timeline)",
+      "content_blocks": [
+        {
+          "type": "timeline",
+          "orientation": "horizontal",
+          "items": [
+            {"date": "2017", "title": "网络安全法", "description": "基本法律框架确立", "card_bg": "#CDD1F6"},
+            {"date": "2019", "title": "等保 2.0", "description": "等级保护升级", "card_bg": "#CDD1F6"},
+            {"date": "2021", "title": "数据安全法", "description": "数据分类分级制度", "card_bg": "#CDD1F6"},
+            {"date": "2024+", "title": "高水平监管", "description": "常态化数据出境评估", "card_bg": "#FFD6BF"}
+          ]
+        }
+      ]
+    },
+    {
+      "action": "clone",
+      "source_index": 48
+    }
+  ]
+}

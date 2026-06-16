@@ -242,7 +242,14 @@ def _draw_text_on_shape(slide, elem, left, top, width, height, default_align=PP_
     align = align_map.get(text_info.get('alignment', text_info.get('align')), default_align)
     
     # 覆盖一个透明的文本框写入文字，以完美保持字号与换行排版
-    txBox = slide.shapes.add_textbox(Cm(left + 0.1), Cm(top + 0.1), Cm(width - 0.2), Cm(height - 0.2))
+    txBox = slide.shapes.add_textbox(Cm(left + 0.05), Cm(top + 0.05), Cm(width - 0.1), Cm(height - 0.1))
+    tf = txBox.text_frame
+    tf.word_wrap = True
+    tf.margin_left = Cm(0.02)
+    tf.margin_right = Cm(0.02)
+    tf.margin_top = Cm(0.02)
+    tf.margin_bottom = Cm(0.02)
+    
     content = text_info.get('content', '')
     
     if isinstance(content, list) or '\n' in content:
@@ -255,7 +262,7 @@ def _draw_text_on_shape(slide, elem, left, top, width, height, default_align=PP_
             alignment=align
         )
     else:
-        p = txBox.text_frame.paragraphs[0]
+        p = tf.paragraphs[0]
         p.alignment = align
         set_paragraph_spacing(p, 1.2)
         run = p.add_run()

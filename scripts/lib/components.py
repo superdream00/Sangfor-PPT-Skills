@@ -14,6 +14,21 @@ from scripts.lib.shapes import add_textbox, add_multiline_textbox, add_styled_re
 from scripts.lib.icons import add_icon
 from scripts.lib.constants import SangforColors, SangforFonts
 
+def _apply_dash_style(shape_or_line, dash_style_str):
+    if not dash_style_str:
+        return
+    try:
+        from pptx.enum.dml import MSO_LINE_DASH_STYLE
+        line_obj = shape_or_line.line if hasattr(shape_or_line, 'line') else shape_or_line
+        if dash_style_str == 'dashed':
+            line_obj.dash_style = MSO_LINE_DASH_STYLE.DASH
+        elif dash_style_str == 'dotted':
+            line_obj.dash_style = MSO_LINE_DASH_STYLE.ROUND_DOT
+        elif dash_style_str == 'solid':
+            line_obj.dash_style = MSO_LINE_DASH_STYLE.SOLID
+    except Exception as e:
+        print(f"  警告: 设置虚线样式失败: {e}")
+
 def add_title_area(slide, title_text):
     """添加标准标题区域（左上角蓝色标题）"""
     title_box = add_textbox(
@@ -365,11 +380,11 @@ def add_timeline(slide, items, left_cm=2, top_cm=6, width_cm=20, orientation='ho
 
 def _add_timeline_horizontal(slide, items, left_cm, top_cm, width_cm,
                               primary_color, text_color, gray_color):
-    """水平时间轴实现"""
+    """水平时间轴实现（支持挂载详情小卡片）"""
     num_items = len(items)
     spacing = width_cm / (num_items - 1) if num_items > 1 else 0
 
-    line_top_cm = top_cm + 1.5
+    line_top_cm = top_cm + 1.2
     line = slide.shapes.add_connector(
         1,
         Cm(left_cm), Cm(line_top_cm),
@@ -392,25 +407,40 @@ def _add_timeline_horizontal(slide, items, left_cm, top_cm, width_cm,
         node.line.color.rgb = hex_to_rgb(SangforColors.WHITE)
         node.line.width = Pt(2)
 
+        # 1. 渲染上方日期
         date_box = slide.shapes.add_textbox(
-            Cm(x_cm - 2), Cm(line_top_cm - 1.2),
+            Cm(x_cm - 2), Cm(line_top_cm - 1.0),
             Cm(4), Cm(0.6)
         )
         date_frame = date_box.text_frame
         date_frame.text = item.get('date', '')
         date_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
         date_frame.paragraphs[0].font.size = Pt(14)
+        date_frame.paragraphs[0].font.bold = True
         date_frame.paragraphs[0].font.color.rgb = text_color
         date_frame.paragraphs[0].font.name = SangforFonts.CHINESE
 
+        # 2. 渲染下方详情（如果指定 card_bg 则绘制卡片底框）
+        card_bg = item.get('card_bg')
+        card_top = line_top_cm + 0.3
+        card_width = 4.2
+        card_height = 2.4
+        
+        if card_bg:
+            card_shape = add_styled_rectangle(
+                slide, x_cm - card_width/2, card_top, card_width, card_height,
+                fill_color=card_bg, corner_radius=0.15
+            )
+            card_shape.line.fill.background()
+            
         title_box = slide.shapes.add_textbox(
-            Cm(x_cm - 2), Cm(line_top_cm + 0.5),
-            Cm(4), Cm(0.8)
+            Cm(x_cm - card_width/2 + 0.1), Cm(card_top + 0.15),
+            Cm(card_width - 0.2), Cm(0.7)
         )
         title_frame = title_box.text_frame
         title_frame.text = item.get('title', '')
         title_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-        title_frame.paragraphs[0].font.size = Pt(12)
+        title_frame.paragraphs[0].font.size = Pt(11)
         title_frame.paragraphs[0].font.bold = True
         title_frame.paragraphs[0].font.color.rgb = primary_color
         title_frame.paragraphs[0].font.name = SangforFonts.CHINESE
@@ -418,20 +448,20 @@ def _add_timeline_horizontal(slide, items, left_cm, top_cm, width_cm,
 
         if item.get('description'):
             desc_box = slide.shapes.add_textbox(
-                Cm(x_cm - 2), Cm(line_top_cm + 1.4),
-                Cm(4), Cm(1.5)
+                Cm(x_cm - card_width/2 + 0.1), Cm(card_top + 0.8),
+                Cm(card_width - 0.2), Cm(1.4)
             )
             desc_frame = desc_box.text_frame
             desc_frame.text = item.get('description', '')
             desc_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-            desc_frame.paragraphs[0].font.size = Pt(10)
+            desc_frame.paragraphs[0].font.size = Pt(9)
             desc_frame.paragraphs[0].font.color.rgb = gray_color
             desc_frame.paragraphs[0].font.name = SangforFonts.CHINESE
             desc_frame.word_wrap = True
 
 def _add_timeline_vertical(slide, items, left_cm, top_cm, height_cm,
-                            primary_color, text_color, gray_color):
-    """垂直时间轴实现"""
+                             primary_color, text_color, gray_color):
+    """垂直时间轴实现（支持挂载卡片）"""
     num_items = len(items)
     spacing = height_cm / (num_items - 1) if num_items > 1 else 0
 
@@ -458,6 +488,7 @@ def _add_timeline_vertical(slide, items, left_cm, top_cm, height_cm,
         node.line.color.rgb = hex_to_rgb(SangforColors.WHITE)
         node.line.width = Pt(2)
 
+        # 1. 渲染左侧日期
         date_box = slide.shapes.add_textbox(
             Cm(left_cm), Cm(y_cm - 0.3),
             Cm(1.8), Cm(0.6)
@@ -466,28 +497,43 @@ def _add_timeline_vertical(slide, items, left_cm, top_cm, height_cm,
         date_frame.text = item.get('date', '')
         date_frame.paragraphs[0].alignment = PP_ALIGN.RIGHT
         date_frame.paragraphs[0].font.size = Pt(12)
+        date_frame.paragraphs[0].font.bold = True
         date_frame.paragraphs[0].font.color.rgb = text_color
         date_frame.paragraphs[0].font.name = SangforFonts.CHINESE
 
+        # 2. 渲染右侧内容
+        card_bg = item.get('card_bg')
+        card_left = line_left_cm + 0.4
+        card_top = y_cm - 0.4
+        card_width = 12.0
+        card_height = 1.2
+        
+        if card_bg:
+            card_shape = add_styled_rectangle(
+                slide, card_left, card_top, card_width, card_height,
+                fill_color=card_bg, corner_radius=0.1
+            )
+            card_shape.line.fill.background()
+            
         title_box = slide.shapes.add_textbox(
-            Cm(line_left_cm + 0.5), Cm(y_cm - 0.3),
-            Cm(12), Cm(0.6)
+            Cm(card_left + 0.2), Cm(card_top + 0.1),
+            Cm(card_width - 0.4), Cm(0.5)
         )
         title_frame = title_box.text_frame
         title_frame.text = item.get('title', '')
-        title_frame.paragraphs[0].font.size = Pt(12)
+        title_frame.paragraphs[0].font.size = Pt(11)
         title_frame.paragraphs[0].font.bold = True
         title_frame.paragraphs[0].font.color.rgb = primary_color
         title_frame.paragraphs[0].font.name = SangforFonts.CHINESE
 
         if item.get('description'):
             desc_box = slide.shapes.add_textbox(
-                Cm(line_left_cm + 0.5), Cm(y_cm + 0.4),
-                Cm(12), Cm(0.8)
+                Cm(card_left + 0.2), Cm(card_top + 0.5),
+                Cm(card_width - 0.4), Cm(0.6)
             )
             desc_frame = desc_box.text_frame
             desc_frame.text = item.get('description', '')
-            desc_frame.paragraphs[0].font.size = Pt(10)
+            desc_frame.paragraphs[0].font.size = Pt(9)
             desc_frame.paragraphs[0].font.color.rgb = gray_color
             desc_frame.paragraphs[0].font.name = SangforFonts.CHINESE
             desc_frame.word_wrap = True
@@ -553,7 +599,7 @@ def add_icon_row(slide, left_cm, top_cm, width_cm, items, icon_size_cm=1.5):
     return shapes
 
 def _render_canvas_block(slide, block, left_cm, top_cm, width_cm, height_cm):
-    """根据坐标手绘自定义形状、文本框、图标与连接线（画布渲染引擎）"""
+    """根据坐标手绘自定义形状、文本框、图标与连接线（画布渲染引擎，已支持虚实线样式）"""
     elements = block.get('elements', [])
     is_absolute = block.get('absolute', True)
 
@@ -580,6 +626,7 @@ def _render_canvas_block(slide, block, left_cm, top_cm, width_cm, height_cm):
         fill_color = elem.get('fill_color', '#FFFFFF')
         border_color = elem.get('border_color', elem.get('line_color'))
         border_width_pt = Pt(elem.get('border_width_pt', elem.get('line_width_pt', 1.0)))
+        border_style = elem.get('border_style', elem.get('line_style'))
         
         if elem_type in ('round_rect', 'rounded_rectangle'):
             shape = add_styled_rectangle(
@@ -589,6 +636,8 @@ def _render_canvas_block(slide, block, left_cm, top_cm, width_cm, height_cm):
                 line_width=border_width_pt,
                 corner_radius=elem.get('corner_radius', 0.2)
             )
+            if border_color and border_style:
+                _apply_dash_style(shape, border_style)
             if 'text' in elem:
                 text_align = elem.get('text_align', 'left')
                 align_map = {'left': PP_ALIGN.LEFT, 'center': PP_ALIGN.CENTER, 'right': PP_ALIGN.RIGHT}
@@ -608,6 +657,8 @@ def _render_canvas_block(slide, block, left_cm, top_cm, width_cm, height_cm):
                 line_width=border_width_pt,
                 corner_radius=None
             )
+            if border_color and border_style:
+                _apply_dash_style(shape, border_style)
             if 'text' in elem:
                 text_align = elem.get('text_align', 'left')
                 align_map = {'left': PP_ALIGN.LEFT, 'center': PP_ALIGN.CENTER, 'right': PP_ALIGN.RIGHT}
@@ -627,6 +678,8 @@ def _render_canvas_block(slide, block, left_cm, top_cm, width_cm, height_cm):
                 shape.line.fill.solid()
                 shape.line.fill.fore_color.rgb = hex_to_rgb(border_color)
                 shape.line.width = border_width_pt
+                if border_style:
+                    _apply_dash_style(shape, border_style)
             else:
                 shape.line.fill.background()
             if 'text' in elem:
@@ -648,6 +701,8 @@ def _render_canvas_block(slide, block, left_cm, top_cm, width_cm, height_cm):
                 shape.line.fill.solid()
                 shape.line.fill.fore_color.rgb = hex_to_rgb(border_color)
                 shape.line.width = border_width_pt
+                if border_style:
+                    _apply_dash_style(shape, border_style)
             else:
                 shape.line.fill.background()
             if 'text' in elem:
@@ -669,6 +724,8 @@ def _render_canvas_block(slide, block, left_cm, top_cm, width_cm, height_cm):
                 shape.line.fill.solid()
                 shape.line.fill.fore_color.rgb = hex_to_rgb(border_color)
                 shape.line.width = border_width_pt
+                if border_style:
+                    _apply_dash_style(shape, border_style)
             else:
                 shape.line.fill.background()
             if 'text' in elem:
@@ -701,7 +758,9 @@ def _render_canvas_block(slide, block, left_cm, top_cm, width_cm, height_cm):
                 
             color = elem.get('line_color', elem.get('color', '#000000'))
             width_pt = elem.get('line_width_pt', elem.get('width_pt', 1.5))
-            add_connector_arrow(slide, fx, fy, tx, ty, color=color, width_pt=width_pt)
+            connector = add_connector_arrow(slide, fx, fy, tx, ty, color=color, width_pt=width_pt)
+            if border_style:
+                _apply_dash_style(connector, border_style)
             
         elif elem_type in ('line', 'connector'):
             from_pt = elem.get('from_point', [0.0, 0.0])
@@ -722,7 +781,9 @@ def _render_canvas_block(slide, block, left_cm, top_cm, width_cm, height_cm):
                 
             color = elem.get('line_color', elem.get('color', '#000000'))
             width_pt = elem.get('line_width_pt', elem.get('width_pt', 1.5))
-            add_connector_line(slide, fx, fy, tx, ty, color=color, width_pt=width_pt)
+            connector = add_connector_line(slide, fx, fy, tx, ty, color=color, width_pt=width_pt)
+            if border_style:
+                _apply_dash_style(connector, border_style)
             
         elif elem_type in ('text', 'text_box'):
             txBox = slide.shapes.add_textbox(Cm(x), Cm(y), Cm(w), Cm(h))
@@ -746,3 +807,45 @@ def _render_canvas_block(slide, block, left_cm, top_cm, width_cm, height_cm):
                     add_icon(slide, icon_name, x, y, size_cm=w, color=color, category=category)
                 except Exception as e:
                     print(f"  警告: 绘制画布图标 '{icon_name}' 时出错: {e}")
+
+def add_grid_matrix(slide, left_cm, top_cm, width_cm, height_cm, rows, cols, items,
+                    spacing_x_cm=0.5, spacing_y_cm=0.5,
+                    header_color=None, bg_color=None, bg_alpha=62):
+    """添加多行多列的矩阵卡片网格"""
+    shapes = []
+    if not items:
+        return shapes
+        
+    card_width = (width_cm - (cols - 1) * spacing_x_cm) / cols
+    card_height = (height_cm - (rows - 1) * spacing_y_cm) / rows
+    
+    card_colors = [SangforColors.BLUE_PRIMARY, SangforColors.BLUE_HIGHLIGHT,
+                  SangforColors.BLUE_LIGHT2]
+    
+    for idx, item in enumerate(items):
+        if idx >= rows * cols:
+            break
+            
+        r = idx // cols
+        c = idx % cols
+        
+        x = left_cm + c * (card_width + spacing_x_cm)
+        y = top_cm + r * (card_height + spacing_y_cm)
+        
+        item_bg_color = item.get('bg_color', bg_color)
+        item_header_color = item.get('header_color', header_color)
+        if item_header_color is None:
+            item_header_color = card_colors[c % len(card_colors)]
+            
+        card_shapes = add_card(
+            slide, x, y, card_width, card_height,
+            header_text=item.get('header', ''),
+            body_text=item.get('body', ''),
+            header_color=item_header_color,
+            bg_color=item_bg_color,
+            bg_alpha=bg_alpha,
+            icon=item.get('icon')
+        )
+        shapes.extend(card_shapes)
+        
+    return shapes

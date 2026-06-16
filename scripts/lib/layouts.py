@@ -12,7 +12,8 @@ from scripts.lib.charts import add_chart
 from scripts.lib.components import (
     add_title_area, add_bullet_list, add_card, add_table,
     add_number_highlight, add_icon_row, add_timeline,
-    add_process_steps, add_comparison_table, _render_canvas_block
+    add_process_steps, add_comparison_table, _render_canvas_block,
+    add_grid_matrix
 )
 
 def build_standard_page(slide, title, content_blocks):
@@ -206,6 +207,13 @@ def _render_content_block(slide, block, left, top, width, height):
         highlight_col = block.get('highlight_col', None)
         if headers and rows:
             add_comparison_table(slide, headers, rows, left, top, width, highlight_col)
+
+    elif block_type == 'grid_matrix':
+        rows_num = block.get('rows', 1)
+        cols_num = block.get('columns', 1)
+        items = block.get('items', [])
+        if items:
+            add_grid_matrix(slide, left, top, width, height, rows_num, cols_num, items)
 
     elif block_type == 'canvas':
         _render_canvas_block(slide, block, left, top, width, height)

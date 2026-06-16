@@ -15,23 +15,28 @@ NSMAP = {
 SKIP_PAGES = [0, 4, 5]
 
 class SangforColors:
-    # 主色系 (蓝色)
+    # 主色系 (蓝色与背景衬底)
     BLUE_PRIMARY = '#006CD9'       # 深信服蓝
     BLUE_DARK = '#003592'          # 深蓝
     BLUE_DEEP = '#00479D'          # 深蓝辅助
+    BLUE_NAVY = '#02288C'          # 深藏青蓝
     BLUE_LIGHT1 = '#0587F5'        # 品牌浅蓝1
     BLUE_LIGHT2 = '#3BA5FF'        # 品牌浅蓝2
     BLUE_LIGHT3 = '#51C0F9'        # 品牌浅蓝3
     BLUE_HIGHLIGHT = '#0185FF'     # 高亮蓝
     BLUE_SOFT = '#65B5FF'          # 柔和蓝
     BLUE_PALE = '#80D8FD'          # 淡蓝
+    BLUE_BG_SOFT = '#CDD1F6'       # 柔和蓝背景（淡青蓝衬底）
     
-    # 强调色 (绿色)
+    # 强调与警示色 (绿、橙、紫、黄)
     GREEN_PRIMARY = '#53C800'      # 深信服绿
     GREEN_VARIANT1 = '#6FBA2C'     # 绿色变体1
     GREEN_VARIANT2 = '#6CCD24'     # 绿色变体2
     GREEN_LIGHT = '#9BF48F'        # 浅绿
     GREEN_SOFT = '#CCE28E'         # 柔和绿
+    ORANGE_LIGHT = '#FFD6BF'       # 珊瑚粉/浅橙
+    PURPLE_ACCENT = '#6159E5'      # 智能紫
+    YELLOW_HIGHLIGHT = '#FFC000'   # 警告黄/高亮金
     
     # 中性色
     TEXT_PRIMARY = '#0E0E0E'       # 正文主色
@@ -90,4 +95,6 @@ BLOCK_WEIGHT_CONFIG = {
     'two_column':       {'min_height': 5.0, 'preferred_height': 10.0, 'weight': 2.5},
     'icon_row':         {'min_height': 2.5, 'preferred_height': 3.0, 'weight': 1.2},
     'canvas':           {'min_height': 5.0, 'preferred_height': 12.0, 'weight': 3.0},
+    'grid_matrix':      {'min_height': 5.0, 'preferred_height': 8.0, 'weight': 2.5},
+    'timeline':         {'min_height': 4.0, 'preferred_height': 6.0, 'weight': 2.0},
 }
