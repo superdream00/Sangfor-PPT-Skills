@@ -39,7 +39,7 @@
       ]
     },
     "section_divider": {
-      "description": "章节分隔页 - 编号+标题+底部渐变条",
+      "description": "章节分隔页 - 编号+标题+底部纯色条",
       "template_indices": [6, 7, 8, 9],
       "default_index": 6,
       "replaceable_elements": [

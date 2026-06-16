@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深信服 PPT 智能生成与在线服务平台</title>
+    <!-- 引入 Google Fonts 提升排版现代感 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #006CD9;
+            --primary-glow: rgba(0, 108, 217, 0.3);
+            --accent: #53C800;
+            --accent-glow: rgba(83, 200, 0, 0.2);
+            --bg-dark: #090e1a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f3f4f6;
+            --text-sub: #9ca3af;
+            --sidebar-width: 320px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 108, 217, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(83, 200, 0, 0.1) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        /* 顶部导航 */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+            padding: 0 40px;
+            border-bottom: 1px solid var(--card-border);
+            backdrop-filter: blur(12px);
+            background-color: rgba(9, 14, 26, 0.8);
+            z-index: 10;
+            position: relative;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-dot {
+            width: 14px;
+            height: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(to right, #ffffff, #8cd3ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-tag {
+            font-size: 11px;
+            background-color: rgba(83, 200, 0, 0.2);
+            color: var(--accent);
+            padding: 2px 8px;
+            border-radius: 20px;
+            border: 1px solid rgba(83, 200, 0, 0.3);
+            font-weight: 600;
+        }
+
+        /* 整体布局 */
+        .container {
+            display: flex;
+            height: calc(100vh - 70px);
+        }
+
+        /* 左侧侧边栏 (导航/模式切换) */
+        .sidebar {
+            width: var(--sidebar-width);
+            border-right: 1px solid var(--card-border);
+            background-color: rgba(9, 14, 26, 0.4);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 24px;
+            gap: 24px;
+            overflow-y: auto;
+        }
+
+        .sidebar-section-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-sub);
+            font-weight: 600;
+        }
+
+        .mode-btn {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background-color: transparent;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            color: var(--text-main);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .mode-btn:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-color: rgba(0, 108, 217, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, rgba(0, 108, 217, 0.15), rgba(0, 108, 217, 0.05));
+            border-color: var(--primary);
+            box-shadow: 0 4px 20px var(--primary-glow);
+        }
+
+        .mode-btn-desc {
+            font-size: 11px;
+            color: var(--text-sub);
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        /* API 配置区域 */
+        .api-config {
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.02);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+
+        .form-group input {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: white;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+        }
+
+        /* 主工作区 */
+        .workspace {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            overflow-y: auto;
+        }
+
+        .workspace-title-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .workspace-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .workspace-desc {
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-top: 6px;
+        }
+
+        /* 内容面板容器 */
+        .panel {
+            display: none;
+            flex-direction: column;
+            gap: 24px;
+            height: 100%;
+        }
+
+        .panel.active {
+            display: flex;
+        }
+
+        /* AI 对话生成模式 */
+        .ai-input-box {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        textarea.ai-textarea {
+            width: 100%;
+            height: 160px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            color: white;
+            font-size: 15px;
+            line-height: 1.6;
+            outline: none;
+            resize: none;
+            transition: all 0.3s;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        textarea.ai-textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow), inset 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 生成按钮 */
+        .btn-generate {
+            align-self: flex-end;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary), #0056b3);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 108, 217, 0.5);
+            background: linear-gradient(135deg, #0a84ff, var(--primary));
+        }
+
+        .btn-generate:active {
+            transform: translateY(0);
+        }
+
+        .btn-generate:disabled {
+            background: #2b3548;
+            color: #4b5563;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* JSON 生成模式 */
+        .json-workspace {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 24px;
+            height: 480px;
+        }
+
+        .json-editor-container {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.02);
+            padding: 10px 20px;
+            border-bottom: 1px solid var(--card-border);
+            font-size: 13px;
+            color: var(--text-sub);
+        }
+
+        textarea.json-textarea {
+            width: 100%;
+            flex: 1;
+            background-color: transparent;
+            border: none;
+            padding: 20px;
+            color: #38bdf8; /* 漂亮的天蓝色表示代码 */
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            outline: none;
+            resize: none;
+        }
+
+        /* 预设 Demo 选择 */
+        .demo-presets {
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.02);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .preset-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-sub);
+            letter-spacing: 0.5px;
+        }
+
+        .preset-btn {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            padding: 10px 14px;
+            border-radius: 8px;
+            color: var(--text-main);
+            text-align: left;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--primary);
+            background-color: rgba(0, 108, 217, 0.05);
+        }
+
+        /* 运行终端控制台 (日志) */
+        .console {
+            background-color: #030712;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            height: 180px;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            color: #10b981; /* 绿色终端 */
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .console-line {
+            display: flex;
+            gap: 8px;
+        }
+
+        .console-prefix {
+            color: #6b7280;
+        }
+
+        .console-info { color: #10b981; }
+        .console-warn { color: #f59e0b; }
+        .console-error { color: #ef4444; }
+
+        /* 右侧侧边栏 (图标库) */
+        .icon-explorer {
+            width: var(--sidebar-width);
+            border-left: 1px solid var(--card-border);
+            background-color: rgba(9, 14, 26, 0.4);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 24px;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .search-box {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: white;
+            font-size: 13px;
+            outline: none;
+            width: 100%;
+        }
+
+        .search-box:focus {
+            border-color: var(--primary);
+        }
+
+        .icon-category-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .icon-category-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-main);
+            border-left: 3px solid var(--accent);
+            padding-left: 8px;
+        }
+
+        .icon-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .icon-badge {
+            font-size: 11px;
+            background-color: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--card-border);
+            color: var(--text-sub);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .icon-badge:hover {
+            background-color: rgba(0, 108, 217, 0.1);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* 模态框/遮罩加载层 */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(9, 14, 26, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .spinner-success {
+            border-left-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .loading-subtext {
+            font-size: 12px;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        /* 滚动条 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部栏 -->
+    <header>
+        <div class="logo-area">
+            <div class="logo-dot"></div>
+            <span class="logo-text">SANGFOR PPT</span>
+            <span class="logo-tag">智能生成系统</span>
+        </div>
+        <div style="font-size: 13px; color: var(--text-sub);">
+            基于深信服品牌视觉体系 v2.1
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- 左侧导航侧边栏 -->
+        <div class="sidebar">
+            <div class="sidebar-section-title">生成模式</div>
+            <button class="mode-btn active" id="btn-mode-ai" onclick="switchMode('ai')">
+                <div style="font-size: 24px;">🤖</div>
+                <div>
+                    <div>AI 描述生成</div>
+                    <div class="mode-btn-desc">基于大语言模型一键规划设计并生成</div>
+                </div>
+            </button>
+            <button class="mode-btn" id="btn-mode-json" onclick="switchMode('json')">
+                <div style="font-size: 24px;">⚙️</div>
+                <div>
+                    <div>JSON 计划构建</div>
+                    <div class="mode-btn-desc">导入或编辑结构化 JSON 进行渲染</div>
+                </div>
+            </button>
+
+            <!-- AI 专属配置项 -->
+            <div class="sidebar-section-title" style="margin-top: 10px;">LLM 驱动器配置</div>
+            <div class="api-config">
+                <div class="form-group">
+                    <label for="llm-key">API Key (密钥)</label>
+                    <input type="password" id="llm-key" placeholder="API Key / Token" value="">
+                </div>
+                <div class="form-group">
+                    <label for="llm-base">API Base URL</label>
+                    <input type="text" id="llm-base" placeholder="https://api.deepseek.com/v1" value="">
+                </div>
+                <div class="form-group">
+                    <label for="llm-model">模型名称 (Model)</label>
+                    <input type="text" id="llm-model" placeholder="deepseek-chat" value="deepseek-chat">
+                </div>
+                <div style="font-size: 11px; color: var(--text-sub); line-height: 1.4;">
+                    提示: 可在环境变量中设置 <code>LLM_API_KEY</code> 以免重复输入。
+                </div>
+            </div>
+        </div>
+
+        <!-- 主工作区 -->
+        <div class="workspace">
+            <!-- AI 描述模式面板 -->
+            <div class="panel active" id="panel-ai">
+                <div class="workspace-title-area">
+                    <div>
+                        <h2 class="workspace-title">AI 文字描述生成</h2>
+                        <p class="workspace-desc">输入您的汇报主题、大纲或大段文本，大模型将自动为您智能编排 PPT 版式并生成。</p>
+                    </div>
+                </div>
+                
+                <div class="ai-input-box">
+                    <textarea class="ai-textarea" id="ai-prompt" placeholder="例如：帮我生成一个关于『深信服托管云三中心灾备联合方案发布会』的 PPT 幻灯片。
+大纲包括：
+1. 建设背景与当前政企灾备痛点（如自建成本高、合规难、恢复慢）
+2. 深信服三中心灾备的核心方案介绍（包含两地三中心架构，基于同城双活与异地容灾）
+3. 方案的核心亮点优势（如分钟级 RTO、安全一键激活、专享灾备管家贴身服务）
+4. 深信服与传统公有云及自建对比表格（突出合规、合规度与服务响应速度）
+5. 实施落地步骤计划（规划设计、数据同步、演练演习）
+6. 总结展望与谢谢聆听"></textarea>
+                    <button class="btn-generate" id="btn-run-ai" onclick="runAIGeneration()">
+                        <span>✨ 开始 AI 智能构建</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- JSON 生成模式面板 -->
+            <div class="panel" id="panel-json">
+                <div class="workspace-title-area">
+                    <div>
+                        <h2 class="workspace-title">JSON 计划配置渲染</h2>
+                        <p class="workspace-desc">直接修改并编排 PPT 的结构化计划树，实现精确的控制流配置渲染。</p>
+                    </div>
+                    <button class="btn-generate" id="btn-run-json" onclick="runJsonGeneration()">
+                        <span>🚀 开始配置渲染</span>
+                    </button>
+                </div>
+
+                <div class="json-workspace">
+                    <div class="json-editor-container">
+                        <div class="editor-header">
+                            <span>slides_plan.json</span>
+                            <span style="cursor: pointer; color: var(--primary);" onclick="formatJson()">格式化代码</span>
+                        </div>
+                        <textarea class="json-textarea" id="json-code" placeholder="{ ... }"></textarea>
+                    </div>
+
+                    <div class="demo-presets">
+                        <div class="preset-title">加载预设示例</div>
+                        <button class="preset-btn" onclick="loadPreset('basic')">基本三栏组件 PPT</button>
+                        <button class="preset-btn" onclick="loadPreset('timeline')">多时间轴与步骤条 PPT</button>
+                        <button class="preset-btn" onclick="loadPreset('chart')">数据图表与数字高亮</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 运行终端日志 -->
+            <div class="sidebar-section-title">控制台输出 (Console)</div>
+            <div class="console" id="console-log">
+                <div class="console-line">
+                    <span class="console-prefix">[SYSTEM]</span>
+                    <span class="console-info">系统已准备就绪。请在左侧选择生成模式。</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧侧边栏 (图标管理器) -->
+        <div class="icon-explorer">
+            <div class="sidebar-section-title">矢量图标库 Explorer</div>
+            <input type="text" class="search-box" id="icon-search" placeholder="搜索图标..." oninput="filterIcons()">
+            <div id="icon-list-container" style="display: flex; flex-direction: column; gap: 16px;">
+                <!-- 动态渲染图标分类 -->
+                <div style="font-size: 12px; color: var(--text-sub);">正在加载图标库...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载层遮罩 -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner" id="loading-spinner"></div>
+        <div class="loading-text" id="loading-text">正在生成您的 PPT 文稿...</div>
+        <div class="loading-subtext" id="loading-subtext">第一步：大模型正在努力编排大纲计划...</div>
+    </div>
+
+    <!-- 引入前端脚本 -->
+    <script src="/static/main.js"></script>
+</body>
+</html>

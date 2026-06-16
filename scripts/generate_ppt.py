@@ -12,9 +12,11 @@ from pptx import Presentation
 from pptx.util import Inches, Pt, Cm, Emu
 from pptx.opc.constants import RELATIONSHIP_TYPE as RT
 
-# 将 scripts 目录添加到 path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from utils import *
+# 将 scripts 及其父目录添加到 path
+scripts_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, scripts_dir)
+sys.path.insert(0, os.path.dirname(scripts_dir))
+from scripts.lib import *
 
 # ============================================================
 # 常量

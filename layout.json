@@ -1,0 +1,1708 @@
+{
+  "page_info": {
+    "width_cm": 33.87,
+    "height_cm": 19.05,
+    "background_color": "#F8F9FC"
+  },
+  "elements": [
+    {
+      "type": "text",
+      "content": "桌面云架构全景图",
+      "left_cm": 1.0,
+      "top_cm": 0.8,
+      "width_cm": 15.0,
+      "height_cm": 0.8,
+      "style": {
+        "font_size_pt": 22,
+        "font_color": "#0033A2",
+        "bold": true
+      }
+    },
+    {
+      "type": "text",
+      "content": "网络隔离 + 数据不落地，构建安全、高效、可控的研发办公环境",
+      "left_cm": 1.0,
+      "top_cm": 1.6,
+      "width_cm": 22.0,
+      "height_cm": 0.8,
+      "style": {
+        "font_size_pt": 9.5,
+        "font_color": "#595959"
+      }
+    },
+    {
+      "type": "text",
+      "content": "SANGFOR 深信服科技 | 让每个用户的数字化更简单、更安全",
+      "left_cm": 25.0,
+      "top_cm": 0.8,
+      "width_cm": 8.0,
+      "height_cm": 0.8,
+      "style": {
+        "font_size_pt": 9.5,
+        "font_color": "#595959",
+        "alignment": "right"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 1.0,
+      "top_cm": 2.7,
+      "width_cm": 4.5,
+      "height_cm": 10.8,
+      "corner_radius": 0.05,
+      "style": {
+        "fill_color": "#FFFFFF",
+        "border_color": "#B1C7E4",
+        "border_width_pt": 1.0
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 1.0,
+      "top_cm": 2.7,
+      "width_cm": 4.5,
+      "height_cm": 0.8,
+      "corner_radius": 0.05,
+      "style": {
+        "fill_color": "#2E6CE4",
+        "border_color": null
+      }
+    },
+    {
+      "type": "text",
+      "content": "用户访问侧 (办公区)",
+      "left_cm": 1.1,
+      "top_cm": 2.85,
+      "width_cm": 4.3,
+      "height_cm": 0.5,
+      "style": {
+        "font_size_pt": 11,
+        "font_color": "#FFFFFF",
+        "bold": true,
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "icon",
+      "icon": "users",
+      "left_cm": 2.85,
+      "top_cm": 4.0,
+      "width_cm": 0.8,
+      "height_cm": 0.8,
+      "color": "#2E6CE4"
+    },
+    {
+      "type": "text",
+      "content": "研发人员",
+      "left_cm": 1.1,
+      "top_cm": 5.0,
+      "width_cm": 4.3,
+      "height_cm": 0.5,
+      "style": {
+        "font_size_pt": 9.5,
+        "font_color": "#0E0E0E",
+        "alignment": "center",
+        "bold": true
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 1.2,
+      "top_cm": 7.1,
+      "width_cm": 4.1,
+      "height_cm": 5.0,
+      "corner_radius": 0.05,
+      "style": {
+        "fill_color": "#FFFFFF",
+        "border_color": "#B1C7E4",
+        "border_width_pt": 1.0
+      }
+    },
+    {
+      "type": "icon",
+      "icon": "device-laptop",
+      "left_cm": 2.85,
+      "top_cm": 7.4,
+      "width_cm": 0.8,
+      "height_cm": 0.8,
+      "color": "#2E6CE4"
+    },
+    {
+      "type": "text",
+      "content": "PC\n\n用于日常办公、\n访问云桌面、\n用IOA进行管理",
+      "left_cm": 1.3,
+      "top_cm": 8.4,
+      "width_cm": 3.9,
+      "height_cm": 3.5,
+      "style": {
+        "font_size_pt": 9,
+        "font_color": "#0E0E0E",
+        "alignment": "center",
+        "line_spacing": 1.3
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 5.8,
+      "top_cm": 2.7,
+      "width_cm": 3.2,
+      "height_cm": 10.8,
+      "corner_radius": 0.05,
+      "style": {
+        "fill_color": "#FFF5F5",
+        "border_color": "#D70809",
+        "border_width_pt": 1.5,
+        "border_style": "dotted"
+      }
+    },
+    {
+      "type": "text",
+      "content": "安全管控通道\n(单向传输)",
+      "left_cm": 5.9,
+      "top_cm": 3.0,
+      "width_cm": 3.0,
+      "height_cm": 0.8,
+      "style": {
+        "font_size_pt": 10,
+        "font_color": "#D70809",
+        "bold": true,
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "icon",
+      "icon": "shield",
+      "left_cm": 7.0,
+      "top_cm": 4.1,
+      "width_cm": 0.8,
+      "height_cm": 0.8,
+      "color": "#D70809"
+    },
+    {
+      "type": "text",
+      "content": "禁止文件传输\n数据拷贝\n截屏\n远程播放",
+      "left_cm": 5.9,
+      "top_cm": 5.1,
+      "width_cm": 3.0,
+      "height_cm": 2.5,
+      "style": {
+        "font_size_pt": 9,
+        "font_color": "#D70809",
+        "alignment": "center",
+        "bold": true,
+        "line_spacing": 1.4
+      }
+    },
+    {
+      "type": "text",
+      "content": "安全登录\n支持单向数据传输",
+      "left_cm": 5.9,
+      "top_cm": 8.0,
+      "width_cm": 3.0,
+      "height_cm": 0.8,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#404040",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "text",
+      "content": "数据回传 (受控)",
+      "left_cm": 5.9,
+      "top_cm": 10.5,
+      "width_cm": 3.0,
+      "height_cm": 0.5,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#404040",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 9.3,
+      "top_cm": 2.7,
+      "width_cm": 12.8,
+      "height_cm": 10.8,
+      "corner_radius": 0.05,
+      "style": {
+        "fill_color": "#FFFFFF",
+        "border_color": "#B1C7E4",
+        "border_width_pt": 1.0
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 9.3,
+      "top_cm": 2.7,
+      "width_cm": 12.8,
+      "height_cm": 0.8,
+      "corner_radius": 0.05,
+      "style": {
+        "fill_color": "#0033A2",
+        "border_color": null
+      }
+    },
+    {
+      "type": "text",
+      "content": "数据中心 / 机房侧 (核心资源)",
+      "left_cm": 9.5,
+      "top_cm": 2.85,
+      "width_cm": 12.4,
+      "height_cm": 0.5,
+      "style": {
+        "font_size_pt": 11,
+        "font_color": "#FFFFFF",
+        "bold": true,
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 12.7,
+      "top_cm": 3.7,
+      "width_cm": 6.0,
+      "height_cm": 0.9,
+      "corner_radius": 0.05,
+      "style": {
+        "fill_color": "#FFFFFF",
+        "border_color": "#B1C7E4",
+        "border_width_pt": 1.0
+      }
+    },
+    {
+      "type": "icon",
+      "icon": "code",
+      "left_cm": 13.0,
+      "top_cm": 3.85,
+      "width_cm": 0.6,
+      "height_cm": 0.6,
+      "color": "#2E6CE4"
+    },
+    {
+      "type": "text",
+      "content": "GIT 代码仓库",
+      "left_cm": 13.8,
+      "top_cm": 3.9,
+      "width_cm": 4.5,
+      "height_cm": 0.6,
+      "style": {
+        "font_size_pt": 10,
+        "bold": true,
+        "font_color": "#0E0E0E"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 9.6,
+      "top_cm": 4.9,
+      "width_cm": 5.8,
+      "height_cm": 5.6,
+      "corner_radius": 0.05,
+      "style": {
+        "fill_color": "#CFDFFB",
+        "border_color": null
+      }
+    },
+    {
+      "type": "text",
+      "content": "云桌面集群",
+      "left_cm": 9.7,
+      "top_cm": 5.1,
+      "width_cm": 5.6,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 9.5,
+        "bold": true,
+        "font_color": "#0033A2",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "icon",
+      "icon": "device-laptop",
+      "left_cm": 9.8,
+      "top_cm": 5.6,
+      "width_cm": 0.5,
+      "height_cm": 0.5,
+      "color": "#2E6CE4"
+    },
+    {
+      "type": "text",
+      "content": "云桌面，用于本地代码开发测试，及调用GPU资源，进行仿真、训练",
+      "left_cm": 10.4,
+      "top_cm": 5.6,
+      "width_cm": 4.8,
+      "height_cm": 1.2,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#404040"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 9.8,
+      "top_cm": 6.9,
+      "width_cm": 5.4,
+      "height_cm": 3.4,
+      "corner_radius": 0.05,
+      "style": {
+        "fill_color": "#FFFFFF",
+        "border_color": "#B1C7E4",
+        "border_width_pt": 1.0
+      }
+    },
+    {
+      "type": "icon",
+      "icon": "device-laptop",
+      "left_cm": 10.0,
+      "top_cm": 7.1,
+      "width_cm": 0.5,
+      "height_cm": 0.5,
+      "color": "#2E6CE4"
+    },
+    {
+      "type": "text",
+      "content": "云桌面池",
+      "left_cm": 10.6,
+      "top_cm": 7.1,
+      "width_cm": 4.0,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 8.5,
+        "bold": true,
+        "font_color": "#0E0E0E"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 10.0,
+      "top_cm": 7.8,
+      "width_cm": 0.8,
+      "height_cm": 0.6,
+      "corner_radius": 0.02,
+      "style": {
+        "fill_color": "#EFF4FC",
+        "border_color": null
+      },
+      "text": {
+        "content": "实例1",
+        "font_size_pt": 7.5,
+        "font_color": "#0E0E0E",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 11.0,
+      "top_cm": 7.8,
+      "width_cm": 0.8,
+      "height_cm": 0.6,
+      "corner_radius": 0.02,
+      "style": {
+        "fill_color": "#EFF4FC",
+        "border_color": null
+      },
+      "text": {
+        "content": "实例2",
+        "font_size_pt": 7.5,
+        "font_color": "#0E0E0E",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 12.0,
+      "top_cm": 7.8,
+      "width_cm": 0.8,
+      "height_cm": 0.6,
+      "corner_radius": 0.02,
+      "style": {
+        "fill_color": "#EFF4FC",
+        "border_color": null
+      },
+      "text": {
+        "content": "实例3",
+        "font_size_pt": 7.5,
+        "font_color": "#0E0E0E",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 13.0,
+      "top_cm": 7.8,
+      "width_cm": 0.8,
+      "height_cm": 0.6,
+      "corner_radius": 0.02,
+      "style": {
+        "fill_color": "#EFF4FC",
+        "border_color": null
+      },
+      "text": {
+        "content": "...",
+        "font_size_pt": 7.5,
+        "font_color": "#0E0E0E",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 13.8,
+      "top_cm": 7.8,
+      "width_cm": 0.8,
+      "height_cm": 0.6,
+      "corner_radius": 0.02,
+      "style": {
+        "fill_color": "#EFF4FC",
+        "border_color": null
+      },
+      "text": {
+        "content": "实例N",
+        "font_size_pt": 7.5,
+        "font_color": "#0E0E0E",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 16.0,
+      "top_cm": 4.9,
+      "width_cm": 5.8,
+      "height_cm": 5.6,
+      "corner_radius": 0.05,
+      "style": {
+        "fill_color": "#DFEBD4",
+        "border_color": "#70AD47",
+        "border_width_pt": 1.0
+      }
+    },
+    {
+      "type": "text",
+      "content": "GPU集群",
+      "left_cm": 16.1,
+      "top_cm": 5.1,
+      "width_cm": 5.6,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 9.5,
+        "bold": true,
+        "font_color": "#385723",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "icon",
+      "icon": "cpu",
+      "left_cm": 16.3,
+      "top_cm": 5.6,
+      "width_cm": 0.5,
+      "height_cm": 0.5,
+      "color": "#70AD47"
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 16.2,
+      "top_cm": 6.2,
+      "width_cm": 1.6,
+      "height_cm": 0.7,
+      "corner_radius": 0.02,
+      "style": {
+        "fill_color": "#FFFFFF",
+        "border_color": "#70AD47",
+        "border_width_pt": 0.7
+      },
+      "text": {
+        "content": "GPU容器 1",
+        "font_size_pt": 7.5,
+        "font_color": "#385723",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 18.0,
+      "top_cm": 6.2,
+      "width_cm": 1.6,
+      "height_cm": 0.7,
+      "corner_radius": 0.02,
+      "style": {
+        "fill_color": "#FFFFFF",
+        "border_color": "#70AD47",
+        "border_width_pt": 0.7
+      },
+      "text": {
+        "content": "GPU容器 2",
+        "font_size_pt": 7.5,
+        "font_color": "#385723",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 19.8,
+      "top_cm": 6.2,
+      "width_cm": 1.6,
+      "height_cm": 0.7,
+      "corner_radius": 0.02,
+      "style": {
+        "fill_color": "#FFFFFF",
+        "border_color": "#70AD47",
+        "border_width_pt": 0.7
+      },
+      "text": {
+        "content": "...",
+        "font_size_pt": 7.5,
+        "font_color": "#385723",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 16.2,
+      "top_cm": 7.1,
+      "width_cm": 1.6,
+      "height_cm": 0.7,
+      "corner_radius": 0.02,
+      "style": {
+        "fill_color": "#FFFFFF",
+        "border_color": "#70AD47",
+        "border_width_pt": 0.7
+      },
+      "text": {
+        "content": "GPU容器 3",
+        "font_size_pt": 7.5,
+        "font_color": "#385723",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 18.0,
+      "top_cm": 7.1,
+      "width_cm": 1.6,
+      "height_cm": 0.7,
+      "corner_radius": 0.02,
+      "style": {
+        "fill_color": "#FFFFFF",
+        "border_color": "#70AD47",
+        "border_width_pt": 0.7
+      },
+      "text": {
+        "content": "GPU容器 N",
+        "font_size_pt": 7.5,
+        "font_color": "#385723",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "text",
+      "content": "远程开发\n\n\n仿真可视化调试",
+      "left_cm": 15.4,
+      "top_cm": 6.3,
+      "width_cm": 0.6,
+      "height_cm": 2.0,
+      "style": {
+        "font_size_pt": 7,
+        "font_color": "#385723",
+        "alignment": "center",
+        "bold": true
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 12.7,
+      "top_cm": 11.0,
+      "width_cm": 6.0,
+      "height_cm": 0.9,
+      "corner_radius": 0.05,
+      "style": {
+        "fill_color": "#FFFFFF",
+        "border_color": "#B1C7E4",
+        "border_width_pt": 1.0
+      }
+    },
+    {
+      "type": "icon",
+      "icon": "database",
+      "left_cm": 13.0,
+      "top_cm": 11.15,
+      "width_cm": 0.6,
+      "height_cm": 0.6,
+      "color": "#2E6CE4"
+    },
+    {
+      "type": "text",
+      "content": "镜像源",
+      "left_cm": 13.8,
+      "top_cm": 11.2,
+      "width_cm": 4.5,
+      "height_cm": 0.6,
+      "style": {
+        "font_size_pt": 10,
+        "bold": true,
+        "font_color": "#0E0E0E"
+      }
+    },
+    {
+      "type": "text",
+      "content": "仅拉取镜像支持访问外网\n可以从浏览器下载资源\n禁止桌面挂载浏览器存在任何数据",
+      "left_cm": 9.4,
+      "top_cm": 11.0,
+      "width_cm": 3.2,
+      "height_cm": 1.5,
+      "style": {
+        "font_size_pt": 7.5,
+        "font_color": "#D70809",
+        "line_spacing": 1.3
+      }
+    },
+    {
+      "type": "text",
+      "content": "默认禁止\n(镜像源访问外网)",
+      "left_cm": 19.3,
+      "top_cm": 11.0,
+      "width_cm": 2.2,
+      "height_cm": 1.0,
+      "style": {
+        "font_size_pt": 7.5,
+        "font_color": "#D70809",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "text",
+      "content": "✕",
+      "left_cm": 21.3,
+      "top_cm": 11.0,
+      "width_cm": 0.5,
+      "height_cm": 0.5,
+      "style": {
+        "font_size_pt": 12,
+        "font_color": "#D70809",
+        "bold": true
+      }
+    },
+    {
+      "type": "text",
+      "content": "定期更新研发\n需要的镜像源",
+      "left_cm": 12.7,
+      "top_cm": 12.0,
+      "width_cm": 6.0,
+      "height_cm": 0.8,
+      "style": {
+        "font_size_pt": 7.5,
+        "font_color": "#595959",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "connector_arrow",
+      "from_point_cm": [
+        15.7,
+        11.9
+      ],
+      "to_point_cm": [
+        15.7,
+        12.5
+      ],
+      "style": {
+        "line_color": "#595959",
+        "line_width_pt": 1.2
+      }
+    },
+    {
+      "type": "connector_arrow",
+      "from_point_cm": [
+        15.7,
+        12.5
+      ],
+      "to_point_cm": [
+        15.7,
+        11.9
+      ],
+      "style": {
+        "line_color": "#595959",
+        "line_width_pt": 1.2
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 22.4,
+      "top_cm": 2.7,
+      "width_cm": 3.2,
+      "height_cm": 10.8,
+      "corner_radius": 0.05,
+      "style": {
+        "fill_color": "#FFFFFF",
+        "border_color": "#B1C7E4",
+        "border_width_pt": 1.0
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 22.4,
+      "top_cm": 2.7,
+      "width_cm": 3.2,
+      "height_cm": 0.8,
+      "corner_radius": 0.05,
+      "style": {
+        "fill_color": "#216EE9",
+        "border_color": null
+      }
+    },
+    {
+      "type": "text",
+      "content": "外网访问区 (受控)",
+      "left_cm": 22.5,
+      "top_cm": 2.85,
+      "width_cm": 3.0,
+      "height_cm": 0.5,
+      "style": {
+        "font_size_pt": 9.5,
+        "font_color": "#FFFFFF",
+        "bold": true,
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 22.6,
+      "top_cm": 3.7,
+      "width_cm": 2.8,
+      "height_cm": 1.5,
+      "corner_radius": 0.02,
+      "style": {
+        "fill_color": "#EFF4FC",
+        "border_color": "#B1C7E4",
+        "border_width_pt": 0.7
+      }
+    },
+    {
+      "type": "icon",
+      "icon": "world",
+      "left_cm": 22.75,
+      "top_cm": 3.85,
+      "width_cm": 0.4,
+      "height_cm": 0.4,
+      "color": "#2E6CE4"
+    },
+    {
+      "type": "text",
+      "content": "受控外网\n访问网关",
+      "left_cm": 23.25,
+      "top_cm": 3.8,
+      "width_cm": 2.1,
+      "height_cm": 0.6,
+      "style": {
+        "font_size_pt": 8,
+        "bold": true,
+        "font_color": "#2E6CE4"
+      }
+    },
+    {
+      "type": "text",
+      "content": "(白名单策略)",
+      "left_cm": 22.6,
+      "top_cm": 4.5,
+      "width_cm": 2.8,
+      "height_cm": 0.5,
+      "style": {
+        "font_size_pt": 7.5,
+        "font_color": "#595959",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "text",
+      "content": "· 网页浏览 (受控)",
+      "left_cm": 22.6,
+      "top_cm": 5.6,
+      "width_cm": 2.8,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#0E0E0E"
+      }
+    },
+    {
+      "type": "text",
+      "content": "· 软件下载 (受控)",
+      "left_cm": 22.6,
+      "top_cm": 6.199999999999999,
+      "width_cm": 2.8,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#0E0E0E"
+      }
+    },
+    {
+      "type": "text",
+      "content": "· 补丁更新 (受控)",
+      "left_cm": 22.6,
+      "top_cm": 6.8,
+      "width_cm": 2.8,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#0E0E0E"
+      }
+    },
+    {
+      "type": "text",
+      "content": "· 其他外网访问 (受控)",
+      "left_cm": 22.6,
+      "top_cm": 7.3999999999999995,
+      "width_cm": 2.8,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#0E0E0E"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 25.9,
+      "top_cm": 2.7,
+      "width_cm": 6.9,
+      "height_cm": 10.8,
+      "corner_radius": 0.05,
+      "style": {
+        "fill_color": "#FFFFFF",
+        "border_color": "#B1C7E4",
+        "border_width_pt": 1.0
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 25.9,
+      "top_cm": 2.7,
+      "width_cm": 6.9,
+      "height_cm": 0.8,
+      "corner_radius": 0.05,
+      "style": {
+        "fill_color": "#0C5EDC",
+        "border_color": null
+      }
+    },
+    {
+      "type": "text",
+      "content": "安全能力 (全链路防护)",
+      "left_cm": 26.0,
+      "top_cm": 2.85,
+      "width_cm": 6.7,
+      "height_cm": 0.5,
+      "style": {
+        "font_size_pt": 11,
+        "font_color": "#FFFFFF",
+        "bold": true,
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "circle",
+      "left_cm": 26.4,
+      "top_cm": 3.7,
+      "width_cm": 0.7,
+      "height_cm": 0.7,
+      "style": {
+        "fill_color": "#0C5EDC",
+        "border_color": null
+      }
+    },
+    {
+      "type": "icon",
+      "icon": "shield",
+      "left_cm": 26.55,
+      "top_cm": 3.85,
+      "width_cm": 0.4,
+      "height_cm": 0.4,
+      "color": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "content": "数据不落地",
+      "left_cm": 27.3,
+      "top_cm": 3.6,
+      "width_cm": 5.0,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 9,
+        "font_color": "#1B50CD",
+        "bold": true
+      }
+    },
+    {
+      "type": "text",
+      "content": "数据在云端处理\n本地无数据",
+      "left_cm": 27.3,
+      "top_cm": 4.05,
+      "width_cm": 5.0,
+      "height_cm": 0.9,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#595959"
+      }
+    },
+    {
+      "type": "circle",
+      "left_cm": 26.4,
+      "top_cm": 5.199999999999999,
+      "width_cm": 0.7,
+      "height_cm": 0.7,
+      "style": {
+        "fill_color": "#0C5EDC",
+        "border_color": null
+      }
+    },
+    {
+      "type": "icon",
+      "icon": "api",
+      "left_cm": 26.55,
+      "top_cm": 5.35,
+      "width_cm": 0.4,
+      "height_cm": 0.4,
+      "color": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "content": "网络隔离",
+      "left_cm": 27.3,
+      "top_cm": 5.1,
+      "width_cm": 5.0,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 9,
+        "font_color": "#1B50CD",
+        "bold": true
+      }
+    },
+    {
+      "type": "text",
+      "content": "办公区与机房区网络隔离\n访问路径可控",
+      "left_cm": 27.3,
+      "top_cm": 5.55,
+      "width_cm": 5.0,
+      "height_cm": 0.9,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#595959"
+      }
+    },
+    {
+      "type": "circle",
+      "left_cm": 26.4,
+      "top_cm": 6.699999999999999,
+      "width_cm": 0.7,
+      "height_cm": 0.7,
+      "style": {
+        "fill_color": "#0C5EDC",
+        "border_color": null
+      }
+    },
+    {
+      "type": "icon",
+      "icon": "file-analytics",
+      "left_cm": 26.55,
+      "top_cm": 6.85,
+      "width_cm": 0.4,
+      "height_cm": 0.4,
+      "color": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "content": "全链路审计",
+      "left_cm": 27.3,
+      "top_cm": 6.6,
+      "width_cm": 5.0,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 9,
+        "font_color": "#1B50CD",
+        "bold": true
+      }
+    },
+    {
+      "type": "text",
+      "content": "全链路操作日志\n留痕可追溯",
+      "left_cm": 27.3,
+      "top_cm": 7.05,
+      "width_cm": 5.0,
+      "height_cm": 0.9,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#595959"
+      }
+    },
+    {
+      "type": "circle",
+      "left_cm": 26.4,
+      "top_cm": 8.2,
+      "width_cm": 0.7,
+      "height_cm": 0.7,
+      "style": {
+        "fill_color": "#0C5EDC",
+        "border_color": null
+      }
+    },
+    {
+      "type": "icon",
+      "icon": "fingerprint",
+      "left_cm": 26.55,
+      "top_cm": 8.35,
+      "width_cm": 0.4,
+      "height_cm": 0.4,
+      "color": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "content": "权限分级",
+      "left_cm": 27.3,
+      "top_cm": 8.1,
+      "width_cm": 5.0,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 9,
+        "font_color": "#1B50CD",
+        "bold": true
+      }
+    },
+    {
+      "type": "text",
+      "content": "最小化权限访问\n分级授权",
+      "left_cm": 27.3,
+      "top_cm": 8.549999999999999,
+      "width_cm": 5.0,
+      "height_cm": 0.9,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#595959"
+      }
+    },
+    {
+      "type": "circle",
+      "left_cm": 26.4,
+      "top_cm": 9.7,
+      "width_cm": 0.7,
+      "height_cm": 0.7,
+      "style": {
+        "fill_color": "#0C5EDC",
+        "border_color": null
+      }
+    },
+    {
+      "type": "icon",
+      "icon": "users",
+      "left_cm": 26.55,
+      "top_cm": 9.85,
+      "width_cm": 0.4,
+      "height_cm": 0.4,
+      "color": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "content": "外协管控",
+      "left_cm": 27.3,
+      "top_cm": 9.6,
+      "width_cm": 5.0,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 9,
+        "font_color": "#1B50CD",
+        "bold": true
+      }
+    },
+    {
+      "type": "text",
+      "content": "外部人员受控接入\n操作可审计",
+      "left_cm": 27.3,
+      "top_cm": 10.049999999999999,
+      "width_cm": 5.0,
+      "height_cm": 0.9,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#595959"
+      }
+    },
+    {
+      "type": "circle",
+      "left_cm": 26.4,
+      "top_cm": 11.2,
+      "width_cm": 0.7,
+      "height_cm": 0.7,
+      "style": {
+        "fill_color": "#0C5EDC",
+        "border_color": null
+      }
+    },
+    {
+      "type": "icon",
+      "icon": "reload",
+      "left_cm": 26.55,
+      "top_cm": 11.35,
+      "width_cm": 0.4,
+      "height_cm": 0.4,
+      "color": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "content": "业务连续性",
+      "left_cm": 27.3,
+      "top_cm": 11.1,
+      "width_cm": 5.0,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 9,
+        "font_color": "#1B50CD",
+        "bold": true
+      }
+    },
+    {
+      "type": "text",
+      "content": "高可用架构与容灾备份\n保障业务连续运行",
+      "left_cm": 27.3,
+      "top_cm": 11.549999999999999,
+      "width_cm": 5.0,
+      "height_cm": 0.9,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#595959"
+      }
+    },
+    {
+      "type": "rectangle",
+      "left_cm": 1.0,
+      "top_cm": 13.8,
+      "width_cm": 25.0,
+      "height_cm": 0.8,
+      "style": {
+        "fill_color": "#0547B9",
+        "border_color": null
+      },
+      "text": {
+        "content": "办公数据安全基座 (深信服)",
+        "font_size_pt": 11,
+        "font_color": "#FFFFFF",
+        "bold": true,
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 1.0,
+      "top_cm": 14.8,
+      "width_cm": 3.8,
+      "height_cm": 2.2,
+      "corner_radius": 0.03,
+      "style": {
+        "fill_color": "#F8FAFE",
+        "border_color": "#B1C7E4",
+        "border_width_pt": 0.8
+      }
+    },
+    {
+      "type": "text",
+      "content": "云桌面集群",
+      "left_cm": 1.0,
+      "top_cm": 14.9,
+      "width_cm": 3.8,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 9,
+        "font_color": "#1B50CD",
+        "bold": true,
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "text",
+      "content": "• 高性能桌面虚拟化\n• 多类终端接入\n• 统一交付与管理",
+      "left_cm": 1.2,
+      "top_cm": 15.4,
+      "width_cm": 3.4,
+      "height_cm": 1.5,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#404040",
+        "line_spacing": 1.3
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 5.2,
+      "top_cm": 14.8,
+      "width_cm": 3.8,
+      "height_cm": 2.2,
+      "corner_radius": 0.03,
+      "style": {
+        "fill_color": "#F8FAFE",
+        "border_color": "#B1C7E4",
+        "border_width_pt": 0.8
+      }
+    },
+    {
+      "type": "text",
+      "content": "GPU资源池",
+      "left_cm": 5.2,
+      "top_cm": 14.9,
+      "width_cm": 3.8,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 9,
+        "font_color": "#1B50CD",
+        "bold": true,
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "text",
+      "content": "• 弹性调度与分配\n• 集中式GPU算力\n• 高性能计算加速",
+      "left_cm": 5.4,
+      "top_cm": 15.4,
+      "width_cm": 3.4,
+      "height_cm": 1.5,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#404040",
+        "line_spacing": 1.3
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 9.4,
+      "top_cm": 14.8,
+      "width_cm": 3.8,
+      "height_cm": 2.2,
+      "corner_radius": 0.03,
+      "style": {
+        "fill_color": "#F8FAFE",
+        "border_color": "#B1C7E4",
+        "border_width_pt": 0.8
+      }
+    },
+    {
+      "type": "text",
+      "content": "存储资源池",
+      "left_cm": 9.4,
+      "top_cm": 14.9,
+      "width_cm": 3.8,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 9,
+        "font_color": "#1B50CD",
+        "bold": true,
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "text",
+      "content": "• 分布式存储\n• 多副本与快照\n• 数据高可靠",
+      "left_cm": 9.6,
+      "top_cm": 15.4,
+      "width_cm": 3.4,
+      "height_cm": 1.5,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#404040",
+        "line_spacing": 1.3
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 13.6,
+      "top_cm": 14.8,
+      "width_cm": 3.8,
+      "height_cm": 2.2,
+      "corner_radius": 0.03,
+      "style": {
+        "fill_color": "#F8FAFE",
+        "border_color": "#B1C7E4",
+        "border_width_pt": 0.8
+      }
+    },
+    {
+      "type": "text",
+      "content": "镜像资源池",
+      "left_cm": 13.6,
+      "top_cm": 14.9,
+      "width_cm": 3.8,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 9,
+        "font_color": "#1B50CD",
+        "bold": true,
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "text",
+      "content": "• 标准镜像管理\n• 快速部署与回滚\n• 环境一致可控",
+      "left_cm": 13.799999999999999,
+      "top_cm": 15.4,
+      "width_cm": 3.4,
+      "height_cm": 1.5,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#404040",
+        "line_spacing": 1.3
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 17.8,
+      "top_cm": 14.8,
+      "width_cm": 3.8,
+      "height_cm": 2.2,
+      "corner_radius": 0.03,
+      "style": {
+        "fill_color": "#F8FAFE",
+        "border_color": "#B1C7E4",
+        "border_width_pt": 0.8
+      }
+    },
+    {
+      "type": "text",
+      "content": "审计中心",
+      "left_cm": 17.8,
+      "top_cm": 14.9,
+      "width_cm": 3.8,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 9,
+        "font_color": "#1B50CD",
+        "bold": true,
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "text",
+      "content": "• 操作行为审计\n• 日志集中分析\n• 风险识别与告警",
+      "left_cm": 18.0,
+      "top_cm": 15.4,
+      "width_cm": 3.4,
+      "height_cm": 1.5,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#404040",
+        "line_spacing": 1.3
+      }
+    },
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 22.0,
+      "top_cm": 14.8,
+      "width_cm": 3.8,
+      "height_cm": 2.2,
+      "corner_radius": 0.03,
+      "style": {
+        "fill_color": "#F8FAFE",
+        "border_color": "#B1C7E4",
+        "border_width_pt": 0.8
+      }
+    },
+    {
+      "type": "text",
+      "content": "安全运营中心",
+      "left_cm": 22.0,
+      "top_cm": 14.9,
+      "width_cm": 3.8,
+      "height_cm": 0.4,
+      "style": {
+        "font_size_pt": 9,
+        "font_color": "#1B50CD",
+        "bold": true,
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "text",
+      "content": "• 安全态势感知\n• 威胁检测响应\n• 策略统一下发",
+      "left_cm": 22.2,
+      "top_cm": 15.4,
+      "width_cm": 3.4,
+      "height_cm": 1.5,
+      "style": {
+        "font_size_pt": 8,
+        "font_color": "#404040",
+        "line_spacing": 1.3
+      }
+    },
+    {
+      "type": "rectangle",
+      "left_cm": 1.0,
+      "top_cm": 17.2,
+      "width_cm": 25.0,
+      "height_cm": 0.8,
+      "style": {
+        "fill_color": "#0038A5",
+        "border_color": null
+      },
+      "text": {
+        "content": "深信服超融合基础设施 (计算 + 存储 + 网络 + 安全)",
+        "font_size_pt": 10,
+        "font_color": "#FFFFFF",
+        "bold": true,
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "text",
+      "content": "→",
+      "left_cm": 27.2,
+      "top_cm": 14.8,
+      "width_cm": 1.0,
+      "height_cm": 0.5,
+      "style": {
+        "font_size_pt": 12,
+        "font_color": "#595959",
+        "bold": true
+      }
+    },
+    {
+      "type": "text",
+      "content": "数据流向",
+      "left_cm": 28.3,
+      "top_cm": 14.850000000000001,
+      "width_cm": 3.5,
+      "height_cm": 0.5,
+      "style": {
+        "font_size_pt": 8.5,
+        "font_color": "#0E0E0E"
+      }
+    },
+    {
+      "type": "text",
+      "content": "-->",
+      "left_cm": 27.2,
+      "top_cm": 15.6,
+      "width_cm": 1.0,
+      "height_cm": 0.5,
+      "style": {
+        "font_size_pt": 12,
+        "font_color": "#70AD47",
+        "bold": true
+      }
+    },
+    {
+      "type": "text",
+      "content": "可视化/调试通道",
+      "left_cm": 28.3,
+      "top_cm": 15.65,
+      "width_cm": 3.5,
+      "height_cm": 0.5,
+      "style": {
+        "font_size_pt": 8.5,
+        "font_color": "#0E0E0E"
+      }
+    },
+    {
+      "type": "text",
+      "content": "→",
+      "left_cm": 27.2,
+      "top_cm": 16.4,
+      "width_cm": 1.0,
+      "height_cm": 0.5,
+      "style": {
+        "font_size_pt": 12,
+        "font_color": "#D70809",
+        "bold": true
+      }
+    },
+    {
+      "type": "text",
+      "content": "禁止/受控流向",
+      "left_cm": 28.3,
+      "top_cm": 16.45,
+      "width_cm": 3.5,
+      "height_cm": 0.5,
+      "style": {
+        "font_size_pt": 8.5,
+        "font_color": "#0E0E0E"
+      }
+    },
+    {
+      "type": "connector_arrow",
+      "from_point_cm": [
+        3.25,
+        5.5
+      ],
+      "to_point_cm": [
+        3.25,
+        7.1
+      ],
+      "style": {
+        "line_color": "#595959",
+        "line_width_pt": 1.5
+      }
+    },
+    {
+      "type": "connector_arrow",
+      "from_point_cm": [
+        5.3,
+        9.6
+      ],
+      "to_point_cm": [
+        5.8,
+        9.6
+      ],
+      "style": {
+        "line_color": "#595959",
+        "line_width_pt": 1.5
+      }
+    },
+    {
+      "type": "connector_arrow",
+      "from_point_cm": [
+        9.0,
+        7.85
+      ],
+      "to_point_cm": [
+        9.6,
+        7.85
+      ],
+      "style": {
+        "line_color": "#595959",
+        "line_width_pt": 1.5
+      }
+    },
+    {
+      "type": "connector_arrow",
+      "from_point_cm": [
+        9.6,
+        11.2
+      ],
+      "to_point_cm": [
+        9.0,
+        11.2
+      ],
+      "style": {
+        "line_color": "#D70809",
+        "line_width_pt": 1.5
+      }
+    },
+    {
+      "type": "connector_arrow",
+      "from_point_cm": [
+        5.8,
+        11.2
+      ],
+      "to_point_cm": [
+        5.3,
+        11.2
+      ],
+      "style": {
+        "line_color": "#D70809",
+        "line_width_pt": 1.5
+      }
+    },
+    {
+      "type": "connector_arrow",
+      "from_point_cm": [
+        15.4,
+        7.0
+      ],
+      "to_point_cm": [
+        16.0,
+        7.0
+      ],
+      "style": {
+        "line_color": "#595959",
+        "line_width_pt": 1.5
+      }
+    },
+    {
+      "type": "connector_arrow",
+      "from_point_cm": [
+        16.0,
+        8.8
+      ],
+      "to_point_cm": [
+        15.4,
+        8.8
+      ],
+      "style": {
+        "line_color": "#70AD47",
+        "line_width_pt": 1.5,
+        "line_style": "dashed"
+      }
+    },
+    {
+      "type": "connector_arrow",
+      "from_point_cm": [
+        12.5,
+        10.3
+      ],
+      "to_point_cm": [
+        14.5,
+        11.0
+      ],
+      "style": {
+        "line_color": "#595959",
+        "line_width_pt": 1.5
+      }
+    },
+    {
+      "type": "connector_arrow",
+      "from_point_cm": [
+        19.3,
+        10.5
+      ],
+      "to_point_cm": [
+        17.5,
+        11.0
+      ],
+      "style": {
+        "line_color": "#595959",
+        "line_width_pt": 1.5
+      }
+    },
+    {
+      "type": "connector_arrow",
+      "from_point_cm": [
+        18.7,
+        11.5
+      ],
+      "to_point_cm": [
+        19.8,
+        11.5
+      ],
+      "style": {
+        "line_color": "#D70809",
+        "line_width_pt": 1.5
+      }
+    },
+    {
+      "type": "connector_arrow",
+      "from_point_cm": [
+        21.8,
+        7.85
+      ],
+      "to_point_cm": [
+        22.4,
+        7.85
+      ],
+      "style": {
+        "line_color": "#595959",
+        "line_width_pt": 1.5,
+        "line_style": "dashed"
+      }
+    },
+    {
+      "type": "connector_arrow",
+      "from_point_cm": [
+        25.6,
+        7.85
+      ],
+      "to_point_cm": [
+        25.9,
+        7.85
+      ],
+      "style": {
+        "line_color": "#595959",
+        "line_width_pt": 1.5
+      }
+    }
+  ]
+}

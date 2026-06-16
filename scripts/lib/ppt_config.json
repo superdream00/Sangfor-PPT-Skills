@@ -1,0 +1,80 @@
+{
+  "page": {
+    "width_cm": 33.87,
+    "height_cm": 19.05,
+    "margin": {
+      "top": 3.5,
+      "bottom": 17.0,
+      "left": 2.0,
+      "right": 2.0,
+      "gap": 0.5
+    }
+  },
+  "colors": {
+    "BLUE_PRIMARY": "#006CD9",
+    "BLUE_DARK": "#003592",
+    "BLUE_DEEP": "#00479D",
+    "BLUE_LIGHT1": "#0587F5",
+    "BLUE_LIGHT2": "#3BA5FF",
+    "BLUE_LIGHT3": "#51C0F9",
+    "BLUE_HIGHLIGHT": "#0185FF",
+    "BLUE_SOFT": "#65B5FF",
+    "BLUE_PALE": "#80D8FD",
+    "GREEN_PRIMARY": "#53C800",
+    "GREEN_VARIANT1": "#6FBA2C",
+    "GREEN_VARIANT2": "#6CCD24",
+    "GREEN_LIGHT": "#9BF48F",
+    "GREEN_SOFT": "#CCE28E",
+    "TEXT_PRIMARY": "#0E0E0E",
+    "TEXT_SECONDARY": "#404040",
+    "TEXT_TERTIARY": "#595959",
+    "TEXT_DARK": "#0D0D0D",
+    "TEXT_MEDIUM": "#262626",
+    "BG_LIGHT_GRAY": "#ECECEC",
+    "BORDER_GRAY": "#E7E6E6",
+    "BG_SOFT_GRAY": "#E8E8E9",
+    "GRAY_MEDIUM": "#808080",
+    "WHITE": "#FFFFFF",
+    "BLACK": "#000000",
+    "CHART_COLORS": [
+      "#006CD9", "#53C800", "#0587F5", "#3BA5FF", 
+      "#6FBA2C", "#51C0F9", "#0185FF", "#65B5FF"
+    ],
+    "TABLE_HEADER_BG": "#006CD9",
+    "TABLE_HEADER_TEXT": "#FFFFFF",
+    "TABLE_ODD_ROW": "#F2F7FC",
+    "TABLE_EVEN_ROW": "#FFFFFF",
+    "TABLE_BORDER": "#E7E6E6"
+  },
+  "fonts": {
+    "CHINESE": "微软雅黑",
+    "ENGLISH": "微软雅黑",
+    "sizes": {
+      "COVER_TITLE": 26,
+      "COVER_SUBTITLE": 14,
+      "PAGE_TITLE": 22,
+      "SUBTITLE": 16,
+      "BODY": 12,
+      "BODY_LARGE": 14,
+      "SMALL": 10,
+      "CAPTION": 9,
+      "TABLE_HEADER": 12,
+      "TABLE_BODY": 11,
+      "CHART_LABEL": 10,
+      "NUMBER_HIGHLIGHT": 44,
+      "SECTION_TITLE": 44
+    }
+  },
+  "block_weight_config": {
+    "text":             {"min_height": 1.5, "preferred_height": 3.0, "weight": 1.0},
+    "bullet_list":      {"min_height": 3.0, "preferred_height": null, "weight": 2.0},
+    "card_grid":        {"min_height": 5.0, "preferred_height": 8.0, "weight": 2.5},
+    "table":            {"min_height": 4.0, "preferred_height": 8.0, "weight": 2.0},
+    "chart":            {"min_height": 7.0, "preferred_height": 11.0, "weight": 3.0},
+    "number_highlight": {"min_height": 4.0, "preferred_height": 5.5, "weight": 1.5},
+    "image":            {"min_height": 5.0, "preferred_height": 10.0, "weight": 2.5},
+    "two_column":       {"min_height": 5.0, "preferred_height": 10.0, "weight": 2.5},
+    "icon_row":         {"min_height": 2.5, "preferred_height": 3.0, "weight": 1.2},
+    "canvas":           {"min_height": 5.0, "preferred_height": 12.0, "weight": 3.0}
+  }
+}

@@ -90,10 +90,10 @@ python scripts/generate_ppt.py \
 
 内置 **172 个深信服蓝图标**（来源 [Tabler Icons](https://tabler.io/icons)，MIT 许可），覆盖 7 大场景：通用商务、云计算/IT、汽车、芯片、电子、新能源、创新药。
 
-**第二期升级（2024）**：原生 SVG 矢量嵌入 + PNG fallback
-- **PowerPoint 2016+**：矢量 SVG，可缩放不失真，右键"编辑图形"改颜色
-- **PowerPoint 2013-**：自动降级为 512px 透明 PNG，保证兼容性
-- **零运行时依赖**：图标已预转换并提交，生成时无需额外安装
+**第三期升级（2026）**：原生 PowerPoint 自定义几何矢量图形（iSlide 样式）
+- **完全可编辑与改色**：图标在底层被直接转换为 PPT 原生的自由图形（`FREEFORM`）及自定义几何路径（`custGeom`）。用户在 PowerPoint 界面中只需选中图标，即可直接在顶部的“形状格式 -> 形状轮廓”中随意修改图标的颜色、线宽和线型。
+- **100% 自包含**：生成的 PPTX 文件内不含任何 SVG 图像资源包（`media/image1.svg` 等），完全是轻量级的矢量数学指令，极大地降低了文件体积，避免了拷贝或发送到其他设备时出现“红叉”或“图片链接断开”的问题。
+- **零外部依赖**：生成 PPT 时不需要任何图片渲染库，100% 纯 Python + python-pptx 原生 XML 解析支持。
 
 三种用法（详见 `SKILL.md` 4.4 节）：
 - `bullet_list` 列表项加 `"icon": "shield-lock"` → 图标替代圆点
@@ -102,7 +102,7 @@ python scripts/generate_ppt.py \
 
 演示：`python scripts/generate_ppt.py --template "templates/【常用】深信服--PPT浅色模板2024.pptx" --plan demo_icons.json --output "output/demo_icons.pptx"`
 
-**维护图标**：编辑 `icons/icon_list.txt` 后 `python download_icons.py` 下载改色，再 `python convert_icons_to_png.py` 转 PNG。这两个工具需要 `svglib`、`reportlab`（见 requirements.txt 的可选依赖），**仅维护图标时需要，生成 PPT 时不需要**。
+**维护与扩展图标**：若需增加图标，只需将 `.svg` 格式的图标放置到 `icons/` 相应的分类文件夹中，生成器在运行时会自动读取、解析其路径并实时绘制。
 
 ---
 

@@ -1,16 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PPT 图片重建工具 - 从结构化 JSON 生成可编辑的 PowerPoint
-
-将 AI 生成的 PPT 图片转换为原生 PowerPoint 形状，支持：
-- 基础形状：矩形、圆角矩形、圆形
-- 文本：标题、正文、多段文字
-- 颜色：纯色填充、边框颜色
-- 布局：精确位置控制
-
-用法:
-    python reconstruct_from_image.py layout.json output.pptx
+PPT 图片重建工具 (reconstruct_from_image.py)
+从结构化 JSON 重建可编辑的 PowerPoint 页面，完全基于 scripts.lib 模块化能力。
+支持：文本框、圆角矩形、卡片、圆形、平行四边形、右箭头、矢量图标、连接线与指向箭头。
 """
 
 import json
@@ -22,289 +15,324 @@ from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.dml.color import RGBColor
 
+# 添加 scripts 目录及其父目录到 sys.path
+scripts_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, scripts_dir)
+sys.path.insert(0, os.path.dirname(scripts_dir))
 
-def parse_color(color_str):
-    """解析颜色字符串为 RGBColor
+from scripts.lib import *
+from scripts.lib.utils import hex_to_rgb, _fill_shape_text
 
-    Args:
-        color_str: 十六进制颜色（如 "#9B59B6"）或颜色名（如 "purple"）
-
-    Returns:
-        RGBColor 对象
-    """
-    # 颜色名称映射（常用色）
+def parse_color_str(color_str):
+    """解析颜色为 Hex 格式，支持常见颜色名"""
+    if color_str is None or str(color_str).lower() in ('none', 'null'):
+        return None
     COLOR_NAMES = {
         "white": "#FFFFFF",
         "black": "#000000",
-        "purple": "#9B59B6",
-        "blue": "#3498DB",
-        "green": "#2ECC71",
-        "orange": "#E67E22",
-        "red": "#E74C3C",
-        "gray": "#95A5A6",
-        "darkgray": "#7F8C8D",
+        "blue": "#006CD9",
+        "green": "#53C800",
+        "gray": "#ECECEC",
+        "lightgray": "#ECECEC",
+        "darkgray": "#595959",
+        "red": "#EF4444",
+        "orange": "#F59E0B"
     }
-
-    # 如果是颜色名，转为十六进制
+    if not color_str:
+        return "#FFFFFF"
     if not color_str.startswith("#"):
-        color_str = COLOR_NAMES.get(color_str.lower(), "#000000")
+        return COLOR_NAMES.get(color_str.lower(), "#000000")
+    return color_str
 
-    # 去掉 # 并转为 RGB
-    hex_color = color_str.lstrip("#")
-    r = int(hex_color[0:2], 16)
-    g = int(hex_color[2:4], 16)
-    b = int(hex_color[4:6], 16)
+def extract_coords(elem):
+    """从元素中抽取位置和大小 (支持嵌套的 position/size 与扁平化命名)"""
+    pos = elem.get('position', {})
+    size = elem.get('size', {})
+    
+    left = pos.get('left_cm', elem.get('left_cm', 0.0))
+    top = pos.get('top_cm', elem.get('top_cm', 0.0))
+    width = size.get('width_cm', elem.get('width_cm', 1.0))
+    height = size.get('height_cm', elem.get('height_cm', 1.0))
+    
+    return float(left), float(top), float(width), float(height)
 
-    return RGBColor(r, g, b)
+def _apply_dash_style(shape_or_line, dash_style_str):
+    if not dash_style_str:
+        return
+    try:
+        from pptx.enum.dml import MSO_LINE_DASH_STYLE
+        if dash_style_str == 'dashed':
+            shape_or_line.line.dash_style = MSO_LINE_DASH_STYLE.DASH
+        elif dash_style_str == 'dotted':
+            shape_or_line.line.dash_style = MSO_LINE_DASH_STYLE.ROUND_DOT
+        elif dash_style_str == 'solid':
+            shape_or_line.line.dash_style = MSO_LINE_DASH_STYLE.SOLID
+    except Exception as e:
+        print(f"  警告: 设置虚线样式失败: {e}")
 
+def draw_element(slide, elem):
+    """绘制单个元素"""
+    elem_type = elem.get('type', elem.get('shape_type', 'text'))
+    left, top, width, height = extract_coords(elem)
+    style = elem.get('style', {})
+    
+    # 颜色解析
+    fill_color = parse_color_str(style.get('fill_color', style.get('color')))
+    border_color = parse_color_str(style.get('border_color', style.get('line_color'))) if ('border_color' in style or 'line_color' in style) else None
+    border_width = Pt(style.get('border_width_pt', style.get('line_width_pt', 1.0)))
 
-def _draw_text(slide, elem):
-    """绘制纯文本框
+    if elem_type in ('text', 'text_box'):
+        # 文字对齐方式映射
+        align_map = {'left': PP_ALIGN.LEFT, 'center': PP_ALIGN.CENTER, 'right': PP_ALIGN.RIGHT}
+        align = align_map.get(style.get('alignment', style.get('align', 'left')), PP_ALIGN.LEFT)
+        
+        # 换行检测支持多行文本框
+        content = elem.get('content', elem.get('text', ''))
+        if isinstance(content, list) or '\n' in content:
+            lines = content if isinstance(content, list) else content.split('\n')
+            add_multiline_textbox(
+                slide, left, top, width, height, lines,
+                default_size=Pt(style.get('font_size_pt', 12)),
+                default_color=parse_color_str(style.get('font_color', '#0E0E0E')),
+                alignment=align,
+                line_spacing=style.get('line_spacing', 1.3)
+            )
+        else:
+            add_textbox(
+                slide, left, top, width, height, content,
+                font_size=Pt(style.get('font_size_pt', 12)),
+                font_color=parse_color_str(style.get('font_color', '#0E0E0E')),
+                bold=style.get('bold', False),
+                alignment=align,
+                line_spacing=style.get('line_spacing', 1.3)
+            )
 
-    Args:
-        slide: 幻灯片对象
-        elem: 元素描述（包含 position, size, style）
-    """
-    pos = elem['position']
-    size = elem['size']
-    style = elem['style']
+    elif elem_type in ('rect', 'rectangle'):
+        shape = add_styled_rectangle(
+            slide, left, top, width, height,
+            fill_color=fill_color,
+            line_color=border_color,
+            line_width=border_width,
+            corner_radius=None
+        )
+        if border_color and style.get('border_style'):
+            _apply_dash_style(shape, style['border_style'])
+        if 'gradient' in style:
+            add_gradient_fill(shape, style['gradient'].get('angle_deg', 0), style['gradient'].get('stops', []))
+        if 'text' in elem:
+            _draw_text_on_shape(slide, elem, left, top, width, height)
 
-    textbox = slide.shapes.add_textbox(
-        Cm(pos['left_cm']), Cm(pos['top_cm']),
-        Cm(size['width_cm']), Cm(size['height_cm'])
-    )
+    elif elem_type in ('round_rect', 'rounded_rectangle'):
+        shape = add_styled_rectangle(
+            slide, left, top, width, height,
+            fill_color=fill_color,
+            line_color=border_color,
+            line_width=border_width,
+            corner_radius=elem.get('corner_radius', 0.2)
+        )
+        if border_color and style.get('border_style'):
+            _apply_dash_style(shape, style['border_style'])
+        if 'gradient' in style:
+            add_gradient_fill(shape, style['gradient'].get('angle_deg', 0), style['gradient'].get('stops', []))
+        if 'text' in elem:
+            _draw_text_on_shape(slide, elem, left, top, width, height)
 
-    text_frame = textbox.text_frame
-    text_frame.text = elem['content']
+    elif elem_type in ('circle', 'oval'):
+        # python-pptx 圆形需要指定宽高相等的 oval
+        shape = slide.shapes.add_shape(MSO_SHAPE.OVAL, Cm(left), Cm(top), Cm(width), Cm(height))
+        shape.fill.solid()
+        shape.fill.fore_color.rgb = hex_to_rgb(fill_color)
+        if border_color:
+            shape.line.fill.solid()
+            shape.line.fill.fore_color.rgb = hex_to_rgb(border_color)
+            shape.line.width = border_width
+            if style.get('border_style'):
+                _apply_dash_style(shape, style['border_style'])
+        else:
+            set_no_border(shape)
+            
+        if 'gradient' in style:
+            add_gradient_fill(shape, style['gradient'].get('angle_deg', 0), style['gradient'].get('stops', []))
+            
+        if 'text' in elem:
+            _draw_text_on_shape(slide, elem, left, top, width, height, default_align=PP_ALIGN.CENTER)
 
-    # 设置样式
-    para = text_frame.paragraphs[0]
-    para.font.size = Pt(style.get('font_size_pt', 14))
-    para.font.color.rgb = parse_color(style.get('font_color', '#000000'))
-    para.font.bold = style.get('bold', False)
-    para.font.name = '微软雅黑'
+    elif elem_type == 'parallelogram':
+        shape = slide.shapes.add_shape(MSO_SHAPE.PARALLELOGRAM, Cm(left), Cm(top), Cm(width), Cm(height))
+        shape.fill.solid()
+        shape.fill.fore_color.rgb = hex_to_rgb(fill_color)
+        if border_color:
+            shape.line.fill.solid()
+            shape.line.fill.fore_color.rgb = hex_to_rgb(border_color)
+            shape.line.width = border_width
+            if style.get('border_style'):
+                _apply_dash_style(shape, style['border_style'])
+        else:
+            set_no_border(shape)
+            
+        if 'gradient' in style:
+            add_gradient_fill(shape, style['gradient'].get('angle_deg', 0), style['gradient'].get('stops', []))
+            
+        if 'text' in elem:
+            _draw_text_on_shape(slide, elem, left, top, width, height, default_align=PP_ALIGN.CENTER)
 
-    # 对齐方式
-    alignment = style.get('alignment', 'left')
-    if alignment == 'center':
-        para.alignment = PP_ALIGN.CENTER
-    elif alignment == 'right':
-        para.alignment = PP_ALIGN.RIGHT
+    elif elem_type in ('arrow', 'right_arrow'):
+        shape = slide.shapes.add_shape(MSO_SHAPE.RIGHT_ARROW, Cm(left), Cm(top), Cm(width), Cm(height))
+        shape.fill.solid()
+        shape.fill.fore_color.rgb = hex_to_rgb(fill_color)
+        if border_color:
+            shape.line.fill.solid()
+            shape.line.fill.fore_color.rgb = hex_to_rgb(border_color)
+            shape.line.width = border_width
+            if style.get('border_style'):
+                _apply_dash_style(shape, style['border_style'])
+        else:
+            set_no_border(shape)
+            
+        if 'gradient' in style:
+            add_gradient_fill(shape, style['gradient'].get('angle_deg', 0), style['gradient'].get('stops', []))
+            
+        if 'text' in elem:
+            _draw_text_on_shape(slide, elem, left, top, width, height, default_align=PP_ALIGN.CENTER)
+
+    elif elem_type == 'icon':
+        icon_name = elem.get('icon_name', elem.get('icon'))
+        color = parse_color_str(elem.get('color', SangforColors.BLUE_PRIMARY))
+        category = elem.get('category')
+        if icon_name:
+            add_icon(slide, icon_name, left, top, size_cm=width, color=color, category=category)
+
+    elif elem_type in ('line', 'connector'):
+        from_pt = elem.get('from_point_cm', elem.get('from_point', [0.0, 0.0]))
+        to_pt = elem.get('to_point_cm', elem.get('to_point', [0.0, 0.0]))
+        color = parse_color_str(style.get('line_color', style.get('color', '#000000')))
+        width_pt = style.get('line_width_pt', 1.5)
+        connector = add_connector_line(slide, from_pt[0], from_pt[1], to_pt[0], to_pt[1], color=color, width_pt=width_pt)
+        if style.get('line_style') or style.get('border_style'):
+            _apply_dash_style(connector, style.get('line_style') or style.get('border_style'))
+
+    elif elem_type == 'connector_arrow':
+        from_pt = elem.get('from_point_cm', elem.get('from_point', [0.0, 0.0]))
+        to_pt = elem.get('to_point_cm', elem.get('to_point', [0.0, 0.0]))
+        color = parse_color_str(style.get('line_color', style.get('color', '#000000')))
+        width_pt = style.get('line_width_pt', 1.5)
+        connector = add_connector_arrow(slide, from_pt[0], from_pt[1], to_pt[0], to_pt[1], color=color, width_pt=width_pt)
+        if style.get('line_style') or style.get('border_style'):
+            _apply_dash_style(connector, style.get('line_style') or style.get('border_style'))
+
+    elif elem_type == 'card':
+        # 兼容旧 schema 并调用公共的 add_card
+        title_text = elem.get('title', {}).get('content', '') if isinstance(elem.get('title'), dict) else elem.get('title', '')
+        desc_text = elem.get('description', {}).get('content', '') if isinstance(elem.get('description'), dict) else elem.get('description', '')
+        add_card(
+            slide, left, top, width, height,
+            header_text=title_text,
+            body_text=desc_text,
+            header_color=fill_color,
+            bg_color=parse_color_str(style.get('bg_color', SangforColors.BG_LIGHT_GRAY)),
+            icon=elem.get('icon')
+        )
     else:
-        para.alignment = PP_ALIGN.LEFT
+        print(f"  警告: 不支持重建的元素类型 '{elem_type}'，已跳过。")
 
-    text_frame.word_wrap = True
-
-
-def _draw_card(slide, elem):
-    """绘制卡片（圆角矩形 + 图标 + 标题 + 说明）
-
-    Args:
-        slide: 幻灯片对象
-        elem: 卡片元素描述
-    """
-    pos = elem['position']
-    size = elem['size']
-    style = elem['style']
-
-    # 1. 绘制圆角矩形背景
-    card_shape = slide.shapes.add_shape(
-        MSO_SHAPE.ROUNDED_RECTANGLE,
-        Cm(pos['left_cm']), Cm(pos['top_cm']),
-        Cm(size['width_cm']), Cm(size['height_cm'])
-    )
-    card_shape.fill.solid()
-    card_shape.fill.fore_color.rgb = parse_color(style['fill_color'])
-    card_shape.line.width = Pt(0)  # 无边框
-
-    # 2. 绘制图标（白色圆形）
-    if 'icon' in elem:
-        icon_info = elem['icon']
-        icon_x = pos['left_cm'] + icon_info['position_offset']['x_cm']
-        icon_y = pos['top_cm'] + icon_info['position_offset']['y_cm']
-        icon_size = icon_info['size_cm']
-
-        icon_circle = slide.shapes.add_shape(
-            MSO_SHAPE.OVAL,
-            Cm(icon_x), Cm(icon_y),
-            Cm(icon_size), Cm(icon_size)
+def _draw_text_on_shape(slide, elem, left, top, width, height, default_align=PP_ALIGN.LEFT):
+    """辅助：在已绘制几何形状上覆盖填充多行格式化文字 (避免直接写入形状导致的对齐限制)"""
+    text_info = elem['text']
+    align_map = {'left': PP_ALIGN.LEFT, 'center': PP_ALIGN.CENTER, 'right': PP_ALIGN.RIGHT}
+    align = align_map.get(text_info.get('alignment', text_info.get('align')), default_align)
+    
+    # 覆盖一个透明的文本框写入文字，以完美保持字号与换行排版
+    txBox = slide.shapes.add_textbox(Cm(left + 0.1), Cm(top + 0.1), Cm(width - 0.2), Cm(height - 0.2))
+    content = text_info.get('content', '')
+    
+    if isinstance(content, list) or '\n' in content:
+        lines = content if isinstance(content, list) else content.split('\n')
+        _fill_shape_text(
+            txBox, lines,
+            default_font_size=Pt(text_info.get('font_size_pt', 12)),
+            default_color=parse_color_str(text_info.get('font_color', '#000000')),
+            default_bold=text_info.get('bold', False),
+            alignment=align
         )
-        icon_circle.fill.solid()
-        icon_circle.fill.fore_color.rgb = parse_color(icon_info['fill_color'])
-        icon_circle.line.width = Pt(0)
-
-    # 3. 标题文字
-    if 'title' in elem:
-        title_info = elem['title']
-        title_box = slide.shapes.add_textbox(
-            Cm(pos['left_cm'] + 0.5),
-            Cm(pos['top_cm'] + title_info['y_offset_cm']),
-            Cm(size['width_cm'] - 1),
-            Cm(1)
-        )
-        title_frame = title_box.text_frame
-        title_frame.text = title_info['content']
-
-        title_para = title_frame.paragraphs[0]
-        title_para.font.size = Pt(title_info.get('font_size_pt', 18))
-        title_para.font.color.rgb = parse_color(title_info.get('font_color', '#FFFFFF'))
-        title_para.font.bold = title_info.get('bold', True)
-        title_para.font.name = '微软雅黑'
-        title_para.alignment = PP_ALIGN.CENTER
-
-    # 4. 说明文字
-    if 'description' in elem:
-        desc_info = elem['description']
-        desc_box = slide.shapes.add_textbox(
-            Cm(pos['left_cm'] + 0.5),
-            Cm(pos['top_cm'] + desc_info['y_offset_cm']),
-            Cm(size['width_cm'] - 1),
-            Cm(1.5)
-        )
-        desc_frame = desc_box.text_frame
-        desc_frame.text = desc_info['content']
-
-        desc_para = desc_frame.paragraphs[0]
-        desc_para.font.size = Pt(desc_info.get('font_size_pt', 12))
-        desc_para.font.color.rgb = parse_color(desc_info.get('font_color', '#FFFFFF'))
-        desc_para.font.bold = False
-        desc_para.font.name = '微软雅黑'
-        desc_para.alignment = PP_ALIGN.CENTER
-        desc_frame.word_wrap = True
-
-
-def _draw_rounded_rectangle(slide, elem):
-    """绘制圆角矩形（带可选文字）
-
-    Args:
-        slide: 幻灯片对象
-        elem: 元素描述
-    """
-    pos = elem['position']
-    size = elem['size']
-    style = elem['style']
-
-    shape = slide.shapes.add_shape(
-        MSO_SHAPE.ROUNDED_RECTANGLE,
-        Cm(pos['left_cm']), Cm(pos['top_cm']),
-        Cm(size['width_cm']), Cm(size['height_cm'])
-    )
-
-    # 填充色
-    shape.fill.solid()
-    shape.fill.fore_color.rgb = parse_color(style.get('fill_color', '#ECECEC'))
-
-    # 边框
-    if 'line_color' in style:
-        shape.line.color.rgb = parse_color(style['line_color'])
-        shape.line.width = Pt(style.get('line_width_pt', 1))
     else:
-        shape.line.width = Pt(0)
-
-    # 内嵌文字（可选）
-    if 'text' in elem:
-        text_info = elem['text']
-        text_frame = shape.text_frame
-        text_frame.text = text_info.get('content', '')
-
-        para = text_frame.paragraphs[0]
-        para.font.size = Pt(text_info.get('font_size_pt', 14))
-        para.font.color.rgb = parse_color(text_info.get('font_color', '#000000'))
-        para.font.bold = text_info.get('bold', False)
-        para.font.name = '微软雅黑'
-
-        alignment = text_info.get('alignment', 'center')
-        if alignment == 'center':
-            para.alignment = PP_ALIGN.CENTER
-        elif alignment == 'right':
-            para.alignment = PP_ALIGN.RIGHT
-
-        text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
-        text_frame.word_wrap = True
-
+        p = txBox.text_frame.paragraphs[0]
+        p.alignment = align
+        set_paragraph_spacing(p, 1.2)
+        run = p.add_run()
+        run.text = content
+        set_font(
+            run,
+            font_name=SangforFonts.CHINESE,
+            size=Pt(text_info.get('font_size_pt', 12)),
+            color=parse_color_str(text_info.get('font_color', '#000000')),
+            bold=text_info.get('bold', False)
+        )
 
 def reconstruct_ppt_from_json(layout_json_path, output_ppt_path):
-    """从结构化 JSON 生成 PPT
-
-    Args:
-        layout_json_path: JSON 文件路径
-        output_ppt_path: 输出 PPT 路径
-
-    Returns:
-        生成的 PPT 文件路径
-    """
-    # 读取 JSON
+    """核心：读取 JSON 几何数据并重建 PPT 页面"""
     with open(layout_json_path, 'r', encoding='utf-8') as f:
         layout = json.load(f)
 
-    # 创建 PPT
+    # 1. 初始化 Presentation 并设置页面宽高
     prs = Presentation()
-    prs.slide_width = Cm(layout['page_info']['width_cm'])
-    prs.slide_height = Cm(layout['page_info']['height_cm'])
+    page_info = layout.get('page_info', {})
+    prs.slide_width = Cm(page_info.get('width_cm', 33.87))
+    prs.slide_height = Cm(page_info.get('height_cm', 19.05))
 
-    # 添加空白页
-    blank_layout = prs.slide_layouts[6]  # 空白布局
+    # 2. 添加空白页并填充背景色
+    blank_layout = prs.slide_layouts[6]
     slide = prs.slides.add_slide(blank_layout)
-
-    # 设置背景色（如果需要）
-    bg_color = layout['page_info'].get('background_color', '#FFFFFF')
+    
+    bg_color = parse_color_str(page_info.get('background_color', '#FFFFFF'))
     if bg_color != '#FFFFFF':
-        background = slide.background
-        fill = background.fill
-        fill.solid()
-        fill.fore_color.rgb = parse_color(bg_color)
+        slide.background.fill.solid()
+        slide.background.fill.fore_color.rgb = hex_to_rgb(bg_color)
 
-    # 逐个绘制元素
-    for elem in layout['elements']:
-        elem_type = elem['type']
+    # 3. 按照 JSON 定义顺序渲染各个几何形状及文本
+    for idx, elem in enumerate(layout.get('elements', [])):
+        try:
+            draw_element(slide, elem)
+        except Exception as e:
+            print(f"  错误: 渲染第 {idx+1} 个元素失败 ({elem.get('type')}): {e}")
 
-        if elem_type == 'text':
-            _draw_text(slide, elem)
-        elif elem_type == 'card':
-            _draw_card(slide, elem)
-        elif elem_type == 'rounded_rectangle':
-            _draw_rounded_rectangle(slide, elem)
-        else:
-            print(f"警告: 不支持的元素类型 '{elem_type}'，已跳过")
-
-    # 保存 PPT
-    prs.save(output_ppt_path)
-    print(f"PPT generated: {output_ppt_path}")
-
+    # 4. 保存为 PPTX 文件
+    output_dir = os.path.dirname(output_ppt_path)
+    if output_dir and not os.path.exists(output_dir):
+        os.makedirs(output_dir, exist_ok=True)
+        
+    try:
+        prs.save(output_ppt_path)
+        print(f"PPT 重建已完成: {output_ppt_path}")
+    except PermissionError:
+        name, ext = os.path.splitext(output_ppt_path)
+        fallback_path = f"{name}_v2{ext}"
+        print(f"  警告: 无法写入 '{output_ppt_path}' (可能已被 PowerPoint 打开)。尝试写入备选路径...")
+        prs.save(fallback_path)
+        print(f"PPT 重建已完成 (使用备选路径): {fallback_path}")
+        output_ppt_path = fallback_path
+        
     return output_ppt_path
 
-
 def main():
-    """命令行入口"""
     if len(sys.argv) < 3:
         print("用法: python reconstruct_from_image.py <layout.json> <output.pptx>")
-        print("\n示例:")
-        print("  python reconstruct_from_image.py test_layout.json output/reconstructed.pptx")
         sys.exit(1)
 
     layout_json = sys.argv[1]
     output_ppt = sys.argv[2]
 
-    # 检查输入文件
     if not os.path.exists(layout_json):
-        print(f"错误: JSON 文件不存在: {layout_json}")
+        print(f"错误: JSON 配置文件不存在: {layout_json}")
         sys.exit(1)
 
-    # 确保输出目录存在
-    output_dir = os.path.dirname(output_ppt)
-    if output_dir and not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
-    # 生成 PPT
     try:
         reconstruct_ppt_from_json(layout_json, output_ppt)
-        print(f"\nSuccess! Open {output_ppt} to view the result.")
+        print("\nSuccess! Reconstructed slide saved.")
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error executing reconstruction: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)
-
 
 if __name__ == '__main__':
     main()

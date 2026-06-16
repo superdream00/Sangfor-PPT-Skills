@@ -5,6 +5,20 @@
 - "生成 PPT" / "制作 PPT" / "做个演示文稿"
 - "深信服 PPT" / "深信服模板"
 - "产品赋能 PPT" / "方案 PPT"
+- "根据图片重建PPT" / "基于图片生成构建" / "根据图片构建单页" / "/reconstruct"
+
+---
+
+## 图像到单页 PPT 重建（新增重点能力）
+
+当用户发出图像重建指令时（通常包含图片附件或路径，提示词如 **“根据图片重建PPT”** 或 **“基于图片生成构建”**），Agent 应执行以下流程：
+1. **分析图片结构**：使用视觉能力，提取图片中的文本、背景颜色、几何位置、卡片组件、图标名称及各组件间的连线与箭头。
+2. **生成布局 JSON**：编写符合 `scripts/reconstruct_from_image.py` 格式的布局 JSON（见下方 Schema 规范），支持圆角矩形、文本框、平行四边形、线条、指向箭头和矢量图标。
+3. **调用重建脚本**：将 JSON 写入临时文件，执行：
+   ```bash
+   python scripts/reconstruct_from_image.py <layout.json> <output/reconstructed.pptx>
+   ```
+4. **验证并交付**：告知用户文件已生成，并且页面内的文字、卡片、线条和图标全都是**可编辑的原生 DrawingML 形状**，方便后续微调。
 
 ---
 
@@ -193,6 +207,83 @@ python scripts/generate_ppt.py \
 - **Claude Code**: 已原生支持 `SKILL.md`，无需额外配置
 - **其他工具**: 复制到对应的 AI 指令/规则文件中
 
+生成时记得 `cd` 到 `sangfor-ppt-generator/` 目录再执行命令，或使用绝对路径。
+
 ---
 
-生成时记得 `cd` 到 `sangfor-ppt-generator/` 目录再执行命令，或使用绝对路径。
+## 图像重建布局 JSON 规范 (layout.json Schema)
+
+当基于图片重建单页 PPT 时，生成一个符合以下格式的 `layout.json`，然后调用 `reconstruct_from_image.py`：
+
+```json
+{
+  "page_info": {
+    "width_cm": 33.87,
+    "height_cm": 19.05,
+    "background_color": "#FFFFFF"
+  },
+  "elements": [
+    // 1. 文本元素 (如标题、段落)
+    {
+      "type": "text",
+      "content": "文本内容\n可以有多行", 
+      "left_cm": 2.0, "top_cm": 1.5, "width_cm": 20.0, "height_cm": 2.0,
+      "style": {
+        "font_size_pt": 22,
+        "font_color": "#006CD9", // 支持品牌色十六进制
+        "bold": true,
+        "alignment": "left" // left, center, right
+      }
+    },
+    // 2. 几何矩形/圆角矩形 (可作为容器背景，支持内嵌文字)
+    {
+      "type": "rounded_rectangle",
+      "left_cm": 2.0, "top_cm": 5.0, "width_cm": 6.0, "height_cm": 4.0,
+      "corner_radius": 0.2,
+      "style": {
+        "fill_color": "#ECECEC",
+        "border_color": "#006CD9",
+        "border_width_pt": 1.5
+      },
+      "text": { // 可选内嵌文本
+        "content": "卡片文本内容",
+        "font_size_pt": 12,
+        "font_color": "#0E0E0E",
+        "bold": false,
+        "alignment": "center"
+      }
+    },
+    // 3. 矢量图标 (调用图标库，自动查找)
+    {
+      "type": "icon",
+      "icon": "shield", // 图标名称 (见库)
+      "left_cm": 4.0, "top_cm": 5.5, "width_cm": 2.0, "height_cm": 2.0,
+      "color": "#53C800" // 自定义图标描边颜色
+    },
+    // 4. 平行四边形或右箭头
+    {
+      "type": "parallelogram", // 或 "arrow"
+      "left_cm": 10.0, "top_cm": 5.0, "width_cm": 4.0, "height_cm": 1.5,
+      "style": {
+        "fill_color": "#006CD9"
+      },
+      "text": {
+        "content": "平行四边形文本",
+        "font_size_pt": 11,
+        "font_color": "#FFFFFF",
+        "alignment": "center"
+      }
+    },
+    // 5. 连接线与指向箭头 (用于流程图、逻辑拓扑)
+    {
+      "type": "connector_arrow", // "connector_arrow" 带箭头，"line" 或 "connector" 为直线
+      "from_point_cm": [8.0, 7.0], // 起始 [x, y] 厘米坐标
+      "to_point_cm": [10.0, 7.0],  // 终点 [x, y] 厘米坐标
+      "style": {
+        "line_color": "#003592",
+        "line_width_pt": 2.0
+      }
+    }
+  ]
+}
+```
